@@ -1,0 +1,112 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+
+import LightBlobMouse from '~/components/light-blob-mouse';
+import LightBlob from '~/components/light-blob.astro';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang='en' class='bg-[#13151a] font-geist text-primary-light'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='description' content='Personal website of Dominik Toth.' />
+    <meta name='viewport' content='width=device-width' />
+    <link rel='icon' type='image/svg+xml' href='/favicon.ico' />
+    <meta name='generator' content={Astro.generator} />
+    <title>Dominik Toth • {title}</title>
+    <ViewTransitions />
+  </head>
+  <body>
+    <!-- Light blobs in top left and bottom right -->
+    <LightBlob className='left-0 right-0 -translate-x-1/2 -translate-y-1/2' />
+    <LightBlob className='bottom-0 right-0 translate-x-1/2 translate-y-1/2' />
+    <!-- Light blob that follows the mouse -->
+    <div class='hidden xl:block'>
+      <LightBlobMouse client:only='react' />
+    </div>
+
+    <slot />
+
+    <style is:global>
+      @font-face {
+        font-family: 'Geist';
+        font-style: normal;
+        font-weight: 100;
+        src: url('/fonts/Geist-Thin.otf');
+      }
+
+      @font-face {
+        font-family: 'Geist';
+        font-style: normal;
+        font-weight: 300;
+        src: url('/fonts/Geist-Light.otf');
+      }
+
+      @font-face {
+        font-family: 'Geist';
+        font-style: normal;
+        font-weight: 400;
+        src: url('/fonts/Geist-Regular.otf');
+      }
+
+      @font-face {
+        font-family: 'Geist';
+        font-style: normal;
+        font-weight: 500;
+        src: url('/fonts/Geist-Medium.otf');
+      }
+
+      @font-face {
+        font-family: 'Geist';
+        font-style: normal;
+        font-weight: 600;
+        src: url('/fonts/Geist-SemiBold.otf');
+      }
+
+      @font-face {
+        font-family: 'Geist';
+        font-style: normal;
+        font-weight: 700;
+        src: url('/fonts/Geist-Bold.otf');
+      }
+
+      @font-face {
+        font-family: 'Geist';
+        font-style: normal;
+        font-weight: 800;
+        src: url('/fonts/Geist-Black.otf');
+      }
+
+      @font-face {
+        font-family: 'Geist';
+        font-style: normal;
+        font-weight: 900;
+        src: url('/fonts/Geist-UltraBlack.otf');
+      }
+
+      html {
+        background-image: linear-gradient(
+          45deg,
+          hsl(240deg 53% 8%) 0%,
+          hsl(240deg 52% 8%) 19%,
+          hsl(240deg 56% 8%) 27%,
+          hsl(240deg 55% 8%) 34%,
+          hsl(240deg 55% 8%) 41%,
+          hsl(240deg 54% 8%) 47%,
+          hsl(240deg 58% 7%) 53%,
+          hsl(240deg 57% 7%) 59%,
+          hsl(240deg 57% 7%) 66%,
+          hsl(240deg 56% 7%) 73%,
+          hsl(240deg 60% 7%) 81%,
+          hsl(240deg 59% 7%) 100%
+        );
+      }
+    </style>
+  </body>
+</html>
