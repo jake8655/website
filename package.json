@@ -34,7 +34,9 @@
     "prettier": "^3.2.5",
     "prettier-plugin-astro": "^0.13.0",
     "prettier-plugin-tailwindcss": "^0.5.11",
-    "typescript": "^5.3.3",
-    "tailwindcss": "^3.4.1"
+    "tailwind-scrollbar-hide": "^1.1.7",
+    "tailwindcss": "^3.4.1",
+    "tailwindcss-animate": "^1.0.7",
+    "typescript": "^5.3.3"
   }
 }

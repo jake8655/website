@@ -1,54 +1,31 @@
-# Astro Starter Kit: Basics
+# dominiktoth.com
 
-```sh
-npm create astro@latest -- --template basics
-```
+My personal website and portfolio built with [Astro](https://astro.build/).
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+## Tech stack
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+- [Astro](https://astro.build/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [React](https://reactjs.org/)
+- [Bun](https://bun.sh)
+- [Vercel](https://vercel.com/)
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+## Development
 
-## 🚀 Project Structure
+### Commands
 
-Inside of your Astro project, you'll see the following folders and files:
+All commands are run from the root of the project, from a terminal.
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+<!-- Create a table with commands -->
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+| Command         | Description                                             |
+| --------------- | ------------------------------------------------------- |
+| `bun install`   | Install all dependencies                                |
+| `bun dev`       | Start the development server at `http://localhost:4321` |
+| `bun run build` | Build the project for production to `./dist/`           |
+| `bun preview`   | Preview the production build                            |
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+### Contributing
 
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Feel free to contribute to this project by opening an issue or pull request.

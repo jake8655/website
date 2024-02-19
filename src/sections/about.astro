@@ -1,4 +1,12 @@
-<section>
+---
+interface Props {
+  className?: string;
+}
+
+const { className } = Astro.props;
+---
+
+<section class:list={[className]}>
   <h2 class='text-4xl font-thin lg:text-6xl'>About me</h2>
   <p class='text-lg leading-normal'>
     Lorem ipsum dolor sit amet consectetur adipisicing elit. Id quo, quaerat

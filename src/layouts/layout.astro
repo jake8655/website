@@ -15,18 +15,16 @@ const { title } = Astro.props;
 <html lang='en' class='bg-[#13151a] font-geist text-primary-light'>
   <head>
     <meta charset='UTF-8' />
-    <meta name='description' content='Personal website of Dominik Toth.' />
+    <meta name='description' content='Personal website of Dominik Tóth.' />
     <meta name='viewport' content='width=device-width' />
     <link rel='icon' type='image/svg+xml' href='/favicon.ico' />
     <meta name='generator' content={Astro.generator} />
-    <title>Dominik Toth • {title}</title>
+    <title>Dominik Tóth • {title}</title>
     <ViewTransitions />
   </head>
   <body>
-    <!-- Light blobs in top left and bottom right -->
     <LightBlob className='left-0 right-0 -translate-x-1/2 -translate-y-1/2' />
     <LightBlob className='bottom-0 right-0 translate-x-1/2 translate-y-1/2' />
-    <!-- Light blob that follows the mouse -->
     <div class='hidden xl:block'>
       <LightBlobMouse client:only='react' />
     </div>
@@ -38,6 +36,7 @@ const { title } = Astro.props;
         font-family: 'Geist';
         font-style: normal;
         font-weight: 100;
+        font-display: swap;
         src: url('/fonts/Geist-Thin.otf');
       }
 
@@ -45,6 +44,7 @@ const { title } = Astro.props;
         font-family: 'Geist';
         font-style: normal;
         font-weight: 300;
+        font-display: swap;
         src: url('/fonts/Geist-Light.otf');
       }
 
@@ -52,6 +52,7 @@ const { title } = Astro.props;
         font-family: 'Geist';
         font-style: normal;
         font-weight: 400;
+        font-display: swap;
         src: url('/fonts/Geist-Regular.otf');
       }
 
@@ -59,6 +60,7 @@ const { title } = Astro.props;
         font-family: 'Geist';
         font-style: normal;
         font-weight: 500;
+        font-display: swap;
         src: url('/fonts/Geist-Medium.otf');
       }
 
@@ -66,6 +68,7 @@ const { title } = Astro.props;
         font-family: 'Geist';
         font-style: normal;
         font-weight: 600;
+        font-display: swap;
         src: url('/fonts/Geist-SemiBold.otf');
       }
 
@@ -73,6 +76,7 @@ const { title } = Astro.props;
         font-family: 'Geist';
         font-style: normal;
         font-weight: 700;
+        font-display: swap;
         src: url('/fonts/Geist-Bold.otf');
       }
 
@@ -80,6 +84,7 @@ const { title } = Astro.props;
         font-family: 'Geist';
         font-style: normal;
         font-weight: 800;
+        font-display: swap;
         src: url('/fonts/Geist-Black.otf');
       }
 
@@ -87,6 +92,7 @@ const { title } = Astro.props;
         font-family: 'Geist';
         font-style: normal;
         font-weight: 900;
+        font-display: swap;
         src: url('/fonts/Geist-UltraBlack.otf');
       }
 
@@ -106,6 +112,15 @@ const { title } = Astro.props;
           hsl(240deg 60% 7%) 81%,
           hsl(240deg 59% 7%) 100%
         );
+
+        --scrollbar-thumb: #005cb8;
+        --scrollbar-track: hsl(240deg 53% 8%);
+      }
+
+      html {
+        scrollbar-width: thin;
+        scroll-behavior: smooth;
+        scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
       }
     </style>
   </body>
