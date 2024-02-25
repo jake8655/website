@@ -25,6 +25,13 @@ export default {
             animationTimingFunction: 'cubic-bezier(0.8,0,1,1)',
           },
         },
+        blink: {
+          '0%, 100%': { backgroundColor: 'transparent' },
+          '50%': { backgroundColor: 'currentColor' },
+        },
+      },
+      animation: {
+        blink: 'blink 1s infinite steps(1, start)',
       },
       boxShadow: {
         glow: '0 0 50px 0 rgba(109, 154, 238, 0.3)',
