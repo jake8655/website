@@ -6,8 +6,6 @@ interface Props {
 }
 
 const { title } = Astro.props;
-
-// TODO: make the hover effect on line 12 work
 ---
 
 <div
@@ -19,7 +17,7 @@ const { title } = Astro.props;
       width={50}
       height={50}
       loading='eager'
-      class='animate-bounce duration-500 ease-out fill-mode-forwards repeat-[2] group-hover:-translate-y-12'
+      class='animate-bounce duration-500 ease-out repeat-[2] group-hover:-translate-y-4'
     />
     <h2 class='text-4xl font-semibold lg:text-6xl'>{title}</h2>
     <Image
@@ -28,7 +26,7 @@ const { title } = Astro.props;
       width={50}
       height={50}
       loading='eager'
-      class='animate-bounce duration-500 ease-out fill-mode-forwards repeat-[2]'
+      class='animate-bounce duration-500 ease-out repeat-[2] group-hover:-translate-y-4'
     />
   </div>
 </div>

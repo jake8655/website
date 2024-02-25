@@ -17,8 +17,6 @@ My personal website and portfolio built with [Astro](https://astro.build/).
 
 All commands are run from the root of the project, from a terminal.
 
-<!-- Create a table with commands -->
-
 | Command         | Description                                             |
 | --------------- | ------------------------------------------------------- |
 | `bun install`   | Install all dependencies                                |
