@@ -2,7 +2,7 @@
 import Image from 'astro/components/Image.astro';
 
 let age = new Date().getFullYear() - 2007;
-if (new Date().getMonth() < 5 && new Date().getDate() < 26) {
+if (new Date().getMonth() < 5 || new Date().getDate() < 26) {
   age--;
 }
 ---
