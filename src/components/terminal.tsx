@@ -17,17 +17,20 @@ const prompt = `dominik@portfolio:~$ `;
 export default function Terminal({ className }: { className?: string }) {
   const [focus, setFocus] = useState(false);
   const [input, setInput] = useState('');
-  const [commandHistory, setCommandHistory] = useState<string[]>([]);
-  const [commandHistoryIndex, setCommandHistoryIndex] = useState<number>(0);
+  const [commandHistory, setCommandHistory] = useState<(string | null)[]>([]);
+  const [commandHistoryIndex, setCommandHistoryIndex] = useState(0);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     e.preventDefault();
 
     switch (e.key) {
       case 'Enter':
+        if (input.trim() === '') setCommandHistory([...commandHistory, null]);
+        else setCommandHistory([...commandHistory, input.trim()]);
+
         setInput('');
-        setCommandHistory([...commandHistory, input.trim()]);
-        setCommandHistoryIndex(commandHistory.length + 1);
+        // +1 because we subtract 1 at history browsing immediately
+        setCommandHistoryIndex(commandHistory.length);
         break;
 
       case 'Backspace':
@@ -36,47 +39,42 @@ export default function Terminal({ className }: { className?: string }) {
 
       case 'c':
         if (e.ctrlKey) {
+          setCommandHistory([...commandHistory, null]);
           setInput('');
-          setCommandHistory([...commandHistory, '']);
-          setCommandHistoryIndex(commandHistory.length + 1);
+          // +1 because we subtract 1 at history browsing immediately
+          setCommandHistoryIndex(commandHistory.length);
           return;
         }
         break;
 
       case 'ArrowUp':
-        console.log(commandHistory, commandHistoryIndex);
+        if (commandHistory.every(c => c === null)) return;
 
-        if (commandHistory.every(c => c === '')) return;
-
-        if (commandHistoryIndex > 0) {
-          let i: number;
-          for (i = commandHistoryIndex; commandHistory[i] === ''; i--) {
-            if (i === 1) {
-              break;
-            }
-          }
-
-          setCommandHistoryIndex(i - 1);
-          setInput(commandHistory[i - 1]!);
+        let newBackIndex = commandHistoryIndex - 1;
+        if (newBackIndex < 0) newBackIndex = 0;
+        while (newBackIndex >= 0 && commandHistory[newBackIndex] === null) {
+          newBackIndex--;
         }
+
+        setCommandHistoryIndex(newBackIndex);
+        setInput(commandHistory[newBackIndex]!);
         break;
 
       case 'ArrowDown':
-        console.log(commandHistory, commandHistoryIndex);
+        if (commandHistory.every(c => c === null)) return;
 
-        if (commandHistory.every(c => c === '')) return;
-
-        if (commandHistoryIndex < commandHistory.length - 1) {
-          let i: number;
-          for (i = commandHistoryIndex; commandHistory[i] === ''; i++) {
-            if (i === commandHistory.length - 1) {
-              break;
-            }
-          }
-
-          setCommandHistoryIndex(i + 1);
-          setInput(commandHistory[i + 1]!);
+        let newForwardIndex = commandHistoryIndex + 1;
+        if (newForwardIndex > commandHistory.length - 1)
+          newForwardIndex = commandHistory.length - 1;
+        while (
+          newForwardIndex < commandHistory.length - 1 &&
+          commandHistory[newForwardIndex] === null
+        ) {
+          newForwardIndex++;
         }
+
+        setCommandHistoryIndex(newForwardIndex);
+        setInput(commandHistory[newForwardIndex]!);
         break;
     }
 
