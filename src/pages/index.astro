@@ -4,6 +4,8 @@ import Terminal from '~/components/terminal';
 import Layout from '~/layouts/layout.astro';
 import About from '~/sections/about.astro';
 import Hero from '~/sections/hero.astro';
+
+const date = new Date();
 ---
 
 <Layout title='Home'>
@@ -11,7 +13,7 @@ import Hero from '~/sections/hero.astro';
     <Hero />
     <ArrowTitle title='A bit of Linux' />
 
-    <Terminal client:only='react' className='hidden xl:block' />
+    <Terminal client:only='react' className='hidden xl:block' {date} />
     <About className='block xl:hidden' />
   </main>
 </Layout>
