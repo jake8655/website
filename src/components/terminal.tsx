@@ -1,11 +1,28 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
-const prompt = `<span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">portfolio</span>:~$ `;
+const PROMPT = `<span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">portfolio</span>:~$ `;
+
+const COMMANDS: Record<
+  'catchAll' | (string & NonNullable<unknown>),
+  { output: (cmd: string) => string }
+> = {
+  hello: {
+    output() {
+      return 'Hello, World!';
+    },
+  },
+  catchAll: {
+    output(cmd: string) {
+      return `Command not found: ${cmd}`;
+    },
+  },
+};
 
 type Command =
   | {
       text: string;
+      output: string;
       ctrlc?: false;
     }
   | { text: string; ctrlc: true }
@@ -41,7 +58,7 @@ function Shell({ welcomeMessage }: { welcomeMessage: string }) {
   const [input, setInput] = useState('');
   const [commandHistory, setCommandHistory] = useState<Command[]>([]);
   const filteredCommandHistory = useMemo(
-    () => commandHistory.filter(c => c !== null && !c.ctrlc),
+    () => commandHistory.filter(c => c && !c.ctrlc),
     [commandHistory],
   );
   const [commandHistoryIndex, setCommandHistoryIndex] = useState(0);
@@ -59,14 +76,18 @@ function Shell({ welcomeMessage }: { welcomeMessage: string }) {
       case e.key === 'Enter' || (e.key === 'm' && e.ctrlKey):
         if (input.trim() === '') setCommandHistory([...commandHistory, null]);
         else {
-          commandHistory.push({ text: input.trim() });
+          const command = COMMANDS[input.trim()] ?? COMMANDS.catchAll;
+          commandHistory.push({
+            text: input.trim(),
+            output: command.output(input.trim()),
+          });
           setCommandHistory([...commandHistory]);
         }
 
         setInput('');
         setCursorPosition(-1);
 
-        const newFiltered = commandHistory.filter(c => c !== null && !c.ctrlc);
+        const newFiltered = commandHistory.filter(c => c && !c.ctrlc);
         // +1 because we subtract 1 at history browsing immediately
         setCommandHistoryIndex(newFiltered.length);
 
@@ -88,9 +109,7 @@ function Shell({ welcomeMessage }: { welcomeMessage: string }) {
         setCursorPosition(-1);
 
         // +1 because we subtract 1 at history browsing immediately
-        const newFilteredCommands = commandHistory.filter(
-          c => c !== null && !c.ctrlc,
-        );
+        const newFilteredCommands = commandHistory.filter(c => c && !c.ctrlc);
         setCommandHistoryIndex(newFilteredCommands.length);
 
         return debouncedSetIsTyping();
@@ -194,10 +213,13 @@ function TerminalCommands({
   return (
     <div className='space-y-1'>
       {commands.map((command, i) => (
-        <div key={i} className='flex'>
-          <pre dangerouslySetInnerHTML={{ __html: prompt }}></pre>
-          {command !== null ? <pre>{command.text}</pre> : null}
-        </div>
+        <React.Fragment key={i}>
+          <div className='flex'>
+            <pre dangerouslySetInnerHTML={{ __html: PROMPT }}></pre>
+            {command ? <pre>{command.text}</pre> : null}
+          </div>
+          {command && !command?.ctrlc ? <pre>{command.output}</pre> : null}
+        </React.Fragment>
       ))}
 
       <CurrentCommand
@@ -223,7 +245,7 @@ function CurrentCommand({
 }) {
   return (
     <div className='flex'>
-      <pre dangerouslySetInnerHTML={{ __html: prompt }}></pre>
+      <pre dangerouslySetInnerHTML={{ __html: PROMPT }}></pre>
       <div className='relative'>
         <pre className='inline'>{input.slice(0, cursorPosition + 1)}</pre>
         <BlinkingCursor
