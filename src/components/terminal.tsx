@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 
 const prompt = `<span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">portfolio</span>:~$ `;
 
@@ -44,9 +45,15 @@ function Shell({ welcomeMessage }: { welcomeMessage: string }) {
     [commandHistory],
   );
   const [commandHistoryIndex, setCommandHistoryIndex] = useState(0);
+  const [cursorPosition, setCursorPosition] = useState(-1);
+  const [isTyping, setIsTyping] = useState(false);
+  const debouncedSetIsTyping = useDebouncedCallback(() => {
+    setIsTyping(false);
+  }, 200);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     e.preventDefault();
+    setIsTyping(true);
 
     switch (true) {
       case e.key === 'Enter' || (e.key === 'm' && e.ctrlKey):
@@ -57,53 +64,88 @@ function Shell({ welcomeMessage }: { welcomeMessage: string }) {
         }
 
         setInput('');
+        setCursorPosition(-1);
 
         const newFiltered = commandHistory.filter(c => c !== null && !c.ctrlc);
         // +1 because we subtract 1 at history browsing immediately
         setCommandHistoryIndex(newFiltered.length);
-        return;
+
+        return debouncedSetIsTyping();
 
       case e.key === 'Backspace' || (e.key === 'h' && e.ctrlKey):
-        setInput(input.slice(0, -1));
-        return;
+        if (cursorPosition === -1) return debouncedSetIsTyping();
+        setInput(
+          input.slice(0, cursorPosition) + input.slice(cursorPosition + 1),
+        );
+        setCursorPosition(cursorPosition - 1);
+
+        return debouncedSetIsTyping();
 
       case e.key === 'c' && e.ctrlKey:
         commandHistory.push({ text: `${input.trim()}^C`, ctrlc: true });
         setCommandHistory([...commandHistory]);
         setInput('');
+        setCursorPosition(-1);
 
         // +1 because we subtract 1 at history browsing immediately
         const newFilteredCommands = commandHistory.filter(
           c => c !== null && !c.ctrlc,
         );
         setCommandHistoryIndex(newFilteredCommands.length);
-        return;
+
+        return debouncedSetIsTyping();
 
       case e.key === 'ArrowUp':
         const newBackIndex = commandHistoryIndex - 1;
         if (newBackIndex < 0) {
-          return;
+          break;
         }
 
         setCommandHistoryIndex(newBackIndex);
+        setCursorPosition(
+          filteredCommandHistory[newBackIndex]!.text.length - 1,
+        );
         setInput(filteredCommandHistory[newBackIndex]!.text);
         break;
 
       case e.key === 'ArrowDown':
         const newForwardIndex = commandHistoryIndex + 1;
         if (newForwardIndex >= filteredCommandHistory.length) {
-          return;
+          break;
         }
 
         setCommandHistoryIndex(newForwardIndex);
+        setCursorPosition(
+          filteredCommandHistory[newForwardIndex]!.text.length - 1,
+        );
         setInput(filteredCommandHistory[newForwardIndex]!.text);
+        break;
+
+      case e.key === 'ArrowLeft':
+        if (cursorPosition > -1) {
+          setCursorPosition(cursorPosition - 1);
+        }
+        break;
+
+      case e.key === 'ArrowRight':
+        if (cursorPosition < input.length - 1) {
+          setCursorPosition(cursorPosition + 1);
+        }
         break;
     }
 
     if (e.key.length === 1) {
-      setInput(input + e.key);
+      const newInput =
+        input.slice(0, cursorPosition + 1) +
+        e.key +
+        input.slice(cursorPosition + 1);
+      setCursorPosition(cursorPosition + 1);
+      setInput(newInput);
     }
+
+    debouncedSetIsTyping();
   };
+
   return (
     <div
       className='h-full space-y-5 overflow-y-scroll scrollbar-hide selection:bg-gray-800 focus:outline-none'
@@ -112,7 +154,13 @@ function Shell({ welcomeMessage }: { welcomeMessage: string }) {
       onBlur={() => setFocus(false)}
       onKeyDown={handleKeyDown}>
       <pre dangerouslySetInnerHTML={{ __html: welcomeMessage }}></pre>
-      <TerminalCommands commands={commandHistory} focus={focus} input={input} />
+      <TerminalCommands
+        commands={commandHistory}
+        focus={focus}
+        input={input}
+        cursorPosition={cursorPosition}
+        isTyping={isTyping}
+      />
       <AutoScroll length={commandHistory.length} />
     </div>
   );
@@ -134,10 +182,14 @@ function TerminalCommands({
   commands,
   focus,
   input,
+  cursorPosition,
+  isTyping,
 }: {
   commands: Command[];
   focus: boolean;
   input: string;
+  cursorPosition: number;
+  isTyping: boolean;
 }) {
   return (
     <div className='space-y-1'>
@@ -148,19 +200,62 @@ function TerminalCommands({
         </div>
       ))}
 
-      <div className='flex'>
-        <pre dangerouslySetInnerHTML={{ __html: prompt }}></pre>
-        <pre>{input}</pre>
-        <BlinkingCursor focus={focus} />
+      <CurrentCommand
+        input={input}
+        cursorPosition={cursorPosition}
+        focus={focus}
+        isTyping={isTyping}
+      />
+    </div>
+  );
+}
+
+function CurrentCommand({
+  input,
+  cursorPosition,
+  focus,
+  isTyping,
+}: {
+  input: string;
+  cursorPosition: number;
+  focus: boolean;
+  isTyping: boolean;
+}) {
+  return (
+    <div className='flex'>
+      <pre dangerouslySetInnerHTML={{ __html: prompt }}></pre>
+      <div className='relative'>
+        <pre className='inline'>{input.slice(0, cursorPosition + 1)}</pre>
+        <BlinkingCursor
+          focus={focus}
+          className='absolute'
+          isTyping={isTyping}
+        />
+        <pre
+          className={`relative z-[10] inline ${focus && !isTyping ? 'animate-blinkText' : focus && isTyping ? 'text-gray-900' : ''}`}>
+          {input.slice(cursorPosition + 1, cursorPosition + 2)}
+        </pre>
+        <pre className='inline'>{input.slice(cursorPosition + 2)}</pre>
       </div>
     </div>
   );
 }
 
-function BlinkingCursor({ focus }: { focus: boolean }) {
+function BlinkingCursor({
+  focus,
+  className,
+  isTyping,
+}: {
+  focus: boolean;
+  className?: string;
+  isTyping: boolean;
+}) {
   if (focus)
     return (
-      <span className='animate-blink text-primary-light'>&nbsp;&nbsp;</span>
+      <span
+        className={`inline ${isTyping ? 'bg-current' : 'animate-blink'} ${className}`}>
+        &nbsp;&nbsp;
+      </span>
     );
 
   return null;

@@ -1,4 +1,5 @@
 import { Config } from 'tailwindcss';
+import colors from 'tailwindcss/colors';
 
 export default {
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
@@ -29,9 +30,14 @@ export default {
           '0%, 100%': { backgroundColor: 'transparent' },
           '50%': { backgroundColor: 'currentColor' },
         },
+        blinkText: {
+          '0%, 100%': { color: '#b0c4de' },
+          '50%': { color: colors.gray[900] },
+        },
       },
       animation: {
         blink: 'blink 1s infinite steps(1, start)',
+        blinkText: 'blinkText 1s infinite steps(1, start)',
       },
       boxShadow: {
         glow: '0 0 50px 0 rgba(109, 154, 238, 0.3)',
