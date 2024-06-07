@@ -1,5 +1,5 @@
 ---
-import Image from 'astro/components/Image.astro';
+import Image from "astro/components/Image.astro";
 
 let age = new Date().getFullYear() - 2007;
 if (new Date().getMonth() < 5 || new Date().getDate() < 26) {
@@ -8,32 +8,32 @@ if (new Date().getMonth() < 5 || new Date().getDate() < 26) {
 ---
 
 <section
-  class='flex flex-col-reverse items-center gap-12 duration-700 animate-in fade-in md:min-h-[40rem] md:flex-row md:items-start md:justify-between'>
-  <aside class='duration-700 ease-out animate-in slide-in-from-left'>
-    <h1 class='text-4xl font-bold leading-tight md:text-5xl lg:text-7xl'>
+  class="flex flex-col-reverse items-center gap-12 duration-700 animate-in fade-in md:min-h-[40rem] md:flex-row md:items-start md:justify-between">
+  <aside class="duration-700 ease-out animate-in slide-in-from-left">
+    <h1 class="text-4xl font-bold leading-tight md:text-5xl lg:text-7xl">
       Hi there! I'm <br />
-      <span class='text-primary'>Dominik Tóth</span>.
+      <span class="text-primary">Dominik Tóth</span>.
     </h1>
-    <p class='text-balance pt-6 text-xl leading-normal'>
-      A {age} year old highschool <span class='text-primary'>student</span>,{
-        ' '
+    <p class="text-balance pt-6 text-xl leading-normal">
+      A {age} year old highschool <span class="text-primary">student</span>,{
+        " "
       }
-      <span class='text-primary'>web developer</span>
-      <br /> and <span class='text-primary'>linux enjoyer</span>
+      <span class="text-primary">web developer</span>
+      <br /> and <span class="text-primary">linux enjoyer</span>
       from Slovakia.
     </p>
   </aside>
 
   <a
-    href='/'
-    class='shrink-0 duration-700 ease-out animate-in slide-in-from-right'>
+    href="/"
+    class="shrink-0 duration-700 ease-out animate-in slide-in-from-right">
     <Image
-      src='/images/ken.png'
-      alt='Ken Kaneki profile'
+      src="/images/ken.png"
+      alt="Ken Kaneki profile"
       width={144}
       height={144}
-      loading='eager'
-      class='h-36 w-36 rounded-full border-4 border-primary-dark shadow-lg shadow-primary-dark'
+      loading="eager"
+      class="h-36 w-36 rounded-full border-4 border-primary-dark shadow-lg shadow-primary-dark"
     />
   </a>
 </section>

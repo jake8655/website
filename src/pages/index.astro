@@ -1,19 +1,18 @@
 ---
-import ArrowTitle from '~/components/arrow-title.astro';
-import Terminal from '~/components/terminal';
-import Layout from '~/layouts/layout.astro';
-import About from '~/sections/about.astro';
-import Hero from '~/sections/hero.astro';
+import ArrowTitle from "~/components/arrow-title.astro";
+import Terminal from "~/components/terminal";
+import Layout from "~/layouts/layout.astro";
+import About from "~/sections/about.astro";
+import Hero from "~/sections/hero.astro";
 
 const date = new Date();
 ---
 
-<Layout title='Home'>
-  <main class='px-8 pt-64 md:mx-auto md:max-w-screen-xl md:px-12 md:pt-32'>
+<Layout title="Home">
+  <main class="px-8 pt-64 md:mx-auto md:max-w-screen-xl md:px-12 md:pt-32">
     <Hero />
-    <ArrowTitle title='A bit of Linux' />
-
-    <Terminal client:only='react' className='hidden xl:block' {date} />
-    <About className='block xl:hidden' />
+    <ArrowTitle title="A bit of Linux" />
+    <Terminal client:only="react" className="hidden xl:block" date={date} />
+    <About className="block xl:hidden" />
   </main>
 </Layout>

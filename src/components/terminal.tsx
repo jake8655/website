@@ -1,32 +1,34 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useDebouncedCallback } from 'use-debounce';
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 
 const PROMPT = `<span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">portfolio</span>:~$ `;
 
-const COMMANDS: Record<
-  'catchAll' | (string & NonNullable<unknown>),
-  { output: (cmd: string) => string }
-> = {
-  hello: {
-    output() {
-      return 'Hello, World!';
-    },
-  },
-  catchAll: {
-    output(cmd: string) {
-      return `Command not found: ${cmd}`;
-    },
-  },
-};
-
+// const FILE_SYSTEM = {
+//   home: {
+//     dominik: {
+//       projects: {
+//         portfolio: {
+//           "README.md": "This is my portfolio",
+//         },
+//       },
+//     },
+//   },
+// };
+//
 type Command =
   | {
       text: string;
       output: string;
       ctrlc?: false;
+      dangerouslyColored: boolean;
     }
   | { text: string; ctrlc: true }
+  | { text: null; output: string; dangerouslyColored: true; ctrlc?: false }
   | null;
+
+function getUptimeDaysFrom(date: Date) {
+  return Math.floor((Date.now() - date.getTime()) / 1000 / 60 / 60 / 24);
+}
 
 export default function Terminal({
   className,
@@ -35,86 +37,121 @@ export default function Terminal({
   className?: string;
   date: Date;
 }) {
-  const welcomeMessage = `       <span class="text-emerald-300">/\\</span>         <span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">portfolio</span>
-      <span class="text-emerald-300">/  \\</span>        <span class="text-blue-500 font-semibold">os</span>     Arch Linux
-     <span class="text-emerald-300">/\\   \\</span>       <span class="text-blue-500 font-semibold">host</span>   Your browser
+  const uptimeDays = getUptimeDaysFrom(date);
+  const neofetch = `       <span class="text-emerald-300">/\\</span>         <span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">portfolio</span>
+      <span class="text-emerald-300">/  \\</span>        <span class="text-blue-500 font-semibold">os</span>     arch btw
+     <span class="text-emerald-300">/\\   \\</span>       <span class="text-blue-500 font-semibold">host</span>   your browser
     <span class="text-blue-500">/      \\      <span class="font-semibold">kernel</span></span> latest
    <span class="text-blue-500">/   ,,   \\     <span class="font-semibold">uptime</span></span> ${
-     Math.floor((Date.now() - date.getTime()) / 1000 / 60 / 60 / 24) || 1
-   } day(s)
+     uptimeDays || 1
+   } day${uptimeDays > 1 ? "s" : ""}
   <span class="text-blue-500">/   |  |  -\\    <span class="font-semibold">pkgs</span></span>   all of em
  <span class="text-blue-500">/_-''    ''-_\\   <span class="font-semibold">memory</span></span> 703M / 15953M`;
 
   return (
     <div
       className={`my-32 h-[calc(100vh*2/3)] rounded-xl border-2 border-primary-dark bg-gray-900/80 p-10 shadow-glow duration-700 ease-out animate-in fade-in slide-in-from-bottom ${className}`}>
-      <Shell welcomeMessage={welcomeMessage} />
+      <Shell neofetch={neofetch} />
     </div>
   );
 }
 
-function Shell({ welcomeMessage }: { welcomeMessage: string }) {
+function Shell({ neofetch }: { neofetch: string }) {
   const [focus, setFocus] = useState(false);
-  const [input, setInput] = useState('');
-  const [commandHistory, setCommandHistory] = useState<Command[]>([]);
+  const [input, setInput] = useState("");
+  const [commandHistory, setCommandHistory] = useState<Command[]>([
+    { output: neofetch, dangerouslyColored: true, text: null },
+  ]);
   const filteredCommandHistory = useMemo(
-    () => commandHistory.filter(c => c && !c.ctrlc),
+    () =>
+      commandHistory.filter(c => c && !c.ctrlc && c.text) as Exclude<
+        Command,
+        { text: null }
+      >[],
     [commandHistory],
   );
   const [commandHistoryIndex, setCommandHistoryIndex] = useState(0);
   const [cursorPosition, setCursorPosition] = useState(-1);
   const [isTyping, setIsTyping] = useState(false);
-  const debouncedSetIsTyping = useDebouncedCallback(() => {
+  const debouncedNoLongerTyping = useDebouncedCallback(() => {
     setIsTyping(false);
   }, 200);
+
+  const commands: Record<
+    "catchAll" | (string & NonNullable<unknown>),
+    { output: (cmd: string) => string }
+  > = {
+    hello: {
+      output() {
+        return "Hello, World!";
+      },
+    },
+    neofetch: {
+      output() {
+        return neofetch;
+      },
+    },
+    catchAll: {
+      output(cmd: string) {
+        return `Command not found: ${cmd}`;
+      },
+    },
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsTyping(true);
 
     switch (true) {
-      case e.key === 'Enter' || (e.key === 'm' && e.ctrlKey):
-        if (input.trim() === '') setCommandHistory([...commandHistory, null]);
+      case e.key === "Enter" || (e.key === "m" && e.ctrlKey):
+        if (input.trim() === "") setCommandHistory([...commandHistory, null]);
         else {
-          const command = COMMANDS[input.trim()] ?? COMMANDS.catchAll;
-          commandHistory.push({
-            text: input.trim(),
-            output: command.output(input.trim()),
-          });
-          setCommandHistory([...commandHistory]);
+          if (input.trim() === "clear") {
+            setCommandHistory([]);
+          } else {
+            const command = commands[input.trim()] ?? commands.catchAll;
+            commandHistory.push({
+              text: input.trim(),
+              output: command.output(input.trim()),
+              dangerouslyColored: input.trim() === "neofetch",
+            });
+            setCommandHistory([...commandHistory]);
+          }
         }
 
-        setInput('');
+        setInput("");
         setCursorPosition(-1);
 
         const newFiltered = commandHistory.filter(c => c && !c.ctrlc);
         // +1 because we subtract 1 at history browsing immediately
         setCommandHistoryIndex(newFiltered.length);
 
-        return debouncedSetIsTyping();
+        return debouncedNoLongerTyping();
 
-      case e.key === 'Backspace' || (e.key === 'h' && e.ctrlKey):
-        if (cursorPosition === -1) return debouncedSetIsTyping();
+      case e.key === "Backspace" || (e.key === "h" && e.ctrlKey):
+        if (cursorPosition === -1) return debouncedNoLongerTyping();
         setInput(
           input.slice(0, cursorPosition) + input.slice(cursorPosition + 1),
         );
         setCursorPosition(cursorPosition - 1);
 
-        return debouncedSetIsTyping();
+        return debouncedNoLongerTyping();
 
-      case e.key === 'c' && e.ctrlKey:
+      case e.key === "c" && e.ctrlKey:
         commandHistory.push({ text: `${input.trim()}^C`, ctrlc: true });
         setCommandHistory([...commandHistory]);
-        setInput('');
+        setInput("");
         setCursorPosition(-1);
 
         // +1 because we subtract 1 at history browsing immediately
-        const newFilteredCommands = commandHistory.filter(c => c && !c.ctrlc);
+        const newFilteredCommands = commandHistory.filter(
+          c => c && !c.ctrlc && c.text,
+        );
         setCommandHistoryIndex(newFilteredCommands.length);
 
-        return debouncedSetIsTyping();
+        return debouncedNoLongerTyping();
 
-      case e.key === 'ArrowUp':
+      case e.key === "ArrowUp":
         const newBackIndex = commandHistoryIndex - 1;
         if (newBackIndex < 0) {
           break;
@@ -127,7 +164,7 @@ function Shell({ welcomeMessage }: { welcomeMessage: string }) {
         setInput(filteredCommandHistory[newBackIndex]!.text);
         break;
 
-      case e.key === 'ArrowDown':
+      case e.key === "ArrowDown":
         const newForwardIndex = commandHistoryIndex + 1;
         if (newForwardIndex >= filteredCommandHistory.length) {
           break;
@@ -140,13 +177,13 @@ function Shell({ welcomeMessage }: { welcomeMessage: string }) {
         setInput(filteredCommandHistory[newForwardIndex]!.text);
         break;
 
-      case e.key === 'ArrowLeft':
+      case e.key === "ArrowLeft":
         if (cursorPosition > -1) {
           setCursorPosition(cursorPosition - 1);
         }
         break;
 
-      case e.key === 'ArrowRight':
+      case e.key === "ArrowRight":
         if (cursorPosition < input.length - 1) {
           setCursorPosition(cursorPosition + 1);
         }
@@ -162,18 +199,17 @@ function Shell({ welcomeMessage }: { welcomeMessage: string }) {
       setInput(newInput);
     }
 
-    debouncedSetIsTyping();
+    debouncedNoLongerTyping();
   };
 
   return (
     <div
-      className='h-full space-y-5 overflow-y-scroll scrollbar-hide selection:bg-gray-800 focus:outline-none'
+      className="h-full space-y-5 overflow-y-scroll scrollbar-hide selection:bg-gray-800 focus:outline-none"
       tabIndex={0}
       onFocus={() => setFocus(true)}
       onBlur={() => setFocus(false)}
       onKeyDown={handleKeyDown}>
-      <pre dangerouslySetInnerHTML={{ __html: welcomeMessage }}></pre>
-      <TerminalCommands
+      <CommandList
         commands={commandHistory}
         focus={focus}
         input={input}
@@ -197,7 +233,7 @@ function AutoScroll({ length }: { length: number }) {
   return <div ref={scrollDivRef}></div>;
 }
 
-function TerminalCommands({
+function CommandList({
   commands,
   focus,
   input,
@@ -211,14 +247,22 @@ function TerminalCommands({
   isTyping: boolean;
 }) {
   return (
-    <div className='space-y-1'>
+    <div className="space-y-1">
       {commands.map((command, i) => (
         <React.Fragment key={i}>
-          <div className='flex'>
-            <pre dangerouslySetInnerHTML={{ __html: PROMPT }}></pre>
-            {command ? <pre>{command.text}</pre> : null}
-          </div>
-          {command && !command?.ctrlc ? <pre>{command.output}</pre> : null}
+          {command?.text !== null && (
+            <div className="flex">
+              <pre dangerouslySetInnerHTML={{ __html: PROMPT }}></pre>
+              {command && <pre>{command.text}</pre>}
+            </div>
+          )}
+          {command && !command.ctrlc ? (
+            command.dangerouslyColored ? (
+              <pre dangerouslySetInnerHTML={{ __html: command.output }}></pre>
+            ) : (
+              <pre>{command.output}</pre>
+            )
+          ) : null}
         </React.Fragment>
       ))}
 
@@ -244,20 +288,26 @@ function CurrentCommand({
   isTyping: boolean;
 }) {
   return (
-    <div className='flex'>
+    <div className="flex">
       <pre dangerouslySetInnerHTML={{ __html: PROMPT }}></pre>
-      <div className='relative'>
-        <pre className='inline'>{input.slice(0, cursorPosition + 1)}</pre>
+      <div className="relative">
+        <pre className="inline">{input.slice(0, cursorPosition + 1)}</pre>
         <BlinkingCursor
           focus={focus}
-          className='absolute'
+          className="absolute"
           isTyping={isTyping}
         />
         <pre
-          className={`relative z-[10] inline ${focus && !isTyping ? 'animate-blinkText' : focus && isTyping ? 'text-gray-900' : ''}`}>
+          className={`relative z-[10] inline ${
+            focus && !isTyping
+              ? "animate-blinkText"
+              : focus && isTyping
+                ? "text-gray-900"
+                : ""
+          }`}>
           {input.slice(cursorPosition + 1, cursorPosition + 2)}
         </pre>
-        <pre className='inline'>{input.slice(cursorPosition + 2)}</pre>
+        <pre className="inline">{input.slice(cursorPosition + 2)}</pre>
       </div>
     </div>
   );
@@ -275,7 +325,9 @@ function BlinkingCursor({
   if (focus)
     return (
       <span
-        className={`inline ${isTyping ? 'bg-current' : 'animate-blink'} ${className}`}>
+        className={`inline ${
+          isTyping ? "bg-current" : "animate-blink"
+        } ${className}`}>
         &nbsp;&nbsp;
       </span>
     );
