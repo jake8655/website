@@ -25,6 +25,7 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   ...eslintPluginAstro.configs.recommended,
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   {
@@ -44,6 +45,9 @@ export default tseslint.config(
       },
     },
   },
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
   ...compat.config(reactHooks.configs.recommended),
   ...compat.plugins("jsx-a11y"),

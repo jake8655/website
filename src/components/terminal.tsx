@@ -45,12 +45,11 @@ export default function Terminal({
    <span class="text-blue-500">/   ,,   \\     <span class="font-semibold">uptime</span></span> ${
      uptimeDays || 1
    } day${uptimeDays > 1 ? "s" : ""}
-  <span class="text-blue-500">/   |  |  -\\    <span class="font-semibold">pkgs</span></span>   all of em
- <span class="text-blue-500">/_-''    ''-_\\   <span class="font-semibold">memory</span></span> 703M / 15953M`;
+  <span class="text-blue-500">/   |  |  -\\    <span class="font-semibold">pkgs</span></span>   all of em`;
 
   return (
     <div
-      className={`my-32 h-[calc(100vh*2/3)] rounded-xl border-2 border-primary-dark bg-gray-900/80 p-10 shadow-glow duration-700 ease-out animate-in fade-in slide-in-from-bottom ${className}`}>
+      className={`before:content-["] relative my-32 h-[calc(100vh*2/3)] rounded-xl border-2 border-primary-dark bg-gray-900/95 p-10 shadow-glow duration-700 ease-out animate-in fade-in slide-in-from-bottom before:absolute before:inset-0 before:-z-[1] before:bg-[url(/wallpaper.gif)] hover:border-violet-400 ${className}`}>
       <Shell neofetch={neofetch} />
     </div>
   );
@@ -79,7 +78,7 @@ function Shell({ neofetch }: { neofetch: string }) {
 
   const commands: Record<
     "catchAll" | (string & NonNullable<unknown>),
-    { output: (cmd: string) => string }
+    { output: (args: string) => string }
   > = {
     hello: {
       output() {
@@ -92,8 +91,12 @@ function Shell({ neofetch }: { neofetch: string }) {
       },
     },
     catchAll: {
+      output(args) {
+        const command = args.split(" ")[0];
+        return `Command not found: ${command}`;
+      },
+    },
       output(cmd: string) {
-        return `Command not found: ${cmd}`;
       },
     },
   };
