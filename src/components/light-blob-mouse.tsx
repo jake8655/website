@@ -14,7 +14,7 @@ export default function LightBlobMouse() {
 
   return (
     <div
-      className="pointer-events-none fixed -z-10 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary blur-[150px]"
+      className="pointer-events-none fixed -z-10 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand blur-[150px]"
       style={{
         top: position.y,
         left: position.x,

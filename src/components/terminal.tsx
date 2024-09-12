@@ -49,7 +49,7 @@ export default function Terminal({
 
   return (
     <div
-      className={`before:content-["] relative my-32 h-[calc(100vh*2/3)] rounded-xl border-2 border-primary-dark bg-gray-900/95 p-10 shadow-glow duration-700 ease-out animate-in fade-in slide-in-from-bottom before:absolute before:inset-0 before:-z-[1] before:bg-[url(/wallpaper.gif)] hover:border-violet-400 ${className}`}>
+      className={`before:content-["] relative my-32 h-[calc(100vh*2/3)] rounded-xl border-2 border-brand-dark bg-gray-900/95 p-10 shadow-glow duration-700 ease-out animate-in fade-in slide-in-from-bottom before:absolute before:inset-0 before:-z-[1] before:bg-[url(/wallpaper.gif)] hover:border-violet-400 ${className}`}>
       <Shell neofetch={neofetch} />
     </div>
   );
