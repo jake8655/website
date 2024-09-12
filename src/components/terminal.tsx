@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
-const PROMPT = `<span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">portfolio</span>:~$ `;
+const PROMPT = `<span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">website</span>:~$ `;
 
 // const FILE_SYSTEM = {
 //   home: {
@@ -38,7 +38,7 @@ export default function Terminal({
   date: Date;
 }) {
   const uptimeDays = getUptimeDaysFrom(date);
-  const neofetch = `       <span class="text-emerald-300">/\\</span>         <span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">portfolio</span>
+  const neofetch = `       <span class="text-emerald-300">/\\</span>         <span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">website</span>
       <span class="text-emerald-300">/  \\</span>        <span class="text-blue-500 font-semibold">os</span>     arch btw
      <span class="text-emerald-300">/\\   \\</span>       <span class="text-blue-500 font-semibold">host</span>   your browser
     <span class="text-blue-500">/      \\      <span class="font-semibold">kernel</span></span> latest
@@ -106,6 +106,12 @@ function Shell({ neofetch }: { neofetch: string }) {
     setIsTyping(true);
 
     switch (true) {
+      case e.key === "l" && e.ctrlKey:
+        setCommandHistory([]);
+        setInput("");
+        setCursorPosition(-1);
+        return debouncedNoLongerTyping();
+
       case e.key === "Enter" || (e.key === "m" && e.ctrlKey):
         if (input.trim() === "") setCommandHistory([...commandHistory, null]);
         else {
@@ -331,7 +337,7 @@ function BlinkingCursor({
         className={`inline ${
           isTyping ? "bg-current" : "animate-blink"
         } ${className}`}>
-        &nbsp;&nbsp;
+        &nbsp;
       </span>
     );
 
