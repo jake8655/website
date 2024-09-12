@@ -1,6 +1,7 @@
 ---
 import ArrowTitle from "~/components/arrow-title.astro";
 import Terminal from "~/components/terminal";
+import { BackgroundBeams } from "~/components/ui/background-beams";
 import Layout from "~/layouts/layout.astro";
 import About from "~/sections/about.astro";
 import Hero from "~/sections/hero.astro";
@@ -16,5 +17,6 @@ const date = new Date();
     <ArrowTitle title="Explore me through the terminal" />
     <Terminal client:only="react" className="hidden xl:block" date={date} />
     <About className="block xl:hidden" />
+    <BackgroundBeams client:only="react" className="-z-[1]" />
   </main>
 </Layout>
