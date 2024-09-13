@@ -1,3 +1,6 @@
+"use client";
+
+import { cn } from "@/lib/utils";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -49,7 +52,11 @@ export default function Terminal({
 
   return (
     <div
-      className={`before:content-["] relative my-32 h-[calc(100vh*2/3)] rounded-xl border-2 border-brand-dark bg-gray-900/95 p-10 shadow-glow duration-700 ease-out animate-in fade-in slide-in-from-bottom before:absolute before:inset-0 before:-z-[1] before:bg-[url(/wallpaper.gif)] hover:border-violet-400 ${className}`}>
+      className={cn(
+        `fade-in slide-in-from-bottom before:-z-[1] relative my-32 h-[calc(100vh*2/3)] animate-in rounded-xl border-2 border-brand-dark bg-gray-900/95 p-10 shadow-glow duration-700 ease-out before:absolute before:inset-0 before:bg-[url(/wallpaper.gif)] before:content-["] hover:border-violet-400`,
+        className,
+      )}
+    >
       <Shell neofetch={neofetch} />
     </div>
   );
@@ -222,11 +229,12 @@ function Shell({ neofetch }: { neofetch: string }) {
 
   return (
     <div
-      className="h-full space-y-5 overflow-y-scroll scrollbar-hide selection:bg-gray-800 focus:outline-none"
+      className="scrollbar-hide h-full space-y-5 overflow-y-scroll selection:bg-gray-800 focus:outline-none"
       tabIndex={0}
       onFocus={() => setFocus(true)}
       onBlur={() => setFocus(false)}
-      onKeyDown={handleKeyDown}>
+      onKeyDown={handleKeyDown}
+    >
       <CommandList
         commands={commandHistory}
         focus={focus}
@@ -322,7 +330,8 @@ function CurrentCommand({
               : focus && isTyping
                 ? "text-gray-900"
                 : ""
-          }`}>
+          }`}
+        >
           {input.slice(cursorPosition + 1, cursorPosition + 2)}
         </pre>
         <pre className="inline">{input.slice(cursorPosition + 2)}</pre>
@@ -343,10 +352,13 @@ function BlinkingCursor({
   if (focus)
     return (
       <span
-        className={`inline ${
-          isTyping ? "bg-current" : "animate-blink"
-        } ${className}`}>
-        &nbsp;
+        className={cn(
+          "inline",
+          isTyping ? "bg-current" : "animate-blink",
+          className,
+        )}
+      >
+        &nbsp;&nbsp;
       </span>
     );
 

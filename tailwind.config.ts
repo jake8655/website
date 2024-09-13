@@ -19,7 +19,11 @@ const addVariablesForColors: PluginCreator = ({ addBase, theme }) => {
 };
 
 export default {
-  content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
   theme: {
     container: {
       center: true,
@@ -29,6 +33,10 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--font-geist-sans)"],
+        mono: ["var(--font-geist-mono)"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -114,7 +122,9 @@ export default {
     },
   },
   plugins: [
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     require("tailwindcss-animate"),
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     require("tailwind-scrollbar-hide"),
     addVariablesForColors,
   ] as PluginCreator[],
