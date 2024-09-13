@@ -78,26 +78,35 @@ function Shell({ neofetch }: { neofetch: string }) {
 
   const commands: Record<
     "catchAll" | (string & NonNullable<unknown>),
-    { output: (args: string) => string }
+    { output: (args: string) => string; description: string }
   > = {
-    hello: {
+    help: {
       output() {
-        return "Hello, World!";
+        const availableCommands = Object.keys(commands).filter(
+          c => c !== "catchAll",
+        );
+        const withDescriptions = availableCommands.map(c => {
+          const command = commands[c];
+          return `${c}: ${command!.description}`;
+        });
+        withDescriptions.push("clear: Clears the terminal");
+
+        return `*Available commands*:\n${withDescriptions.join("\n")}`;
       },
+      description: "Shows a list of available commands",
     },
     neofetch: {
       output() {
         return neofetch;
       },
+      description: "Use this to flex your system",
     },
     catchAll: {
       output(args) {
         const command = args.split(" ")[0];
         return `Command not found: ${command}`;
       },
-    },
-      output(cmd: string) {
-      },
+      description: "Command not found",
     },
   };
 
