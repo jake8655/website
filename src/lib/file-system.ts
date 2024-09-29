@@ -15,7 +15,7 @@ interface File extends FileSystemNode {
   content: string;
 }
 
-interface Directory extends FileSystemNode {
+export interface Directory extends FileSystemNode {
   files: {
     [key: string]: File | Directory;
   };
@@ -25,91 +25,39 @@ function isFile(fs: FileSystemNode): fs is File {
   return (fs as File).content !== undefined;
 }
 
-// Assuming the root is /
-const FILE_SYSTEM = {
-  name: "root",
-  _parent: "",
-  files: {
-    home: {
-      name: "home",
-      _parent: "/",
-      files: {
-        dominik: {
-          name: "dominik",
-          _parent: "/home",
-          files: {
-            projects: {
-              name: "projects",
-              _parent: "/home/dominik",
-              files: {
-                website: {
-                  name: "website",
-                  _parent: "/home/dominik/projects",
-                  files: {
-                    "README.md": {
-                      name: "README.md",
-                      _parent: "/home/dominik/projects/website",
-                      content: "This is my website",
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-        jake: {
-          name: "jake",
-          _parent: "/home",
-          files: {},
-        },
-      },
-    },
-  },
-} satisfies Directory;
-
 export class FileSystem {
   private cwd: string = "/home/dominik";
-  private readonly fs: Directory = FILE_SYSTEM;
 
-  private pathToFs(path: string): Directory {
+  constructor(private readonly fs: Directory) {}
+
+  private pathToFs(path: string): Directory | File {
     if (path === "/") {
       return this.fs;
     }
 
+    path = this.replaceTilde(path);
     const parts = path.split("/").filter(Boolean);
+    const startsWithSlash = path.startsWith("/");
 
-    if (path.startsWith("/")) {
-      let dir = this.fs;
-      // console.log(dir, parts);
-      for (const part of parts) {
-        if (!dir.files[part]) {
-          // console.log("error in pathToFs, starts with /");
-          throw new Error(`no such file or directory: ${path}`);
-        }
-        if (isFile(dir.files[part])) {
-          throw new Error(`not a directory: ${path}`);
-        }
+    let file: Directory | File = startsWithSlash
+      ? this.fs
+      : this.pathToFs(this.cwd);
+    for (let i = 0; i < parts.length; i++) {
+      const part = parts[i]!;
 
-        dir = dir.files[part];
-      }
-
-      return dir;
-    }
-
-    let dir = this.pathToFs(this.cwd);
-    for (const part of parts) {
-      if (!dir.files[part]) {
-        // console.log("error in pathToFs");
-        throw new Error(`no such file or directory: ${path}`);
-      }
-      if (isFile(dir.files[part])) {
+      if (isFile(file) && i < parts.length - 1) {
         throw new Error(`not a directory: ${path}`);
       }
 
-      dir = dir.files[part];
+      if (!isFile(file)) {
+        if (!file.files[part]) {
+          throw new Error(`no such file or directory: ${path}`);
+        }
+        file = file.files[part];
+      }
     }
 
-    return dir;
+    return file;
   }
 
   private fsToPath(fs: FileSystemNode) {
@@ -133,23 +81,34 @@ export class FileSystem {
     }
   }
 
+  private dedupeSlashes(str: string) {
+    return str.replace(/\/+/g, "/");
+  }
+
+  private replaceTilde(str: string) {
+    return str.replace("~", "/home/dominik");
+  }
+
   private pwd() {
-    return this.cwd;
+    return this.replaceTilde(this.cwd);
   }
 
   private ls(path: string) {
     const pathAsFs = this.pathToFs(path);
-    return Object.keys(pathAsFs.files);
+    return Object.keys(isFile(pathAsFs) ? pathAsFs : pathAsFs.files).sort();
   }
 
   private cd(dir: string) {
-    if (dir.startsWith("/")) {
+    if (dir.startsWith("/") || dir.startsWith("~")) {
       if (this.pathExists(dir)) {
+        if (isFile(this.pathToFs(dir))) {
+          throw new Error(`cd: not a directory: ${dir}`);
+        }
+
         this.cwd = dir;
         return "";
       }
 
-      // console.log("error in cd, starts with /");
       throw new Error(`cd: no such file or directory: ${dir}`);
     }
 
@@ -157,22 +116,31 @@ export class FileSystem {
     let cwd = this.pathToFs(this.cwd);
 
     for (const part of parts) {
-      if (!cwd.files[part]) {
-        // console.log("error in cd");
-        throw new Error(`cd: no such file or directory: ${dir}`);
+      if (part === "..") {
+        cwd = this.pathToFs(cwd._parent);
+        continue;
       }
-      if (isFile(cwd.files[part])) {
-        throw new Error(`cd: not a directory: ${dir}`);
+      if (!isFile(cwd)) {
+        if (!cwd.files[part]) {
+          throw new Error(`cd: no such file or directory: ${dir}`);
+        }
+        if (isFile(cwd.files[part])) {
+          throw new Error(`cd: not a directory: ${dir}`);
+        }
+        cwd = cwd.files[part];
       }
-      cwd = cwd.files[part];
     }
 
     this.cwd = this.fsToPath(cwd);
     return "";
   }
 
-  private dedupeSlashes(str: string) {
-    return str.replace(/\/+/g, "/");
+  private cat(path: string) {
+    const pathAsFs = this.pathToFs(path);
+    if (isFile(pathAsFs)) {
+      return pathAsFs.content;
+    }
+    throw new Error(`cat: is a directory: ${this.replaceTilde(path)}`);
   }
 
   public createCommands(): ShellCommands {
@@ -192,22 +160,49 @@ export class FileSystem {
             return "";
           }
         },
-        description: "Change directory",
+        description: "change working directory",
       },
       ls: {
         output: (args: string) => {
           let path = args.trim().split(" ")[1] || this.cwd;
           path = this.dedupeSlashes(path);
 
-          return this.ls(path).join("\n");
+          try {
+            return this.ls(path).join("\n");
+          } catch (e) {
+            if (e instanceof Error) {
+              return e.message;
+            }
+            return "";
+          }
         },
-        description: "List files",
+        description: "list directory contents",
       },
       pwd: {
         output: () => {
           return this.pwd();
         },
-        description: "Print working directory",
+        description: "print name of current/working directory",
+      },
+      cat: {
+        output: (args: string) => {
+          let path = args.trim().split(" ")[1];
+          if (!path) {
+            return "cat: missing file";
+          }
+
+          path = this.dedupeSlashes(path);
+
+          try {
+            return this.cat(path);
+          } catch (e) {
+            if (e instanceof Error) {
+              return e.message;
+            }
+            return "";
+          }
+        },
+        description: "concatenate files and print on the standard output",
       },
     };
   }

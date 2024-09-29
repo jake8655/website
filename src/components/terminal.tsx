@@ -1,14 +1,14 @@
 "use client";
 
+import { env } from "@/env.mjs";
 import { FileSystem, type ShellCommands } from "@/lib/file-system";
 import { cn } from "@/lib/utils";
+import { api } from "@/trpc/react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 const PROMPT = `<span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">website</span>:~$ `;
 const DANGEROUSLY_COLORED_COMMANDS = ["neofetch", "help"];
-
-const fileSystem = new FileSystem();
 
 type Command =
   | {
@@ -32,6 +32,11 @@ export default function Terminal({
   className?: string;
   pageCreationDate: Date;
 }) {
+  const { data: serverFiles } = api.fs.getLocalFiles.useQuery();
+  // Should never happen because api.fs.getLocalFiles is prefetched on the server
+  if (!serverFiles) return null;
+
+  const fileSystem = new FileSystem(serverFiles);
   const uptimeDays = getUptimeDaysFrom(pageCreationDate);
   const neofetch = `       <span class="text-emerald-300">/\\</span>         <span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">website</span>
       <span class="text-emerald-300">/  \\</span>        <span class="text-blue-500 font-semibold">os</span>     arch btw
@@ -49,12 +54,15 @@ export default function Terminal({
         className,
       )}
     >
-      <Shell neofetch={neofetch} />
+      <Shell neofetch={neofetch} fileSystem={fileSystem} />
     </div>
   );
 }
 
-function Shell({ neofetch }: { neofetch: string }) {
+function Shell({
+  neofetch,
+  fileSystem,
+}: { neofetch: string; fileSystem: FileSystem }) {
   const [focus, setFocus] = useState(false);
   const [input, setInput] = useState("");
   const [commandHistory, setCommandHistory] = useState<Command[]>([
@@ -74,6 +82,11 @@ function Shell({ neofetch }: { neofetch: string }) {
   const debouncedNoLongerTyping = useDebouncedCallback(() => {
     setIsTyping(false);
   }, 200);
+  const terminalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (env.NEXT_PUBLIC_AUTOFOCUS_TERMINAL) terminalRef.current?.focus();
+  }, []);
 
   const commands: ShellCommands = {
     help: {
@@ -86,25 +99,25 @@ function Shell({ neofetch }: { neofetch: string }) {
           return `<span class="text-yellow-200">${c}</span>: ${command!.description}`;
         });
         withDescriptions.push(
-          '<span class="text-yellow-200">clear</span>: Clears the terminal',
+          '<span class="text-yellow-200">clear</span>: clear the terminal screen',
         );
 
         return `<span class="font-semibold">Available commands</span>:\n${withDescriptions.join("\n")}`;
       },
-      description: "Shows a list of available commands",
+      description: "list of available commands",
     },
     neofetch: {
       output() {
         return neofetch;
       },
-      description: "Use this to flex your system",
+      description: "a fast, highly customizable system info script",
     },
     catchAll: {
       output(args) {
         const command = args.split(" ")[0];
         return `Command not found: ${command}`;
       },
-      description: "Command not found",
+      description: "command not found",
     },
     ...fileSystem.createCommands(),
   };
@@ -233,6 +246,7 @@ function Shell({ neofetch }: { neofetch: string }) {
   return (
     <div
       className="scrollbar-hide h-full space-y-5 overflow-y-scroll selection:bg-gray-800 focus:outline-none"
+      ref={terminalRef}
       tabIndex={0}
       onFocus={() => setFocus(true)}
       onBlur={() => setFocus(false)}

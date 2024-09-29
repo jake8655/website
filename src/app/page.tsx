@@ -3,11 +3,14 @@ import About from "@/components/sections/about";
 import Hero from "@/components/sections/hero";
 import Terminal from "@/components/terminal";
 import { BackgroundBeams } from "@/components/ui/background-beams";
+import { api } from "@/trpc/server";
 import Link from "next/link";
 
 const pageCreationDate = new Date();
 
-export default function Home() {
+export default async function Home() {
+  await api.fs.getLocalFiles.prefetch();
+
   return (
     <main className="px-8 pt-64 md:mx-auto md:max-w-screen-xl md:px-12 md:pt-32">
       <Hero />
