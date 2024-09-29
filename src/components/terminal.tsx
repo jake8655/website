@@ -1,23 +1,15 @@
 "use client";
 
+import { FileSystem, type ShellCommands } from "@/lib/file-system";
 import { cn } from "@/lib/utils";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 const PROMPT = `<span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">website</span>:~$ `;
+const DANGEROUSLY_COLORED_COMMANDS = ["neofetch", "help"];
 
-// const FILE_SYSTEM = {
-//   home: {
-//     dominik: {
-//       projects: {
-//         portfolio: {
-//           "README.md": "This is my portfolio",
-//         },
-//       },
-//     },
-//   },
-// };
-//
+const fileSystem = new FileSystem();
+
 type Command =
   | {
       text: string;
@@ -35,12 +27,12 @@ function getUptimeDaysFrom(date: Date) {
 
 export default function Terminal({
   className,
-  date,
+  pageCreationDate,
 }: {
   className?: string;
-  date: Date;
+  pageCreationDate: Date;
 }) {
-  const uptimeDays = getUptimeDaysFrom(date);
+  const uptimeDays = getUptimeDaysFrom(pageCreationDate);
   const neofetch = `       <span class="text-emerald-300">/\\</span>         <span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">website</span>
       <span class="text-emerald-300">/  \\</span>        <span class="text-blue-500 font-semibold">os</span>     arch btw
      <span class="text-emerald-300">/\\   \\</span>       <span class="text-blue-500 font-semibold">host</span>   your browser
@@ -83,10 +75,7 @@ function Shell({ neofetch }: { neofetch: string }) {
     setIsTyping(false);
   }, 200);
 
-  const commands: Record<
-    "catchAll" | (string & NonNullable<unknown>),
-    { output: (args: string) => string; description: string }
-  > = {
+  const commands: ShellCommands = {
     help: {
       output() {
         const availableCommands = Object.keys(commands).filter(
@@ -94,11 +83,13 @@ function Shell({ neofetch }: { neofetch: string }) {
         );
         const withDescriptions = availableCommands.map(c => {
           const command = commands[c];
-          return `${c}: ${command!.description}`;
+          return `<span class="text-yellow-200">${c}</span>: ${command!.description}`;
         });
-        withDescriptions.push("clear: Clears the terminal");
+        withDescriptions.push(
+          '<span class="text-yellow-200">clear</span>: Clears the terminal',
+        );
 
-        return `*Available commands*:\n${withDescriptions.join("\n")}`;
+        return `<span class="font-semibold">Available commands</span>:\n${withDescriptions.join("\n")}`;
       },
       description: "Shows a list of available commands",
     },
@@ -115,6 +106,7 @@ function Shell({ neofetch }: { neofetch: string }) {
       },
       description: "Command not found",
     },
+    ...fileSystem.createCommands(),
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -122,6 +114,14 @@ function Shell({ neofetch }: { neofetch: string }) {
     setIsTyping(true);
 
     switch (true) {
+      case e.key === "Escape":
+        // Lose focus from the terminal
+        const activeElement = document.activeElement;
+        if (activeElement instanceof HTMLElement) {
+          activeElement.blur();
+        }
+        return debouncedNoLongerTyping();
+
       case e.key === "l" && e.ctrlKey:
         setCommandHistory([]);
         setInput("");
@@ -134,11 +134,14 @@ function Shell({ neofetch }: { neofetch: string }) {
           if (input.trim() === "clear") {
             setCommandHistory([]);
           } else {
-            const command = commands[input.trim()] ?? commands.catchAll;
+            const command =
+              commands[input.trim().split(" ")[0]!] ?? commands.catchAll!;
             commandHistory.push({
               text: input.trim(),
               output: command.output(input.trim()),
-              dangerouslyColored: input.trim() === "neofetch",
+              dangerouslyColored: DANGEROUSLY_COLORED_COMMANDS.includes(
+                input.trim(),
+              ),
             });
             setCommandHistory([...commandHistory]);
           }
@@ -148,8 +151,8 @@ function Shell({ neofetch }: { neofetch: string }) {
         setCursorPosition(-1);
 
         const newFiltered = commandHistory.filter(c => c && !c.ctrlc);
-        // +1 because we subtract 1 at history browsing immediately
-        setCommandHistoryIndex(newFiltered.length);
+        // -1 because we subtract 1 at history browsing immediately
+        setCommandHistoryIndex(newFiltered.length - 1);
 
         return debouncedNoLongerTyping();
 
