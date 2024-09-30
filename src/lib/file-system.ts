@@ -89,7 +89,7 @@ export class FileSystem {
     return str.replace("~", "/home/dominik");
   }
 
-  private pwd() {
+  public pwd() {
     return this.replaceTilde(this.cwd);
   }
 

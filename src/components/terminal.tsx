@@ -7,7 +7,6 @@ import { api } from "@/trpc/react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
-const PROMPT = `<span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">website</span>:~$ `;
 const DANGEROUSLY_COLORED_COMMANDS = ["neofetch", "help"];
 
 type Command =
@@ -63,6 +62,8 @@ function Shell({
   neofetch,
   fileSystem,
 }: { neofetch: string; fileSystem: FileSystem }) {
+  const PROMPT = `<span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">website</span>:${fileSystem.pwd()} $ `;
+
   const [focus, setFocus] = useState(false);
   const [input, setInput] = useState("");
   const [commandHistory, setCommandHistory] = useState<Command[]>([
@@ -258,6 +259,7 @@ function Shell({
         input={input}
         cursorPosition={cursorPosition}
         isTyping={isTyping}
+        prompt={PROMPT}
       />
       <AutoScroll length={commandHistory.length} />
     </div>
@@ -282,12 +284,14 @@ function CommandList({
   input,
   cursorPosition,
   isTyping,
+  prompt,
 }: {
   commands: Command[];
   focus: boolean;
   input: string;
   cursorPosition: number;
   isTyping: boolean;
+  prompt: string;
 }) {
   return (
     <div className="space-y-1">
@@ -295,7 +299,7 @@ function CommandList({
         <React.Fragment key={i}>
           {command?.text !== null && (
             <div className="flex">
-              <pre dangerouslySetInnerHTML={{ __html: PROMPT }}></pre>
+              <pre dangerouslySetInnerHTML={{ __html: prompt }}></pre>
               {command && <pre>{command.text}</pre>}
             </div>
           )}
@@ -314,6 +318,7 @@ function CommandList({
         cursorPosition={cursorPosition}
         focus={focus}
         isTyping={isTyping}
+        prompt={prompt}
       />
     </div>
   );
@@ -324,15 +329,17 @@ function CurrentCommand({
   cursorPosition,
   focus,
   isTyping,
+  prompt,
 }: {
   input: string;
   cursorPosition: number;
   focus: boolean;
   isTyping: boolean;
+  prompt: string;
 }) {
   return (
     <div className="flex">
-      <pre dangerouslySetInnerHTML={{ __html: PROMPT }}></pre>
+      <pre dangerouslySetInnerHTML={{ __html: prompt }}></pre>
       <div className="relative">
         <pre className="inline">{input.slice(0, cursorPosition + 1)}</pre>
         <BlinkingCursor
