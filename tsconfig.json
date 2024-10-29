@@ -21,7 +21,6 @@
     "noImplicitOverride": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "exactOptionalPropertyTypes": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "plugins": [
@@ -31,15 +30,14 @@
     ],
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "**/*.cjs",
-    // Eslintrc added explicitly because `**/*.cjs` doesnt cover it
-    ".eslintrc.cjs",
     "**/*.mjs",
     ".next/types/**/*.ts"
   ],
