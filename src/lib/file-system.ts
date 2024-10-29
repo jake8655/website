@@ -95,7 +95,9 @@ export class FileSystem {
 
   private ls(path: string) {
     const pathAsFs = this.pathToFs(path);
-    return Object.keys(isFile(pathAsFs) ? pathAsFs : pathAsFs.files).sort();
+
+    if (isFile(pathAsFs)) return [pathAsFs.name];
+    return Object.keys(pathAsFs.files).sort();
   }
 
   private cd(dir: string) {
