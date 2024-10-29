@@ -6,10 +6,12 @@ import { BackgroundBeams } from "@/components/ui/background-beams";
 import { api } from "@/trpc/server";
 import Link from "next/link";
 
+export const dynamic = "force-static";
+
 const pageCreationDate = new Date();
 
 export default async function Home() {
-  await api.fs.getLocalFiles.prefetch();
+  const serverFiles = await api.fs.getLocalFiles();
 
   return (
     <main className="px-8 pt-64 md:mx-auto md:max-w-screen-xl md:px-12 md:pt-32">
@@ -19,6 +21,7 @@ export default async function Home() {
       <Terminal
         className="hidden xl:block"
         pageCreationDate={pageCreationDate}
+        serverFiles={serverFiles}
       />
       <About className="block xl:hidden" />
       <BackgroundBeams className="-z-[1]" />
