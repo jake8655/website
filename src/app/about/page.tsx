@@ -7,7 +7,7 @@ export default function About() {
         <h1 className="font-bold text-4xl">About</h1>
       </Link>
       <p className="text-xl">
-        I'm a software engineer and a designer. I'm currently working at
+        I'm a software engineer and a designer. I'm currently working at{" "}
         <a
           className="text-brand-light"
           href="https://www.google.com"
