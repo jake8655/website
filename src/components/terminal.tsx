@@ -1,9 +1,12 @@
 "use client";
 
-import { env } from "@/env.mjs";
-import { FileSystem, type ShellCommands } from "@/lib/file-system";
+import { env } from "@/env";
+import {
+  type Directory,
+  FileSystem,
+  type ShellCommands,
+} from "@/lib/file-system";
 import { cn } from "@/lib/utils";
-import { api } from "@/trpc/react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -27,14 +30,12 @@ function getUptimeDaysFrom(date: Date) {
 export default function Terminal({
   className,
   pageCreationDate,
+  serverFiles,
 }: {
   className?: string;
   pageCreationDate: Date;
+  serverFiles: Directory;
 }) {
-  const { data: serverFiles } = api.fs.getLocalFiles.useQuery();
-  // Should never happen because api.fs.getLocalFiles is prefetched on the server
-  if (!serverFiles) return null;
-
   const fileSystem = new FileSystem(serverFiles);
   const uptimeDays = getUptimeDaysFrom(pageCreationDate);
   const neofetch = `       <span class="text-emerald-300">/\\</span>         <span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">website</span>
