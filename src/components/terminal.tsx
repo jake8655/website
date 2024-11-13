@@ -50,7 +50,7 @@ export default function Terminal({
   return (
     <div
       className={cn(
-        `fade-in slide-in-from-bottom before:-z-[1] relative my-32 h-[calc(100vh*2/3)] animate-in rounded-xl border-2 border-brand-dark bg-gray-900/95 p-10 shadow-glow duration-700 ease-out before:absolute before:inset-0 before:bg-[url(/wallpaper.gif)] before:content-["] hover:border-violet-400`,
+        `fade-in slide-in-from-bottom before:-z-[1] relative my-32 h-[calc(100vh*2/3)] animate-in rounded-xl border-2 border-brand-dark bg-gray-900/95 p-10 shadow-glow duration-700 ease-out before:absolute before:inset-0 before:bg-[url(/wallpaper.png)] before:bg-cover before:content-[""] hover:border-violet-400`,
         className,
       )}
     >
