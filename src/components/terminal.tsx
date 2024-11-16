@@ -6,13 +6,15 @@ import {
   FileSystem,
   type ShellCommands,
 } from "@/lib/file-system";
-import { cn } from "@/lib/utils";
+import { cn, dangerouslySanitizeHtml, getUptimeDaysFrom } from "@/lib/utils";
+import { atom, useAtom } from "jotai";
+import Image from "next/image";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 const DANGEROUSLY_COLORED_COMMANDS = ["neofetch", "help"];
 
-type Command =
+type Command = { prompt: string } & (
   | {
       text: string;
       output: string;
@@ -21,11 +23,9 @@ type Command =
     }
   | { text: string; ctrlc: true }
   | { text: null; output: string; dangerouslyColored: true; ctrlc?: false }
-  | null;
+);
 
-function getUptimeDaysFrom(date: Date) {
-  return Math.floor((Date.now() - date.getTime()) / 1000 / 60 / 60 / 24);
-}
+const focusAtom = atom(false);
 
 export default function Terminal({
   className,
@@ -47,13 +47,33 @@ export default function Terminal({
    } day${uptimeDays > 1 ? "s" : ""}
   <span class="text-blue-500">/   |  |  -\\    <span class="font-semibold">pkgs</span></span>   all of em`;
 
+  const [focus, setFocus] = useAtom(focusAtom);
+
   return (
     <div
       className={cn(
-        `fade-in slide-in-from-bottom before:-z-[1] relative my-32 h-[calc(100vh*2/3)] animate-in rounded-xl border-2 border-brand-dark bg-gray-900/95 p-10 shadow-glow duration-700 ease-out before:absolute before:inset-0 before:bg-[url(/wallpaper.png)] before:bg-cover before:content-[""] hover:border-violet-400`,
+        "fade-in slide-in-from-bottom relative my-32 h-[calc(100vh*2/3)] animate-in rounded-xl p-10 shadow-glow duration-700 ease-out",
+        "bg-gray-900/95",
+        // Gradient (outer) border
+        // https://www.30secondsofcode.org/css/s/nested-border-radius
+        // rounded-15px because inner-radius(12px, rounded-xl) + distance(3px)
+        "before:-z-[1] before:-inset-[3px] before:absolute before:animate-borderAngle before:rounded-[15px] before:bg-gradient-var before:from-[#cba6f7] before:via-[#89b4fa] before:to-[#94e2d5] before:opacity-0 before:transition before:content-[''] hover:before:opacity-100",
+        // Single-color (outer) border
+        // https://www.30secondsofcode.org/css/s/nested-border-radius
+        // rounded-15px because inner-radius(12px, rounded-xl) + distance(3px)
+        "after:-z-[2] after:-inset-[3px] after:absolute after:rounded-[15px] after:bg-gray-800 after:content-['']",
+        focus && "before:opacity-100",
         className,
       )}
+      onClick={() => setFocus(true)}
     >
+      {/* Background Image */}
+      <Image
+        src="/wallpaper.png"
+        alt="Terminal wallpaper"
+        layout="fill"
+        className="absolute inset-0 z-[-1] rounded-[inherit] bg-center bg-cover"
+      />
       <Shell neofetch={neofetch} fileSystem={fileSystem} />
     </div>
   );
@@ -62,14 +82,18 @@ export default function Terminal({
 function Shell({
   neofetch,
   fileSystem,
-}: { neofetch: string; fileSystem: FileSystem }) {
+}: {
+  neofetch: string;
+  fileSystem: FileSystem;
+}) {
   const PROMPT = `<span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">website</span>:${fileSystem.pwd()} $ `;
 
-  const [focus, setFocus] = useState(false);
   const [input, setInput] = useState("");
   const [commandHistory, setCommandHistory] = useState<Command[]>([
-    { output: neofetch, dangerouslyColored: true, text: null },
+    { output: neofetch, dangerouslyColored: true, text: null, prompt: PROMPT },
   ]);
+  const [focus, setFocus] = useAtom(focusAtom);
+
   const filteredCommandHistory = useMemo(
     () =>
       commandHistory.filter(c => c && !c.ctrlc && c.text) as Exclude<
@@ -89,6 +113,10 @@ function Shell({
   useEffect(() => {
     if (env.NEXT_PUBLIC_AUTOFOCUS_TERMINAL) terminalRef.current?.focus();
   }, []);
+
+  useEffect(() => {
+    if (focus) terminalRef.current?.focus();
+  }, [focus]);
 
   const commands: ShellCommands = {
     help: {
@@ -144,7 +172,16 @@ function Shell({
         return debouncedNoLongerTyping();
 
       case e.key === "Enter" || (e.key === "m" && e.ctrlKey):
-        if (input.trim() === "") setCommandHistory([...commandHistory, null]);
+        if (input.trim() === "")
+          setCommandHistory([
+            ...commandHistory,
+            {
+              prompt: PROMPT,
+              text: "",
+              output: "",
+              dangerouslyColored: false,
+            },
+          ]);
         else {
           if (input.trim() === "clear") {
             setCommandHistory([]);
@@ -157,6 +194,7 @@ function Shell({
               dangerouslyColored: DANGEROUSLY_COLORED_COMMANDS.includes(
                 input.trim(),
               ),
+              prompt: PROMPT,
             });
             setCommandHistory([...commandHistory]);
           }
@@ -181,7 +219,11 @@ function Shell({
         return debouncedNoLongerTyping();
 
       case e.key === "c" && e.ctrlKey:
-        commandHistory.push({ text: `${input.trim()}^C`, ctrlc: true });
+        commandHistory.push({
+          text: `${input.trim()}^C`,
+          ctrlc: true,
+          prompt: PROMPT,
+        });
         setCommandHistory([...commandHistory]);
         setInput("");
         setCursorPosition(-1);
@@ -256,7 +298,6 @@ function Shell({
     >
       <CommandList
         commands={commandHistory}
-        focus={focus}
         input={input}
         cursorPosition={cursorPosition}
         isTyping={isTyping}
@@ -267,6 +308,9 @@ function Shell({
   );
 }
 
+// TODO: fix so that is doesnt autoscroll all the time, only when terminal in view? (intersection observer) or only scroll the text itself into view not the whole terminal
+// in its current state it scrolls the entire terminal into view on page load because there is already a command in the history (length !== 0) => neofetch
+// NOTE: can keep the way it works when NEXT_PUBLIC_AUTOSCROLL_TERMINAL is set to true
 function AutoScroll({ length }: { length: number }) {
   const scrollDivRef = useRef<HTMLDivElement>(null);
 
@@ -281,14 +325,12 @@ function AutoScroll({ length }: { length: number }) {
 
 function CommandList({
   commands,
-  focus,
   input,
   cursorPosition,
   isTyping,
   prompt,
 }: {
   commands: Command[];
-  focus: boolean;
   input: string;
   cursorPosition: number;
   isTyping: boolean;
@@ -298,15 +340,23 @@ function CommandList({
     <div className="space-y-1">
       {commands.map((command, i) => (
         <React.Fragment key={i}>
-          {command?.text !== null && (
+          {command.text !== null && (
             <div className="flex">
-              <pre dangerouslySetInnerHTML={{ __html: prompt }}></pre>
-              {command && <pre>{command.text}</pre>}
+              <pre
+                dangerouslySetInnerHTML={dangerouslySanitizeHtml(
+                  command.prompt,
+                )}
+              ></pre>
+              <pre>{command.text}</pre>
             </div>
           )}
-          {command && !command.ctrlc ? (
+          {!command.ctrlc ? (
             command.dangerouslyColored ? (
-              <pre dangerouslySetInnerHTML={{ __html: command.output }}></pre>
+              <pre
+                dangerouslySetInnerHTML={dangerouslySanitizeHtml(
+                  command.output,
+                )}
+              ></pre>
             ) : (
               <pre>{command.output}</pre>
             )
@@ -317,7 +367,6 @@ function CommandList({
       <CurrentCommand
         input={input}
         cursorPosition={cursorPosition}
-        focus={focus}
         isTyping={isTyping}
         prompt={prompt}
       />
@@ -328,26 +377,22 @@ function CommandList({
 function CurrentCommand({
   input,
   cursorPosition,
-  focus,
   isTyping,
   prompt,
 }: {
   input: string;
   cursorPosition: number;
-  focus: boolean;
   isTyping: boolean;
   prompt: string;
 }) {
+  const [focus] = useAtom(focusAtom);
+
   return (
     <div className="flex">
-      <pre dangerouslySetInnerHTML={{ __html: prompt }}></pre>
+      <pre dangerouslySetInnerHTML={dangerouslySanitizeHtml(prompt)}></pre>
       <div className="relative">
         <pre className="inline">{input.slice(0, cursorPosition + 1)}</pre>
-        <BlinkingCursor
-          focus={focus}
-          className="absolute"
-          isTyping={isTyping}
-        />
+        <BlinkingCursor className="absolute" isTyping={isTyping} />
         <pre
           className={`relative z-[10] inline ${
             focus && !isTyping
@@ -366,14 +411,14 @@ function CurrentCommand({
 }
 
 function BlinkingCursor({
-  focus,
   className,
   isTyping,
 }: {
-  focus: boolean;
   className?: string;
   isTyping: boolean;
 }) {
+  const [focus] = useAtom(focusAtom);
+
   if (focus)
     return (
       <span

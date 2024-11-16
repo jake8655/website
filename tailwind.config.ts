@@ -5,9 +5,7 @@ import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette";
 import type { PluginCreator } from "tailwindcss/types/config";
 
 // This plugin adds each Tailwind color as a global CSS variable, e.g. var(--gray-200).
-// eslint-disable-next-line @typescript-eslint/unbound-method
 const addVariablesForColors: PluginCreator = ({ addBase, theme }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
   const allColors = flattenColorPalette(theme("colors"));
   const newVars = Object.fromEntries(
     Object.entries(allColors as object).map(([key, val]) => [`--${key}`, val]),
@@ -109,15 +107,28 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        borderAngle: {
+          from: {
+            "--gradient-angle": "0deg",
+          },
+          to: {
+            "--gradient-angle": "360deg",
+          },
+        },
       },
       animation: {
         blink: "blink 1s infinite steps(1, start)",
         blinkText: "blinkText 1s infinite steps(1, start)",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        borderAngle: "borderAngle 10s linear infinite",
       },
       boxShadow: {
         glow: "0 0 50px 0 rgba(109, 154, 238, 0.3)",
+      },
+      backgroundImage: {
+        "gradient-var":
+          "linear-gradient(var(--gradient-angle), var(--tw-gradient-stops))",
       },
     },
   },
