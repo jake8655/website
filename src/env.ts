@@ -22,6 +22,8 @@ export const env = createEnv({
       str => (str === "true" ? true : false),
       z.boolean().default(false),
     ),
+    NEXT_PUBLIC_POSTHOG_HOST: z.string().url(),
+    NEXT_PUBLIC_POSTHOG_KEY: z.string(),
   },
 
   /**
@@ -31,6 +33,8 @@ export const env = createEnv({
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
     NEXT_PUBLIC_AUTOFOCUS_TERMINAL: process.env.NEXT_PUBLIC_AUTOFOCUS_TERMINAL,
+    NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
