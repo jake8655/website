@@ -46,7 +46,8 @@ export default function Layout({
 }
 
 function FilteredPostHogProvider({ children }: { children: React.ReactNode }) {
-  if (env.NODE_ENV === "development") return <>{children}</>;
+  if (env.NODE_ENV === "development" || env.VERCEL_ENV !== "production")
+    return <>{children}</>;
 
   return <CSPostHogProvider>{children}</CSPostHogProvider>;
 }
