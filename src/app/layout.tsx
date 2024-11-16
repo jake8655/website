@@ -6,7 +6,6 @@ import NextTopLoader from "nextjs-toploader";
 
 import LightBlob from "@/components/light-blob";
 import LightBlobMouse from "@/components/light-blob-mouse";
-import TitleSetter from "@/components/title-setter";
 import { TRPCReactProvider } from "@/trpc/react";
 
 import "@/app/globals.css";
@@ -27,7 +26,6 @@ export default function Layout({
       <body className="font-sans">
         <TRPCReactProvider>
           <NextTopLoader color="#005cb8" />
-          <TitleSetter />
           <LightBlob className="-translate-x-1/2 -translate-y-1/2 right-0 left-0" />
           <LightBlob className="right-0 bottom-0 translate-x-1/2 translate-y-1/2" />
           <div className="hidden xl:block">

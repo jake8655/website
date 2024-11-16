@@ -1,5 +1,10 @@
 import Link from "next/link";
 
+export const metadata = {
+  title: "Dominik Tóth • About",
+  description: "Some information about me.",
+};
+
 export default function About() {
   return (
     <div className="flex flex-col items-center justify-center gap-4 py-20">

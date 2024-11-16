@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const date = new Date();
-let age = date.getFullYear() - 2007;
-if (date.getMonth() < 4 || (date.getMonth() === 4 && date.getDate() < 25)) {
-  age--;
-}
-
 export default function Hero() {
+  const date = new Date();
+  let age = date.getFullYear() - 2007;
+  if (date.getMonth() < 4 || (date.getMonth() === 4 && date.getDate() < 25)) {
+    age--;
+  }
+
   return (
     <section className="fade-in flex animate-in flex-col-reverse items-center gap-12 duration-700 md:min-h-[40rem] md:flex-row md:items-start md:justify-between">
       <aside className="slide-in-from-left animate-in duration-700 ease-out">

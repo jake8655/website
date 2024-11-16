@@ -6,12 +6,16 @@ import { BackgroundBeams } from "@/components/ui/background-beams";
 import { api } from "@/trpc/server";
 import Link from "next/link";
 
-export const dynamic = "force-static";
+export const metadata = {
+  title: "Dominik Tóth • Home",
+  description: "Personal website of Dominik Tóth.",
+};
 
-const pageCreationDate = new Date();
+export const dynamic = "force-static";
 
 export default async function Home() {
   const serverFiles = await api.fs.getLocalFiles();
+  const pageCreationDate = new Date();
 
   return (
     <main className="px-8 pt-64 md:mx-auto md:max-w-screen-xl md:px-12 md:pt-32">
