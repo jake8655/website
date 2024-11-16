@@ -19,8 +19,8 @@ export default function Hero() {
           A {age} year old highschool{" "}
           <span className="text-brand">student</span>,{" "}
           <span className="text-brand">web developer</span>
-          <br /> and <span className="text-brand">linux enjoyer</span>
-          from Slovakia.
+          <br /> and <span className="text-brand">linux enjoyer</span> from
+          Slovakia.
         </p>
       </aside>
 
