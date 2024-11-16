@@ -10,6 +10,9 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
+    VERCEL_ENV: z
+      .enum(["production", "preview", "development"])
+      .default("development"),
   },
 
   /**
@@ -35,6 +38,7 @@ export const env = createEnv({
     NEXT_PUBLIC_AUTOFOCUS_TERMINAL: process.env.NEXT_PUBLIC_AUTOFOCUS_TERMINAL,
     NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
+    VERCEL_ENV: process.env.VERCEL_ENV,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
