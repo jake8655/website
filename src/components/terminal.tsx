@@ -119,6 +119,11 @@ function Shell({
     if (focus) terminalRef.current?.focus();
   }, [focus]);
 
+  useEffect(() => {
+    if (!terminalRef.current) return;
+    terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+  }, [commandHistory]);
+
   const commands: ShellCommands = {
     help: {
       output() {
@@ -304,24 +309,8 @@ function Shell({
         isTyping={isTyping}
         prompt={PROMPT}
       />
-      <AutoScroll length={commandHistory.length} />
     </div>
   );
-}
-
-// TODO: fix so that is doesnt autoscroll all the time, only when terminal in view? (intersection observer) or only scroll the text itself into view not the whole terminal
-// in its current state it scrolls the entire terminal into view on page load because there is already a command in the history (length !== 0) => neofetch
-// NOTE: can keep the way it works when NEXT_PUBLIC_AUTOSCROLL_TERMINAL is set to true
-function AutoScroll({ length }: { length: number }) {
-  const scrollDivRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (length === 0) return;
-
-    scrollDivRef.current?.scrollIntoView();
-  }, [length]);
-
-  return <div ref={scrollDivRef}></div>;
 }
 
 function CommandList({
