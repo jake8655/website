@@ -39,6 +39,7 @@ jobs:
 
       - name: Check build cache
         uses: actions/cache@v4
+        id: cache
         with:
           path: |
             ${{ github.workspace }}/.next/cache
