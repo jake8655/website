@@ -20,10 +20,24 @@ jobs:
         with:
          fetch-depth: 0
 
+      - name: Check build cache
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: |
+            ${{ github.workspace }}/.next/cache
+          # Generate a new cache whenever packages or source files change.
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/bun.lockb') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
+          # If source files changed but packages didn't, rebuild from a prior cache.
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/bun.lockb') }}-
+
       - name: Setup
+        if: steps.cache.outputs.cache-hit != 'true'
         uses: ./.github/actions/setup
 
       - name: Format & Lint & Typecheck
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
           bun fmt
           bun lint
