@@ -58,7 +58,7 @@ export default function Terminal({
         // Gradient (outer) border
         // https://www.30secondsofcode.org/css/s/nested-border-radius
         // rounded-15px because inner-radius(12px, rounded-xl) + distance(3px)
-        "before:-z-[1] before:-inset-[3px] before:absolute before:animate-borderAngle before:rounded-[15px] before:bg-gradient-var before:from-[#cba6f7] before:via-[#89b4fa] before:to-[#94e2d5] before:opacity-0 before:transition before:content-[''] hover:before:opacity-100",
+        "before:-z-[1] before:-inset-[3px] before:absolute before:animate-borderAngle before:rounded-[15px] before:bg-gradient-var before:from-gradient-purple before:via-gradient-blue before:to-gradient-green before:opacity-0 before:transition before:content-[''] hover:before:opacity-100",
         // Single-color (outer) border
         // https://www.30secondsofcode.org/css/s/nested-border-radius
         // rounded-15px because inner-radius(12px, rounded-xl) + distance(3px)
@@ -295,7 +295,7 @@ function Shell({
 
   return (
     <div
-      className="scrollbar-hide h-full space-y-5 overflow-y-scroll selection:bg-gray-800 focus:outline-none"
+      className="scrollbar-hide h-full space-y-5 overflow-y-scroll focus:outline-none"
       ref={terminalRef}
       tabIndex={0}
       onFocus={() => setFocus(true)}
@@ -384,13 +384,10 @@ function CurrentCommand({
         <pre className="inline">{input.slice(0, cursorPosition + 1)}</pre>
         <BlinkingCursor className="absolute" isTyping={isTyping} />
         <pre
-          className={`relative z-[10] inline ${
-            focus && !isTyping
-              ? "animate-blinkText"
-              : focus && isTyping
-                ? "text-gray-900"
-                : ""
-          }`}
+          className={cn(
+            "relative z-[10] inline",
+            focus && (!isTyping ? "animate-blinkText" : "text-gray-900"),
+          )}
         >
           {input.slice(cursorPosition + 1, cursorPosition + 2)}
         </pre>

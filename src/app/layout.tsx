@@ -24,7 +24,7 @@ export default function Layout({
   return (
     <html
       lang="en"
-      className={`${GeistSans.variable} text-brand-light ${GeistMono.variable} antialiased`}
+      className={`${GeistSans.variable} text-brand-light ${GeistMono.variable} antialiased selection:bg-gradient-green selection:text-teal-900`}
     >
       <FilteredPostHogProvider>
         <body className="font-sans">
