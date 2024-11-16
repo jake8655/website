@@ -7,6 +7,7 @@ import {
   type ShellCommands,
 } from "@/lib/file-system";
 import { cn, dangerouslySanitizeHtml, getUptimeDaysFrom } from "@/lib/utils";
+import terminalBackground from "@/wallpaper.png";
 import { atom, useAtom } from "jotai";
 import Image from "next/image";
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -69,10 +70,10 @@ export default function Terminal({
     >
       {/* Background Image */}
       <Image
-        src="/wallpaper.png"
+        src={terminalBackground}
         alt="Terminal wallpaper"
-        layout="fill"
-        className="absolute inset-0 z-[-1] rounded-[inherit] bg-center bg-cover"
+        fill
+        className="-z-[1] absolute inset-0 rounded-[inherit] object-cover"
       />
       <Shell neofetch={neofetch} fileSystem={fileSystem} />
     </div>
