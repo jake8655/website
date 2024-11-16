@@ -86,3 +86,9 @@
     scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
   }
 }
+
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
