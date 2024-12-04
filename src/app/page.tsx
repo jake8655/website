@@ -17,7 +17,7 @@ export default async function Home() {
   const pageCreationDate = new Date();
 
   return (
-    <main className="px-8 pt-64 md:mx-auto md:max-w-screen-xl md:px-12 md:pt-32">
+    <main className="px-8 pt-16 md:mx-auto md:max-w-screen-xl md:px-12 md:pt-32 lg:pt-64">
       <Hero />
       <ArrowTitle title="Explore me through the terminal" />
       <Terminal
