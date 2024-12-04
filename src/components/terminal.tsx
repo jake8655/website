@@ -55,11 +55,11 @@ export default function Terminal({
       className={cn(
         "fade-in slide-in-from-bottom relative my-32 h-[calc(100vh*2/3)] animate-in rounded-xl p-10 shadow-glow duration-700 ease-out",
         "bg-gray-900/95",
-        // Gradient (outer) border
+        // Gradient (outer) border on hover
         // https://www.30secondsofcode.org/css/s/nested-border-radius
         // rounded-15px because inner-radius(12px, rounded-xl) + distance(3px)
         "before:-z-[1] before:-inset-[3px] before:absolute before:animate-borderAngle before:rounded-[15px] before:bg-gradient-var before:from-gradient-purple before:via-gradient-blue before:to-gradient-green before:opacity-0 before:transition before:content-[''] hover:before:opacity-100",
-        // Single-color (outer) border
+        // Single-color (outer) border when not hovered
         // https://www.30secondsofcode.org/css/s/nested-border-radius
         // rounded-15px because inner-radius(12px, rounded-xl) + distance(3px)
         "after:-z-[2] after:-inset-[3px] after:absolute after:rounded-[15px] after:bg-gray-800 after:content-['']",
@@ -327,7 +327,7 @@ function CommandList({
   prompt: string;
 }) {
   return (
-    <div className="space-y-1">
+    <ul className="space-y-1">
       {commands.map((command, i) => (
         <React.Fragment key={i}>
           {command.text !== null && (
@@ -360,7 +360,7 @@ function CommandList({
         isTyping={isTyping}
         prompt={prompt}
       />
-    </div>
+    </ul>
   );
 }
 

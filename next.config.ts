@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
   experimental: {
     reactCompiler: true,
   },
+  transpilePackages: ["three"],
 };
 
 export default nextConfig;
