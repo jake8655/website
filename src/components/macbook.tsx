@@ -6,6 +6,7 @@ import { ContactShadows, Environment, useGLTF } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Suspense, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import { BreakPoint, useScreenSize } from "use-screen-size";
 
 export default function Macbook() {
   const [open, setOpen] = useState(false);
@@ -45,6 +46,10 @@ function Model({
   const group = useRef<THREE.Group<THREE.Object3DEventMap>>(null);
   const { nodes, materials } = useGLTF("/macbook.glb");
   const [hovered, setHovered] = useState(false);
+  const screenSize = useScreenSize();
+  const smallScreen = (
+    [BreakPoint.xs, BreakPoint.s, BreakPoint.m] as string[]
+  ).includes(screenSize.screen);
 
   useEffect(
     () => void (document.body.style.cursor = hovered ? "pointer" : "auto"),
@@ -84,10 +89,14 @@ function Model({
       onPointerOver={e => (e.stopPropagation(), setHovered(true))}
       onPointerOut={_ => setHovered(false)}
       dispose={null}
+      scale={smallScreen ? 1.4 : 1}
     >
       {/* Lid + Screen */}
       {/* @ts-expect-error Bad types */}
-      <three.group rotation-x={hinge} position={[0, 3.46, 0.41]}>
+      <three.group
+        rotation-x={hinge}
+        position={[0, smallScreen ? -0.04 : 3.46, 0.41]}
+      >
         <group position={[0, 2.96, -0.13]} rotation={[Math.PI / 2, 0, 0]}>
           <mesh
             material={materials.aluminium}
@@ -113,10 +122,10 @@ function Model({
         material={materials.keys}
         // @ts-expect-error Bad types
         geometry={nodes.keyboard!.geometry}
-        position={[1.79, 3.5, 3.45]}
+        position={[1.79, smallScreen ? 0 : 3.5, 3.45]}
       />
       {/* Body */}
-      <group position={[0, 3.4, 3.39]}>
+      <group position={[0, smallScreen ? -0.1 : 3.4, 3.39]}>
         <mesh
           material={materials.aluminium}
           // @ts-expect-error Bad types
@@ -133,7 +142,7 @@ function Model({
         material={materials.touchbar}
         // @ts-expect-error Bad types
         geometry={nodes.touchbar!.geometry}
-        position={[0, 3.47, 1.2]}
+        position={[0, smallScreen ? -0.03 : 3.47, 1.2]}
       />
     </group>
   );

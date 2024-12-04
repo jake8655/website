@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Macbook from "../macbook";
 
 export default function Hero() {
@@ -8,7 +9,7 @@ export default function Hero() {
   }
 
   return (
-    <section className="fade-in grid animate-in grid-cols-2 items-start gap-12 duration-700 md:min-h-[40rem]">
+    <section className="fade-in grid animate-in grid-cols-1 items-start gap-12 duration-700 md:min-h-[40rem] md:grid-cols-2">
       <aside className="slide-in-from-left animate-in duration-700 ease-out">
         <h1 className="font-bold text-4xl leading-tight md:text-5xl lg:text-7xl">
           Hi there! I&apos;m <br />
@@ -23,10 +24,17 @@ export default function Hero() {
           <span className="text-brand">web developer</span>
           <br /> and <span className="text-brand">linux enjoyer</span> from
           Slovakia.
+          <Image
+            src="/images/slovakia-flag.png"
+            alt="Slovaki flag"
+            className="ml-2 inline-block align-top"
+            width={30}
+            height={30}
+          />
         </p>
       </aside>
 
-      <aside className="h-full">
+      <aside className="h-full min-h-[250px] lg:min-h-0">
         <Macbook />
       </aside>
     </section>

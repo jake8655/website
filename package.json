@@ -40,7 +40,8 @@
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.5.4",
     "three": "^0.171.0",
-    "use-debounce": "^10.0.4"
+    "use-debounce": "^10.0.4",
+    "use-screen-size": "^1.4.4"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
