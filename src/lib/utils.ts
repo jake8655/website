@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import sanitizeHtml from "sanitize-html";
 import { twMerge } from "tailwind-merge";
+import { BreakPoint, useScreenSize } from "use-screen-size";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -23,4 +24,13 @@ export function dangerouslySanitizeHtml(
       ...options,
     }),
   };
+}
+
+export function useSmallScreen() {
+  const screenSize = useScreenSize();
+  const isSmallScreen = (
+    [BreakPoint.xs, BreakPoint.s, BreakPoint.m] as string[]
+  ).includes(screenSize.screen);
+
+  return isSmallScreen;
 }

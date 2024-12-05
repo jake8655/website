@@ -1,12 +1,12 @@
 "use client";
 
+import { useSmallScreen } from "@/lib/utils";
 import { type Interpolation, useSpring } from "@react-spring/core";
 import { a as three } from "@react-spring/three";
 import { ContactShadows, Environment, useGLTF } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Suspense, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { BreakPoint, useScreenSize } from "use-screen-size";
 
 export default function Macbook() {
   const [open, setOpen] = useState(false);
@@ -46,10 +46,7 @@ function Model({
   const group = useRef<THREE.Group<THREE.Object3DEventMap>>(null);
   const { nodes, materials } = useGLTF("/macbook.glb");
   const [hovered, setHovered] = useState(false);
-  const screenSize = useScreenSize();
-  const smallScreen = (
-    [BreakPoint.xs, BreakPoint.s, BreakPoint.m] as string[]
-  ).includes(screenSize.screen);
+  const smallScreen = useSmallScreen();
 
   useEffect(
     () => void (document.body.style.cursor = hovered ? "pointer" : "auto"),
