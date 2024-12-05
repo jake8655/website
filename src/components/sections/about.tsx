@@ -1,7 +1,8 @@
+import { cn } from "@/lib/utils";
+
 export default function About({ className }: { className?: string }) {
   return (
-    <section className={className}>
-      <h2 className="font-thin text-4xl lg:text-6xl">About me</h2>
+    <section className={cn(className)}>
       <p className="text-lg leading-normal">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Id quo, quaerat
         dolor facere harum aliquam quasi placeat labore deserunt nesciunt a
