@@ -21,9 +21,9 @@ export default function Hero() {
         <p className="text-balance pt-6 text-xl leading-normal">
           A {age} year old highschool{" "}
           <span className="text-brand">student</span>,{" "}
-          <span className="text-brand">web developer</span>
-          <br /> and <span className="text-brand">linux enjoyer</span> from
-          Slovakia.
+          <span className="text-brand">web developer</span>,{" "}
+          <span className="text-brand">linux</span> and{" "}
+          <span className="text-brand">aviation</span> enthusiast from Slovakia.
           <Image
             src="/images/slovakia-flag.png"
             alt="Slovaki flag"
