@@ -1,4 +1,4 @@
-import ArrowTitle from "@/components/arrow-title";
+import ArrowTitle from "@/components/arrow-title-wrapper";
 import About from "@/components/sections/about";
 import Hero from "@/components/sections/hero";
 import Terminal from "@/components/terminal";
@@ -19,7 +19,7 @@ export default async function Home() {
   return (
     <main className="px-8 pt-16 md:mx-auto md:max-w-screen-xl md:px-12 md:pt-32 lg:pt-64">
       <Hero />
-      <ArrowTitle title="Explore me through the terminal" />
+      <ArrowTitle />
       <Terminal
         pageCreationDate={pageCreationDate}
         serverFiles={serverFiles}
