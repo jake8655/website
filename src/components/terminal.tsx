@@ -12,6 +12,7 @@ import { atom, useAtom } from "jotai";
 import Image from "next/image";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import { BackgroundBeamsWithCollision } from "./ui/background-beams-with-collision";
 
 const DANGEROUSLY_COLORED_COMMANDS = ["neofetch", "help"];
 
@@ -53,7 +54,7 @@ export default function Terminal({
   return (
     <div
       className={cn(
-        "fade-in slide-in-from-bottom relative my-32 h-[calc(100vh*2/3)] animate-in rounded-xl p-10 shadow-glow duration-700 ease-out",
+        "fade-in slide-in-from-bottom relative my-32 h-[calc(100vh*2/3)] animate-in rounded-xl shadow-glow duration-700 ease-out",
         "bg-gray-900/95",
         // Gradient (outer) border on hover
         // https://www.30secondsofcode.org/css/s/nested-border-radius
@@ -68,14 +69,16 @@ export default function Terminal({
       )}
       onClick={() => setFocus(true)}
     >
-      {/* Background Image */}
-      <Image
-        src={terminalBackground}
-        alt="Terminal wallpaper"
-        fill
-        className="-z-[1] absolute inset-0 rounded-[inherit] object-cover"
-      />
-      <Shell neofetch={neofetch} fileSystem={fileSystem} />
+      <BackgroundBeamsWithCollision className="rounded-xl p-10">
+        {/* Background Image */}
+        <Image
+          src={terminalBackground}
+          alt="Terminal wallpaper"
+          fill
+          className="-z-[1] absolute inset-0 rounded-[inherit] object-cover"
+        />
+        <Shell neofetch={neofetch} fileSystem={fileSystem} />
+      </BackgroundBeamsWithCollision>
     </div>
   );
 }
@@ -331,25 +334,27 @@ function CommandList({
       {commands.map((command, i) => (
         <React.Fragment key={i}>
           {command.text !== null && (
-            <div className="flex">
+            <li className="flex">
               <pre
                 dangerouslySetInnerHTML={dangerouslySanitizeHtml(
                   command.prompt,
                 )}
               ></pre>
               <pre>{command.text}</pre>
-            </div>
+            </li>
           )}
           {!command.ctrlc ? (
-            command.dangerouslyColored ? (
-              <pre
-                dangerouslySetInnerHTML={dangerouslySanitizeHtml(
-                  command.output,
-                )}
-              ></pre>
-            ) : (
-              <pre>{command.output}</pre>
-            )
+            <li>
+              {command.dangerouslyColored ? (
+                <pre
+                  dangerouslySetInnerHTML={dangerouslySanitizeHtml(
+                    command.output,
+                  )}
+                ></pre>
+              ) : (
+                <pre>{command.output}</pre>
+              )}
+            </li>
           ) : null}
         </React.Fragment>
       ))}
