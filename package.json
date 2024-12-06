@@ -13,6 +13,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@artsy/fresnel": "^8.0.1",
     "@react-spring/three": "^9.7.5",
     "@react-spring/web": "^9.7.5",
     "@react-three/drei": "^9.119.0",

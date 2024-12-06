@@ -26,11 +26,14 @@ export function dangerouslySanitizeHtml(
   };
 }
 
+/**
+ * ONLY USE IN CLIENT COMPONENTS
+ */
 export function useSmallScreen() {
   const screenSize = useScreenSize();
-  const isSmallScreen = (
-    [BreakPoint.xs, BreakPoint.s, BreakPoint.m] as string[]
-  ).includes(screenSize.screen);
+  const isSmallScreen = ([BreakPoint.xs, BreakPoint.s] as string[]).includes(
+    screenSize.screen,
+  );
 
   return isSmallScreen;
 }

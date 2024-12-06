@@ -12,6 +12,7 @@ import { TRPCReactProvider } from "@/trpc/react";
 import "@/app/globals.css";
 import { CSPostHogProvider } from "@/components/posthog-provider";
 import { env } from "@/env";
+import { MediaContextProvider, mediaStyles } from "@/lib/media";
 
 export const metadata: Metadata = {
   title: "Dominik Tóth",
@@ -26,18 +27,27 @@ export default function Layout({
       lang="en"
       className={`${GeistSans.variable} text-brand-light ${GeistMono.variable} antialiased selection:bg-gradient-green selection:text-teal-900`}
     >
+      <head>
+        <style
+          key="fresnel-css"
+          dangerouslySetInnerHTML={{ __html: mediaStyles }}
+          type="text/css"
+        />
+      </head>
       <FilteredPostHogProvider>
         <body className="font-sans">
           <TRPCReactProvider>
-            <ReactQueryDevtools initialIsOpen={false} />
-            <NextTopLoader color="#005cb8" />
-            <LightBlob className="-translate-x-1/2 -translate-y-1/2 right-0 left-0" />
-            <LightBlob className="right-0 bottom-0 translate-x-1/2 translate-y-1/2" />
-            <div className="hidden xl:block">
-              <LightBlobMouse />
-            </div>
+            <MediaContextProvider>
+              <ReactQueryDevtools initialIsOpen={false} />
+              <NextTopLoader color="#005cb8" />
+              <LightBlob className="-translate-x-1/2 -translate-y-1/2 right-0 left-0" />
+              <LightBlob className="right-0 bottom-0 translate-x-1/2 translate-y-1/2" />
+              <div className="hidden xl:block">
+                <LightBlobMouse />
+              </div>
 
-            {children}
+              {children}
+            </MediaContextProvider>
           </TRPCReactProvider>
         </body>
       </FilteredPostHogProvider>
