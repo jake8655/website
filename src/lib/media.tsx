@@ -14,4 +14,6 @@ const ExampleAppMedia = createMedia({
 // Make styles for injection into the header of the page
 export const mediaStyles = ExampleAppMedia.createMediaStyle();
 
-export const { Media, MediaContextProvider } = ExampleAppMedia;
+const { Media, MediaContextProvider } = ExampleAppMedia;
+
+export { Media, MediaContextProvider };
