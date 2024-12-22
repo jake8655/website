@@ -1,14 +1,10 @@
 import { type ClassValue, clsx } from "clsx";
 import sanitizeHtml from "sanitize-html";
 import { twMerge } from "tailwind-merge";
-import { BreakPoint, useScreenSize } from "use-screen-size";
+import { useScreen } from "usehooks-ts";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
-}
-
-export function getUptimeDaysFrom(date: Date) {
-  return Math.floor((Date.now() - date.getTime()) / 1000 / 60 / 60 / 24);
 }
 
 export function dangerouslySanitizeHtml(
@@ -26,14 +22,13 @@ export function dangerouslySanitizeHtml(
   };
 }
 
-/**
- * ONLY USE IN CLIENT COMPONENTS
- */
+export function getUptimeDaysFrom(date: Date) {
+  return Math.floor((Date.now() - date.getTime()) / 1000 / 60 / 60 / 24);
+}
+
 export function useSmallScreen() {
-  const screenSize = useScreenSize();
-  const isSmallScreen = ([BreakPoint.xs, BreakPoint.s] as string[]).includes(
-    screenSize.screen,
-  );
+  const screenSize = useScreen();
+  const isSmallScreen = !screenSize || screenSize.width < 1280;
 
   return isSmallScreen;
 }
