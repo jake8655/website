@@ -11,7 +11,6 @@ import terminalBackground from "@/wallpaper.png";
 import { atom, useAtom } from "jotai";
 import Image from "next/image";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useDebouncedCallback } from "use-debounce";
 import { BackgroundBeamsWithCollision } from "./ui/background-beams-with-collision";
 
 const DANGEROUSLY_COLORED_COMMANDS = ["neofetch", "help"];
@@ -35,19 +34,10 @@ export default function Terminal({
   serverFiles,
 }: {
   className?: string;
-  pageCreationDate: Date;
+  pageCreationDate: string;
   serverFiles: Directory;
 }) {
   const fileSystem = new FileSystem(serverFiles);
-  const uptimeDays = getUptimeDaysFrom(pageCreationDate);
-  const neofetch = `       <span class="text-emerald-300">/\\</span>         <span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">website</span>
-      <span class="text-emerald-300">/  \\</span>        <span class="text-blue-500 font-semibold">os</span>     arch btw
-     <span class="text-emerald-300">/\\   \\</span>       <span class="text-blue-500 font-semibold">host</span>   your browser
-    <span class="text-blue-500">/      \\      <span class="font-semibold">kernel</span></span> latest
-   <span class="text-blue-500">/   ,,   \\     <span class="font-semibold">uptime</span></span> ${
-     uptimeDays || 1
-   } day${uptimeDays > 1 ? "s" : ""}
-  <span class="text-blue-500">/   |  |  -\\    <span class="font-semibold">pkgs</span></span>   all of em`;
 
   const [focus, setFocus] = useAtom(focusAtom);
 
@@ -77,25 +67,44 @@ export default function Terminal({
           fill
           className="-z-[1] absolute inset-0 rounded-[inherit] object-cover"
         />
-        <Shell neofetch={neofetch} fileSystem={fileSystem} />
+        <Shell
+          pageCreationDate={new Date(pageCreationDate)}
+          fileSystem={fileSystem}
+        />
       </BackgroundBeamsWithCollision>
     </div>
   );
 }
 
 function Shell({
-  neofetch,
+  pageCreationDate,
   fileSystem,
 }: {
-  neofetch: string;
+  pageCreationDate: Date;
   fileSystem: FileSystem;
 }) {
   const PROMPT = `<span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">website</span>:${fileSystem.pwd()} $ `;
+  const uptimeDays = getUptimeDaysFrom(pageCreationDate);
+
+  const NEOFETCH = `        <span class="text-emerald-300">/\\</span>         <span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">website</span>
+       <span class="text-emerald-300">/  \\</span>        <span class="text-blue-500 font-semibold">os</span>     arch btw
+      <span class="text-emerald-300">/\\   \\</span>       <span class="text-blue-500 font-semibold">host</span>   your browser
+     <span class="text-blue-500">/      \\      <span class="font-semibold">kernel</span></span> latest
+    <span class="text-blue-500">/   ,,   \\     <span class="font-semibold">uptime</span></span> ${
+      uptimeDays || 1
+    } day${uptimeDays > 1 ? "s" : ""}
+   <span class="text-blue-500">/   |  |  -\\    <span class="font-semibold">pkgs</span></span>   all of em`;
 
   const [input, setInput] = useState("");
   const [commandHistory, setCommandHistory] = useState<Command[]>([
-    { output: neofetch, dangerouslyColored: true, text: null, prompt: PROMPT },
+    {
+      output: NEOFETCH,
+      dangerouslyColored: true,
+      text: null,
+      prompt: PROMPT,
+    },
   ]);
+
   const [focus, setFocus] = useAtom(focusAtom);
 
   const filteredCommandHistory = useMemo(
@@ -108,10 +117,18 @@ function Shell({
   );
   const [commandHistoryIndex, setCommandHistoryIndex] = useState(0);
   const [cursorPosition, setCursorPosition] = useState(-1);
+
   const [isTyping, setIsTyping] = useState(false);
-  const debouncedNoLongerTyping = useDebouncedCallback(() => {
-    setIsTyping(false);
-  }, 200);
+  const typingTimeout = useRef<NodeJS.Timeout | null>(null);
+  useEffect(() => {
+    const timeoutId = typingTimeout.current;
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, []);
+
   const terminalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -147,7 +164,7 @@ function Shell({
     },
     neofetch: {
       output() {
-        return neofetch;
+        return NEOFETCH;
       },
       description: "a fast, highly customizable system info script",
     },
@@ -163,7 +180,10 @@ function Shell({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     e.preventDefault();
+
+    if (typingTimeout.current) clearTimeout(typingTimeout.current);
     setIsTyping(true);
+    typingTimeout.current = setTimeout(() => setIsTyping(false), 300);
 
     switch (true) {
       case e.key === "Escape":
@@ -172,13 +192,13 @@ function Shell({
         if (activeElement instanceof HTMLElement) {
           activeElement.blur();
         }
-        return debouncedNoLongerTyping();
+        return;
 
       case e.key === "l" && e.ctrlKey:
         setCommandHistory([]);
         setInput("");
         setCursorPosition(-1);
-        return debouncedNoLongerTyping();
+        return;
 
       case e.key === "Enter" || (e.key === "m" && e.ctrlKey):
         if (input.trim() === "")
@@ -216,16 +236,16 @@ function Shell({
         // -1 because we subtract 1 at history browsing immediately
         setCommandHistoryIndex(newFiltered.length - 1);
 
-        return debouncedNoLongerTyping();
+        return;
 
       case e.key === "Backspace" || (e.key === "h" && e.ctrlKey):
-        if (cursorPosition === -1) return debouncedNoLongerTyping();
+        if (cursorPosition === -1) return;
         setInput(
           input.slice(0, cursorPosition) + input.slice(cursorPosition + 1),
         );
         setCursorPosition(cursorPosition - 1);
 
-        return debouncedNoLongerTyping();
+        return;
 
       case e.key === "c" && e.ctrlKey:
         commandHistory.push({
@@ -243,7 +263,7 @@ function Shell({
         );
         setCommandHistoryIndex(newFilteredCommands.length);
 
-        return debouncedNoLongerTyping();
+        return;
 
       case e.key === "ArrowUp":
         const newBackIndex = commandHistoryIndex - 1;
@@ -292,8 +312,6 @@ function Shell({
       setCursorPosition(cursorPosition + 1);
       setInput(newInput);
     }
-
-    debouncedNoLongerTyping();
   };
 
   return (
@@ -359,12 +377,14 @@ function CommandList({
         </React.Fragment>
       ))}
 
-      <CurrentCommand
-        input={input}
-        cursorPosition={cursorPosition}
-        isTyping={isTyping}
-        prompt={prompt}
-      />
+      <li>
+        <CurrentCommand
+          input={input}
+          cursorPosition={cursorPosition}
+          isTyping={isTyping}
+          prompt={prompt}
+        />
+      </li>
     </ul>
   );
 }

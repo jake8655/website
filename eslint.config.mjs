@@ -1,34 +1,36 @@
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
-import js from "@eslint/js";
+
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
-import tsParser from "@typescript-eslint/parser";
+import jsxA11y from "eslint-plugin-jsx-a11y";
 import reactCompiler from "eslint-plugin-react-compiler";
+import reactHooks from "eslint-plugin-react-hooks";
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = dirname(__filename);
+
 const compat = new FlatCompat({
   baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
 });
 
+/** @type {import("eslint").Linter.Config[]} */
 const config = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     plugins: {
       "@typescript-eslint": typescriptEslint,
       "react-compiler": reactCompiler,
+      "react-hooks": reactHooks,
+      "jsx-a11y": jsxA11y,
     },
 
     languageOptions: {
-      parser: tsParser,
-      ecmaVersion: 5,
-      sourceType: "script",
-
       parserOptions: {
         project: true,
+        ecmaFeatures: {
+          jsx: true,
+        },
       },
     },
 
