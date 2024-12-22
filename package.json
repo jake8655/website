@@ -56,7 +56,7 @@
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.1",
     "@types/sanitize-html": "^2.13.0",
-    "@types/three": "^0.170.0",
+    "@types/three": "^0.171.0",
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "@typescript-eslint/parser": "^8.17.0",
     "eslint": "9.16.0",
