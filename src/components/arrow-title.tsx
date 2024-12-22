@@ -14,14 +14,32 @@ export default function ArrowTitle({ className }: { className?: string }) {
         className,
       )}
     >
-      {guiMode ? <GuiTitle /> : <CliTitle />}
+      {guiMode ? (
+        <Title text="About me" slideDirection="bottom" key="about" />
+      ) : (
+        <Title
+          text="Explore me through the terminal"
+          slideDirection="top"
+          key="explore"
+        />
+      )}
     </div>
   );
 }
 
-function GuiTitle() {
+function Title({
+  text,
+  slideDirection,
+}: { text: string; slideDirection: "bottom" | "top" }) {
   return (
-    <div className="group fade-in slide-in-from-bottom-32 flex animate-in gap-4 duration-700 ease-out md:gap-12">
+    <div
+      className={cn(
+        "group fade-in flex animate-in gap-4 duration-700 ease-out md:gap-12",
+        slideDirection === "bottom"
+          ? "slide-in-from-bottom-32"
+          : "slide-in-from-top-32",
+      )}
+    >
       <Image
         src="/images/arrow.svg"
         alt="Chevron arrows pointing down"
@@ -30,39 +48,9 @@ function GuiTitle() {
         loading="eager"
         className="repeat-[2] group-hover:-translate-y-4 animate-bounce duration-500 ease-out"
       />
-
       <h2 className="text-balance text-center font-semibold text-3xl lg:text-5xl">
-        About me
+        {text}
       </h2>
-
-      <Image
-        src="/images/arrow.svg"
-        alt="Chevron arrows pointing down"
-        width={50}
-        height={50}
-        loading="eager"
-        className="repeat-[2] group-hover:-translate-y-4 animate-bounce duration-500 ease-out"
-      />
-    </div>
-  );
-}
-
-function CliTitle() {
-  return (
-    <div className="group fade-in slide-in-from-top-32 flex animate-in gap-4 duration-700 ease-out md:gap-12">
-      <Image
-        src="/images/arrow.svg"
-        alt="Chevron arrows pointing down"
-        width={50}
-        height={50}
-        loading="eager"
-        className="repeat-[2] group-hover:-translate-y-4 animate-bounce duration-500 ease-out"
-      />
-
-      <h2 className="text-balance text-center font-semibold text-3xl lg:text-5xl">
-        Explore me through the terminal
-      </h2>
-
       <Image
         src="/images/arrow.svg"
         alt="Chevron arrows pointing down"
