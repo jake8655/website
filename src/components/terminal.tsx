@@ -119,7 +119,7 @@ function Shell({
   const [cursorPosition, setCursorPosition] = useState(-1);
 
   const [isTyping, setIsTyping] = useState(false);
-  const typingTimeout = useRef<NodeJS.Timeout>(null);
+  const typingTimeout = useRef<NodeJS.Timeout | null>(null);
   useEffect(() => {
     const timeoutId = typingTimeout.current;
     return () => {
