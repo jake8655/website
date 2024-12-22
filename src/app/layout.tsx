@@ -7,12 +7,12 @@ import NextTopLoader from "nextjs-toploader";
 
 import LightBlob from "@/components/light-blob";
 import LightBlobMouse from "@/components/light-blob-mouse";
+import { CSPostHogProvider } from "@/components/posthog-provider";
+import SnowOverlayNoSSR from "@/components/snow-overlay-no-ssr";
+import { env } from "@/env";
 import { TRPCReactProvider } from "@/trpc/react";
 
 import "@/app/globals.css";
-import { CSPostHogProvider } from "@/components/posthog-provider";
-import SnowOverlayWrapper from "@/components/snow-overlay-wrapper";
-import { env } from "@/env";
 
 export const metadata: Metadata = {
   title: "Dominik Tóth",
@@ -35,7 +35,7 @@ export default function Layout({
             <LightBlob className="-translate-x-1/2 -translate-y-1/2 right-0 left-0" />
             <LightBlob className="right-0 bottom-0 translate-x-1/2 translate-y-1/2" />
             <LightBlobMouse className="hidden xl:block" />
-            <SnowOverlayWrapper />
+            <SnowOverlayNoSSR />
 
             {children}
           </TRPCReactProvider>
