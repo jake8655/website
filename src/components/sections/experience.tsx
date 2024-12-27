@@ -144,26 +144,6 @@ export default function Experience({ className }: { className?: string }) {
       )}
     >
       <Timeline data={data} />
-      <ul className="list-disc">
-        <li>
-          A section below the timeline showcasing my current skills (languages,
-          tech...)
-        </li>
-        <li>mention asrrp.hu in projects</li>
-        <li>Mention vim/nvim somewhere</li>
-        <li>
-          Projects section separate from timeline? - in horizontally sliding
-          carousel - mention game I made!!!! Asteroids
-        </li>
-        <li>
-          About section before experience? - maybe not cuz i mostly say
-          everything important in hero section. Mention planes/vatsim somewhere
-          (hobbies?) + dogs/animals? (photo?) - in about me section?
-        </li>
-        <li>
-          look through projects directory on my system for projects n shit
-        </li>
-      </ul>
     </section>
   );
 }
