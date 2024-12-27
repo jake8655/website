@@ -6,7 +6,7 @@ import {
   FileSystem,
   type ShellCommands,
 } from "@/lib/file-system";
-import { cn, dangerouslySanitizeHtml, getUptimeDaysFrom } from "@/lib/utils";
+import { cn, dangerouslySanitizeHtml } from "@/lib/utils";
 import terminalBackground from "@/wallpaper.png";
 import { atom, useAtom } from "jotai";
 import Image from "next/image";
@@ -30,11 +30,11 @@ const focusAtom = atom(false);
 
 export default function Terminal({
   className,
-  pageCreationDate,
+  uptimeDays,
   serverFiles,
 }: {
   className?: string;
-  pageCreationDate: string;
+  uptimeDays: number;
   serverFiles: Directory;
 }) {
   const fileSystem = new FileSystem(serverFiles);
@@ -67,24 +67,20 @@ export default function Terminal({
           fill
           className="-z-[1] absolute inset-0 rounded-[inherit] object-cover"
         />
-        <Shell
-          pageCreationDate={new Date(pageCreationDate)}
-          fileSystem={fileSystem}
-        />
+        <Shell uptimeDays={uptimeDays} fileSystem={fileSystem} />
       </BackgroundBeamsWithCollision>
     </div>
   );
 }
 
 function Shell({
-  pageCreationDate,
+  uptimeDays,
   fileSystem,
 }: {
-  pageCreationDate: Date;
+  uptimeDays: number;
   fileSystem: FileSystem;
 }) {
   const PROMPT = `<span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">website</span>:${fileSystem.pwd()} $ `;
-  const uptimeDays = getUptimeDaysFrom(pageCreationDate);
 
   const NEOFETCH = `        <span class="text-emerald-300">/\\</span>         <span class="text-rose-300 font-semibold">dominik</span>@<span class="text-rose-300 font-semibold">website</span>
        <span class="text-emerald-300">/  \\</span>        <span class="text-blue-500 font-semibold">os</span>     arch btw

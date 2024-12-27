@@ -22,8 +22,16 @@ export function dangerouslySanitizeHtml(
   };
 }
 
-export function getUptimeDaysFrom(date: Date) {
-  return Math.floor((Date.now() - date.getTime()) / 1000 / 60 / 60 / 24);
+export function getDifferenceBetweenDates(date1: Date, date2: Date) {
+  const diff = Math.floor(
+    Math.abs(new Date(date2).getTime() - new Date(date1).getTime()) /
+      1000 /
+      60 /
+      60 /
+      24,
+  );
+
+  return diff;
 }
 
 export function useSmallScreen() {
