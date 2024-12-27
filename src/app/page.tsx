@@ -20,7 +20,7 @@ export default async function Home() {
   return (
     <>
       <ModeSwitcher
-        className="fixed top-0 right-0 mt-4 mr-4 hidden xl:flex"
+        className="absolute top-0 right-0 mt-4 mr-4 hidden xl:flex"
         defaultValue={guiMode ? guiMode.value === "true" : true}
       >
         <main className="px-8 pt-16 md:mx-auto md:max-w-screen-xl md:px-12 md:pt-32 lg:pt-64">
