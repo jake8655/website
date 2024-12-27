@@ -13,6 +13,14 @@ const nextConfig: NextConfig = {
     ppr: true,
   },
   transpilePackages: ["three"],
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "assets.aceternity.com",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

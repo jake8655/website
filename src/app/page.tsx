@@ -1,6 +1,6 @@
 import ArrowTitle from "@/components/arrow-title";
 import ModeSwitcher, { OnlyCli, OnlyGui } from "@/components/mode-switcher";
-import About from "@/components/sections/about";
+import Experience from "@/components/sections/experience";
 import Hero from "@/components/sections/hero";
 import Terminal from "@/components/terminal";
 import { BackgroundBeams } from "@/components/ui/background-beams";
@@ -28,7 +28,7 @@ export default async function Home() {
           <Hero />
           <ArrowTitle />
           <OnlyGui>
-            <About />
+            <Experience />
           </OnlyGui>
           <OnlyCli>
             <TerminalWithData />
