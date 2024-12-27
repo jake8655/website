@@ -75,11 +75,14 @@ export type Card = {
   href?: string;
 };
 
-export function FocusCards({ cards }: { cards: Card[] }) {
+export function FocusCards({
+  cards,
+  className,
+}: { cards: Card[]; className?: string }) {
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div className={cn("grid grid-cols-1 gap-4 sm:grid-cols-2", className)}>
       {cards.map((card, index) => (
         <Card
           key={card.text}
