@@ -4,6 +4,7 @@ import About from "@/components/sections/about";
 import Hero from "@/components/sections/hero";
 import Terminal from "@/components/terminal";
 import { BackgroundBeams } from "@/components/ui/background-beams";
+import { getDifferenceBetweenDates } from "@/lib/utils";
 import { getLocalFiles } from "@/server/sdk/fs";
 import { unstable_cache } from "next/cache";
 import { cookies } from "next/headers";
@@ -45,11 +46,8 @@ const getCachedDate = unstable_cache(async () => new Date());
 async function TerminalWithData() {
   const serverFiles = await getLocalFiles();
   const pageCreationDate = await getCachedDate();
+  const currentDate = new Date();
+  const uptimeDays = getDifferenceBetweenDates(pageCreationDate, currentDate);
 
-  return (
-    <Terminal
-      serverFiles={serverFiles}
-      pageCreationDate={pageCreationDate.toString()}
-    />
-  );
+  return <Terminal serverFiles={serverFiles} uptimeDays={uptimeDays} />;
 }
