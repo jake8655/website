@@ -2,6 +2,7 @@ import ArrowTitle from "@/components/arrow-title";
 import ModeSwitcher, { OnlyCli, OnlyGui } from "@/components/mode-switcher";
 import Experience from "@/components/sections/experience";
 import Hero from "@/components/sections/hero";
+import Projects from "@/components/sections/projects";
 import Terminal from "@/components/terminal";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { getDifferenceBetweenDates } from "@/lib/utils";
@@ -29,6 +30,7 @@ export default async function Home() {
           <ArrowTitle />
           <OnlyGui>
             <Experience />
+            <Projects />
           </OnlyGui>
           <OnlyCli>
             <TerminalWithData />
