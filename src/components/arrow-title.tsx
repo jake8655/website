@@ -15,7 +15,7 @@ export default function ArrowTitle({ className }: { className?: string }) {
       )}
     >
       {guiMode ? (
-        <Title text="About me" slideDirection="bottom" key="about" />
+        <Title text="My Experience" slideDirection="bottom" key="experience" />
       ) : (
         <Title
           text="Explore me through the terminal"
