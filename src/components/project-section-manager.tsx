@@ -61,6 +61,9 @@ const usePaginateScroll = (
 
   const handleWheel = useCallback(
     (e: WheelEvent) => {
+      const newDirection = scrollAccumulator + e.deltaY > 0 ? 1 : -1;
+      if (page + newDirection >= maxPage || page + newDirection < 0) return;
+
       e.preventDefault();
 
       startResetAccumulatorTimeout();
@@ -68,7 +71,6 @@ const usePaginateScroll = (
       setScrollAccumulator(prev => prev + e.deltaY);
 
       if (Math.abs(scrollAccumulator) >= SCROLL_THRESHOLD) {
-        const newDirection = scrollAccumulator > 0 ? 1 : -1;
         setScrollAccumulator(0);
 
         if (page + newDirection < maxPage && page + newDirection >= 0) {
@@ -111,7 +113,7 @@ export default function ProjectSectionManager() {
   );
 
   return (
-    <div className="relative h-screen" ref={containerRef}>
+    <div className="relative h-screen overflow-hidden" ref={containerRef}>
       <SectionButton
         paginate={paginate}
         page={page}
