@@ -1,6 +1,7 @@
 "use client";
 
-import { cn, useSmallScreen } from "@/lib/utils";
+import { useSmallScreen } from "@/lib/hooks";
+import { cn } from "@/lib/utils";
 import { setGuiModeCookieAction } from "@/server/sdk/gui-mode";
 import { createContext, use, useEffect, useState } from "react";
 
