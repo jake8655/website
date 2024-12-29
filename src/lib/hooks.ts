@@ -3,9 +3,9 @@
 import { useEffect, useRef } from "react";
 import { useScreen } from "usehooks-ts";
 
-export function useSmallScreen() {
+export function useSmallScreen(width?: number) {
   const screenSize = useScreen();
-  const isSmallScreen = !screenSize || screenSize.width < 1280;
+  const isSmallScreen = !screenSize || screenSize.width < (width || 1280);
 
   return isSmallScreen;
 }

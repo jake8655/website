@@ -1,4 +1,4 @@
-import ArrowTitle from "@/components/arrow-title";
+import ArrowTitle, { ExperienceTitle } from "@/components/arrow-title";
 import ModeSwitcher, { OnlyCli, OnlyGui } from "@/components/mode-switcher";
 import Experience from "@/components/sections/experience";
 import Hero from "@/components/sections/hero";
@@ -27,10 +27,14 @@ export default async function Home() {
       >
         <main className="px-8 pt-16 md:mx-auto md:max-w-screen-xl md:px-12 md:pt-32 lg:pt-64">
           <Hero />
-          <ArrowTitle />
+          <ExperienceTitle />
           <OnlyGui>
             <Experience />
-            <Projects />
+            <div className="grid place-items-center">
+              <ArrowTitle text="My Projects" slideDirection="top" />
+            </div>
+            <Projects className="-translate-x-1/2 ml-[50%] w-[400vh]" />
+            <div className="h-screen w-full"></div>
           </OnlyGui>
           <OnlyCli>
             <TerminalWithData />
