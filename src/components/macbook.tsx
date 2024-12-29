@@ -1,6 +1,6 @@
 "use client";
 
-import { useSmallScreen } from "@/lib/utils";
+import { useSmallScreen } from "@/lib/hooks";
 import { type Interpolation, useSpring } from "@react-spring/core";
 import { a as three } from "@react-spring/three";
 import { ContactShadows, Environment, useGLTF } from "@react-three/drei";

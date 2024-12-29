@@ -3,42 +3,26 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useGuiMode } from "./mode-switcher";
+import RevealOnScroll from "./reveal-on-scroll";
 
-export default function ArrowTitle({ className }: { className?: string }) {
-  const guiMode = useGuiMode();
-
-  return (
-    <div
-      className={cn(
-        "fade-in slide-in-from-top grid animate-in place-items-center duration-700 ease-out",
-        className,
-      )}
-    >
-      {guiMode ? (
-        <Title text="My Experience" slideDirection="bottom" key="experience" />
-      ) : (
-        <Title
-          text="Explore me through the terminal"
-          slideDirection="top"
-          key="explore"
-        />
-      )}
-    </div>
-  );
-}
-
-function Title({
+export default function ArrowTitle({
   text,
   slideDirection,
-}: { text: string; slideDirection: "bottom" | "top" }) {
+  className,
+}: { text: string; slideDirection: "bottom" | "top"; className?: string }) {
   return (
-    <div
-      className={cn(
-        "group fade-in flex animate-in gap-4 duration-700 ease-out md:gap-12",
-        slideDirection === "bottom"
-          ? "slide-in-from-bottom-32"
-          : "slide-in-from-top-32",
-      )}
+    <RevealOnScroll
+      className={cn("group flex gap-4 md:gap-12", className)}
+      variants={{
+        hidden: {
+          opacity: 0,
+          y: slideDirection === "bottom" ? -128 : 128,
+        },
+        visible: {
+          opacity: 1,
+          y: 0,
+        },
+      }}
     >
       <Image
         src="/images/arrow.svg"
@@ -59,6 +43,34 @@ function Title({
         loading="eager"
         className="repeat-[2] group-hover:-translate-y-4 animate-bounce duration-500 ease-out"
       />
-    </div>
+    </RevealOnScroll>
+  );
+}
+
+export function ExperienceTitle({ className }: { className?: string }) {
+  const guiMode = useGuiMode();
+
+  return (
+    <RevealOnScroll
+      className={cn("grid place-items-center", className)}
+      variants={{
+        hidden: {
+          opacity: 0,
+          y: "-100%",
+        },
+        visible: {
+          opacity: 1,
+          y: 0,
+        },
+      }}
+      transition={{
+        delay: 0.8,
+      }}
+    >
+      <ArrowTitle
+        text={guiMode ? "My Experience" : "Explore me through the terminal"}
+        slideDirection="bottom"
+      />
+    </RevealOnScroll>
   );
 }

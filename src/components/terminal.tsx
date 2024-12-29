@@ -6,6 +6,7 @@ import {
   FileSystem,
   type ShellCommands,
 } from "@/lib/file-system";
+import { useDebouncedCallback } from "@/lib/hooks";
 import { cn, dangerouslySanitizeHtml } from "@/lib/utils";
 import terminalBackground from "@/wallpaper.png";
 import { atom, useAtom } from "jotai";
@@ -115,15 +116,10 @@ function Shell({
   const [cursorPosition, setCursorPosition] = useState(-1);
 
   const [isTyping, setIsTyping] = useState(false);
-  const typingTimeout = useRef<NodeJS.Timeout | null>(null);
-  useEffect(() => {
-    const timeoutId = typingTimeout.current;
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, []);
+  const startNoTypingTimeout = useDebouncedCallback(
+    () => setIsTyping(false),
+    300,
+  );
 
   const terminalRef = useRef<HTMLDivElement>(null);
 
@@ -177,9 +173,8 @@ function Shell({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    if (typingTimeout.current) clearTimeout(typingTimeout.current);
     setIsTyping(true);
-    typingTimeout.current = setTimeout(() => setIsTyping(false), 300);
+    startNoTypingTimeout();
 
     switch (true) {
       case e.key === "Escape":

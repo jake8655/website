@@ -137,12 +137,7 @@ export default function Experience({ className }: { className?: string }) {
   ];
 
   return (
-    <section
-      className={cn(
-        "fade-in slide-in-from-bottom animate-in duration-700 ease-out",
-        className,
-      )}
-    >
+    <section className={cn(className)}>
       <Timeline data={data} />
     </section>
   );

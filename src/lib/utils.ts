@@ -1,7 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import sanitizeHtml from "sanitize-html";
 import { twMerge } from "tailwind-merge";
-import { useScreen } from "usehooks-ts";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -32,11 +31,4 @@ export function getDifferenceBetweenDates(date1: Date, date2: Date) {
   );
 
   return diff;
-}
-
-export function useSmallScreen() {
-  const screenSize = useScreen();
-  const isSmallScreen = !screenSize || screenSize.width < 1280;
-
-  return isSmallScreen;
 }

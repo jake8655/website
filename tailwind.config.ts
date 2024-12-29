@@ -137,9 +137,7 @@ export default {
     },
   },
   plugins: [
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
     require("tailwindcss-animate"),
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
     require("tailwind-scrollbar-hide"),
     addVariablesForColors,
   ] as PluginCreator[],

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Macbook from "../macbook";
+import RevealOnScroll from "../reveal-on-scroll";
 
 export default function Hero() {
   const date = new Date();
@@ -9,8 +10,13 @@ export default function Hero() {
   }
 
   return (
-    <section className="fade-in grid animate-in grid-cols-1 items-start gap-12 duration-700 md:min-h-[40rem] md:grid-cols-2">
-      <aside className="slide-in-from-left animate-in duration-700 ease-out">
+    <section className="grid grid-cols-1 items-start gap-12 md:min-h-[40rem] md:grid-cols-2">
+      <RevealOnScroll
+        variants={{
+          hidden: { x: "-50%", opacity: 0 },
+          visible: { x: 0, opacity: 1 },
+        }}
+      >
         <h1 className="font-bold text-4xl leading-tight md:text-5xl lg:text-7xl">
           Hi there! I&apos;m <br />
           <span className="bg-gradient-to-bl from-brand to-blue-600 bg-clip-text text-transparent leading-normal">
@@ -32,11 +38,20 @@ export default function Hero() {
             height={30}
           />
         </p>
-      </aside>
+      </RevealOnScroll>
 
-      <aside className="h-full min-h-[250px] lg:min-h-0">
+      <RevealOnScroll
+        outerClassName="h-full min-h-[250px] lg:min-h-0"
+        className="h-full"
+        variants={{
+          hidden: { x: "50%", opacity: 0 },
+          visible: { x: 0, opacity: 1 },
+        }}
+        transition={{ delay: 0.5 }}
+        initial="visible"
+      >
         <Macbook />
-      </aside>
+      </RevealOnScroll>
     </section>
   );
 }
