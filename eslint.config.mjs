@@ -61,6 +61,8 @@ const config = [
           },
         },
       ],
+
+      "@typescript-eslint/no-require-imports": ["off"],
     },
   },
 ];
