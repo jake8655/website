@@ -67,10 +67,19 @@ export function ExperienceTitle({ className }: { className?: string }) {
         delay: 0.8,
       }}
     >
-      <ArrowTitle
-        text={guiMode ? "My Experience" : "Explore me through the terminal"}
-        slideDirection="bottom"
-      />
+      {guiMode ? (
+        <ArrowTitle
+          text="My Experience"
+          slideDirection="bottom"
+          key="experience"
+        />
+      ) : (
+        <ArrowTitle
+          text="Explore me through the terminal"
+          slideDirection="top"
+          key="terminal"
+        />
+      )}
     </RevealOnScroll>
   );
 }
