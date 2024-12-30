@@ -42,7 +42,7 @@ export const Card = ({
         visible: { opacity: 1, scale: 1 },
       }}
       transition={{
-        delay: 0.2 + index * 0.2,
+        delay: index * 0.2,
       }}
       once
     >

@@ -64,7 +64,7 @@ export function ExperienceTitle({ className }: { className?: string }) {
         },
       }}
       transition={{
-        delay: 0.8,
+        delay: 0.6,
       }}
     >
       {guiMode ? (

@@ -50,7 +50,6 @@ export default function RevealOnScroll({
         className={cn(className)}
         transition={{
           duration: 0.7,
-          delay: 0.2,
           ease: "easeOut",
           ...transition,
         }}
