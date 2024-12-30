@@ -1,8 +1,8 @@
-import { ExperienceTitle } from "@/components/arrow-title";
+import ArrowTitle, { ExperienceTitle } from "@/components/arrow-title";
 import ModeSwitcher, { OnlyCli, OnlyGui } from "@/components/mode-switcher";
 import Experience from "@/components/sections/experience";
 import Hero from "@/components/sections/hero";
-// import Projects from "@/components/sections/projects";
+import Projects from "@/components/sections/projects";
 import Terminal from "@/components/terminal";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { getDifferenceBetweenDates } from "@/lib/utils";
@@ -30,11 +30,10 @@ export default async function Home() {
           <ExperienceTitle />
           <OnlyGui>
             <Experience />
-            {/* <div className="grid place-items-center"> */}
-            {/*   <ArrowTitle text="My Projects" slideDirection="top" /> */}
-            {/* </div> */}
-            {/* <Projects className="-translate-x-1/2 ml-[50%] w-[400vh]" /> */}
-            {/* <div className="h-screen w-full"></div> */}
+            <div className="mt-64 grid place-items-center">
+              <ArrowTitle text="My Projects" slideDirection="top" />
+            </div>
+            <Projects className="mt-32 h-[400vh] w-full" />
           </OnlyGui>
           <OnlyCli>
             <TerminalWithData />
