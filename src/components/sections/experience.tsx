@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import RevealOnScroll from "../reveal-on-scroll";
 import { type Card, FocusCards } from "../ui/focus-cards";
 import { Timeline } from "../ui/timeline";
 
@@ -137,8 +138,15 @@ export default function Experience({ className }: { className?: string }) {
   ];
 
   return (
-    <section className={cn(className)}>
+    <RevealOnScroll
+      className={cn(className)}
+      variants={{
+        hidden: { opacity: 0, y: 100 },
+        visible: { opacity: 1, y: 0 },
+      }}
+      once
+    >
       <Timeline data={data} />
-    </section>
+    </RevealOnScroll>
   );
 }
