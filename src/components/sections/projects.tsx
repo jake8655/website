@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils";
-import { getProjectLikeCount } from "@/server/sdk/get-project-like-count";
-import { Suspense } from "react";
-import ProjectLikeButton from "../project-like-button";
+import { HydrateClient, api } from "@/trpc/server";
+import ProjectLikes from "../project-likes";
 import ProjectsSection from "../projects-section";
 
 const projects = [
@@ -47,7 +46,7 @@ export default function Projects({ className }: { className?: string }) {
   );
 }
 
-function ProjectCard({
+async function ProjectCard({
   title,
   id,
   className,
@@ -56,37 +55,28 @@ function ProjectCard({
   id: string;
   className?: string;
 }) {
+  await api.projectLike.getProjectLikeCount.prefetch({ projectId: id });
+
   return (
-    <div
-      className={cn(
-        "relative mb-[600px] min-h-[600px] w-full rounded-[30px] shadow-md",
-        className,
-      )}
-      style={{
-        transformOrigin: "50% -160%",
-      }}
-    >
-      <div className="project-text relative h-full w-full">
-        <h3 className="absolute bottom-0 left-0 translate-y-full pt-4 pl-4 font-bold text-xl">
-          {title}
-        </h3>
-        <div className="absolute right-0 bottom-0 flex translate-y-full items-center gap-8 pt-4 pr-4 font-bold text-lg">
-          <Suspense fallback={<div />}>
+    <HydrateClient>
+      <div
+        className={cn(
+          "relative mb-[600px] min-h-[600px] w-full rounded-[30px] shadow-md",
+          className,
+        )}
+        style={{
+          transformOrigin: "50% -160%",
+        }}
+      >
+        <div className="project-text relative h-full w-full">
+          <h3 className="absolute bottom-0 left-0 translate-y-full pt-4 pl-4 font-bold text-xl">
+            {title}
+          </h3>
+          <div className="absolute right-0 bottom-0 flex translate-y-full items-center gap-8 pt-4 pr-4 font-bold text-lg">
             <ProjectLikes projectId={id} />
-          </Suspense>
+          </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-async function ProjectLikes({ projectId }: { projectId: string }) {
-  const { likes, userHasLiked } = await getProjectLikeCount(projectId);
-
-  return (
-    <div className="fade-in slide-in-from-right flex animate-in gap-2 duration-700">
-      {likes}
-      <ProjectLikeButton projectId={projectId} userHasLiked={userHasLiked} />
-    </div>
+    </HydrateClient>
   );
 }
