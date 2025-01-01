@@ -4,6 +4,7 @@ import { likeProjectAction } from "@/server/sdk/like-project";
 import { ThumbsUp } from "lucide-react";
 import { useTransition } from "react";
 
+// TODO: use optimistic updates when liked
 export default function ProjectLikeButton({
   projectId,
   userHasLiked,
