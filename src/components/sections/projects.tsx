@@ -6,27 +6,27 @@ import ProjectsSection from "../projects-section";
 const projects = [
   {
     title: "ASR RolePlay",
-    backgroundColor: "bg-blue-600",
+    backgroundColor: "bg-gradient-to-br from-blue-600 to-blue-800",
     id: "asr-roleplay",
   },
   {
     title: "Access-Bot",
-    backgroundColor: "bg-green-600",
+    backgroundColor: "bg-gradient-to-br from-green-600 to-green-800",
     id: "access-bot",
   },
   {
     title: "Asteroids",
-    backgroundColor: "bg-slate-300",
+    backgroundColor: "bg-gradient-to-br from-slate-300 to-slate-400",
     id: "asteroids",
   },
   {
     title: "Gymgol Simulator",
-    backgroundColor: "bg-teal-600",
+    backgroundColor: "bg-gradient-to-br from-teal-600 to-teal-800",
     id: "gymgol-simulator",
   },
   {
     title: "Tic-Tac-Toe Game & Bot",
-    backgroundColor: "bg-red-600",
+    backgroundColor: "bg-gradient-to-br from-red-600 to-red-800",
     id: "tic-tac-toe",
   },
 ];
@@ -61,7 +61,7 @@ async function ProjectCard({
     <HydrateClient>
       <div
         className={cn(
-          "relative mb-[600px] min-h-[600px] w-full rounded-[30px] shadow-md",
+          "relative mb-[600px] min-h-[600px] w-full rounded-[30px]",
           className,
         )}
         style={{
