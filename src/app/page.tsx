@@ -33,7 +33,7 @@ export default async function Home() {
             <div className="mt-64 grid place-items-center">
               <ArrowTitle text="My Projects" slideDirection="top" />
             </div>
-            <Projects className="mt-32 h-[400vh] w-full" />
+            <Projects className="mt-32 w-full" />
           </OnlyGui>
           <OnlyCli>
             <TerminalWithData />
