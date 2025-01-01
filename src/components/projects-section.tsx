@@ -44,6 +44,7 @@ export default function ProjectsSection({
           start: "center center",
           end: () => lastCardST.current!.start + 500,
           pin: true,
+          scrub: true,
           pinSpacing: false,
           animation: scaleDown,
           toggleActions: "restart none none reverse",
