@@ -42,7 +42,7 @@ export default function ProjectsSection({
         ScrollTrigger.create({
           trigger: card,
           start: "center center",
-          end: () => lastCardST.current!.start + 500,
+          end: () => lastCardST.current!.start + 20,
           pin: true,
           scrub: true,
           pinSpacing: false,
