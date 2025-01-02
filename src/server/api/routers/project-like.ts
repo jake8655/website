@@ -13,15 +13,19 @@ const ratelimit = new Ratelimit({
   analytics: true,
 });
 
-const FALLBACK_IP_ADDRESS = "0.0.0.0";
-
 async function getUserIp() {
   const heads = await headers();
 
   const forwardedFor = heads.get("x-forwarded-for");
-  if (forwardedFor) return forwardedFor.split(",")[0] ?? FALLBACK_IP_ADDRESS;
+  if (forwardedFor) {
+    const [ip] = forwardedFor.split(",");
+    if (ip) return ip;
+    throw new Error("No IP found in X-Forwarded-For header");
+  }
 
-  return heads.get("x-real-ip") ?? FALLBACK_IP_ADDRESS;
+  const ip = heads.get("x-real-ip");
+  if (ip) return ip;
+  throw new Error("No IP found in X-Real-IP header");
 }
 
 export const projectLikeRouter = createTRPCRouter({
