@@ -85,10 +85,11 @@ export const projectLikeRouter = createTRPCRouter({
         };
       }
 
-      await redis.decr(["likes", "projects", input.projectId].join(":"));
-      const newLikes = await redis.del(
-        ["deduplicate", hash, input.projectId].join(":"),
-      );
+      const [newLikes] = await redis
+        .multi()
+        .decr(["likes", "projects", input.projectId].join(":"))
+        .del(["deduplicate", hash, input.projectId].join(":"))
+        .exec();
 
       return {
         likes: newLikes,
