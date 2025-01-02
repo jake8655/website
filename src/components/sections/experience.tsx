@@ -3,7 +3,7 @@ import Blob from "../blob";
 import RevealOnScroll from "../reveal-on-scroll";
 import { type Card, FocusCards } from "../ui/focus-cards";
 import { Timeline } from "../ui/timeline";
-import { Wrapper } from "@/app/page";
+import Wrapper from "../wrapper";
 
 export default function Experience({ className }: { className?: string }) {
   const first_point_cards: Card[] = [

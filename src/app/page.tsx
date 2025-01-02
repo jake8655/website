@@ -7,6 +7,7 @@ import Terminal from "@/components/terminal";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { ShootingStars } from "@/components/ui/shooting-stars";
 import { StarsBackground } from "@/components/ui/stars-background";
+import Wrapper from "@/components/wrapper";
 import { getDifferenceBetweenDates } from "@/lib/utils";
 import { getLocalFiles } from "@/server/sdk/fs";
 import { unstable_cache } from "next/cache";
@@ -55,14 +56,6 @@ export default async function Home() {
         </main>
       </ModeSwitcher>
     </>
-  );
-}
-
-export function Wrapper({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="px-8 md:mx-auto md:max-w-screen-xl md:px-12 ">
-      {children}
-    </div>
   );
 }
 

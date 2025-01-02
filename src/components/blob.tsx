@@ -11,7 +11,7 @@ uniform float u_time;
 varying vec2 vUv;
 varying float vDisplacement;
 
-// Classic Perlin 3D Noise 
+// Classic Perlin 3D Noise
 // by Stefan Gustavson
 //
 vec4 permute(vec4 x) {
@@ -90,7 +90,7 @@ float cnoise(vec3 P) {
     vec3 fade_xyz = fade(Pf0);
     vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
     vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
-    float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x); 
+    float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x);
     return 2.2 * n_xyz;
 }
 
@@ -146,7 +146,7 @@ export default function Blob() {
           <pointLight position={[0, 0, 8]} intensity={1} color={"#ffffff"} />
           <BlobMesh />
         </Canvas>
-        <div className="-z-20 -translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-[600px] w-[600px] rounded-full bg-gradient-to-b from-green-500 to-blue-800 opacity-70 blur-[150px]"></div>
+        <div className="-z-20 -translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-[600px] max-h-[100vh] w-[600px] max-w-[100vw] rounded-full bg-gradient-to-b from-green-500 to-blue-800 opacity-70 blur-[150px]"></div>
       </div>
     </div>
   );
