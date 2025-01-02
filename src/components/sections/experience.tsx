@@ -1,6 +1,9 @@
 import { cn } from "@/lib/utils";
+import Blob from "../blob";
+import RevealOnScroll from "../reveal-on-scroll";
 import { type Card, FocusCards } from "../ui/focus-cards";
 import { Timeline } from "../ui/timeline";
+import Wrapper from "../wrapper";
 
 export default function Experience({ className }: { className?: string }) {
   const first_point_cards: Card[] = [
@@ -137,8 +140,18 @@ export default function Experience({ className }: { className?: string }) {
   ];
 
   return (
-    <section className={cn(className)}>
-      <Timeline data={data} />
-    </section>
+    <RevealOnScroll
+      className={cn("relative", className)}
+      variants={{
+        hidden: { opacity: 0, y: 100 },
+        visible: { opacity: 1, y: 0 },
+      }}
+      once
+    >
+      <Wrapper>
+        <Timeline data={data} />
+      </Wrapper>
+      <Blob />
+    </RevealOnScroll>
   );
 }

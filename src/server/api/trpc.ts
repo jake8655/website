@@ -7,6 +7,7 @@
  * need to use are documented accordingly near the end.
  */
 
+import type { RatelimitError } from "@/lib/utils";
 import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
@@ -47,6 +48,11 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
         ...shape.data,
         zodError:
           error.cause instanceof ZodError ? error.cause.flatten() : null,
+        ratelimit: (error.cause as RatelimitError | undefined)?.reset
+          ? {
+              resetTimestamp: (error.cause as RatelimitError).reset,
+            }
+          : null,
       },
     };
   },

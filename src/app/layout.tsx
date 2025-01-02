@@ -13,6 +13,7 @@ import { env } from "@/env";
 import { TRPCReactProvider } from "@/trpc/react";
 
 import "@/app/globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Dominik Tóth",
@@ -25,7 +26,7 @@ export default function Layout({
   return (
     <html
       lang="en"
-      className={`${GeistSans.variable} text-brand-light ${GeistMono.variable} antialiased selection:bg-gradient-green selection:text-teal-900`}
+      className={`${GeistSans.variable} text-brand-light ${GeistMono.variable} dark antialiased selection:bg-gradient-green selection:text-teal-900`}
     >
       <body className="font-sans">
         <FilteredPostHogProvider>
@@ -38,6 +39,7 @@ export default function Layout({
             <SnowOverlayNoSSR />
 
             {children}
+            <Toaster />
           </TRPCReactProvider>
         </FilteredPostHogProvider>
       </body>

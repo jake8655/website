@@ -58,12 +58,19 @@ export default function ModeSwitcher({
   );
 }
 
-export function OnlyGui({ children }: { children: React.ReactNode }) {
+export function OnlyGui({
+  children,
+  className,
+}: { children: React.ReactNode; className?: string }) {
   const guiMode = useGuiMode();
 
   // Only hiding using CSS to not lose state when guiMode changes
   // If the component was unmounted, the state would be lost
-  return <div className={cn("hidden", guiMode && "block")}>{children}</div>;
+  return (
+    <div className={cn("hidden", guiMode && "block", className)}>
+      {children}
+    </div>
+  );
 }
 
 export function OnlyCli({ children }: { children: React.ReactNode }) {
