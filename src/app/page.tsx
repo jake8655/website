@@ -45,7 +45,6 @@ export default async function Home() {
               <ShootingStars className="-z-10" />
               <StarsBackground className="-z-10" />
             </div>
-            <div className="h-screen"></div>
           </OnlyGui>
           <OnlyCli>
             <Wrapper>
@@ -66,7 +65,10 @@ async function TerminalWithData() {
   const serverFiles = await getLocalFiles();
   const pageCreationDate = await getCachedDate();
   const currentDate = new Date();
-  const uptimeDays = getDifferenceBetweenDates(pageCreationDate, currentDate);
+  const uptimeDays = await getDifferenceBetweenDates(
+    pageCreationDate,
+    currentDate,
+  );
 
   return <Terminal serverFiles={serverFiles} uptimeDays={uptimeDays} />;
 }

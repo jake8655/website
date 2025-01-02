@@ -21,7 +21,7 @@ export function dangerouslySanitizeHtml(
   };
 }
 
-export function getDifferenceBetweenDates(date1: Date, date2: Date) {
+export async function getDifferenceBetweenDates(date1: Date, date2: Date) {
   const diff = Math.floor(
     Math.abs(new Date(date2).getTime() - new Date(date1).getTime()) /
       1000 /
