@@ -2,6 +2,7 @@ import { RatelimitError } from "@/lib/utils";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { waitUntil } from "@vercel/functions";
+import { unstable_cache } from "next/cache";
 import { headers } from "next/headers";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
@@ -102,15 +103,22 @@ export const projectLikeRouter = createTRPCRouter({
     }),
 });
 
-async function hashIp(ip: string) {
-  // Hash the IP and turn it into a hex string
-  const buf = await crypto.subtle.digest(
-    "SHA-256",
-    new TextEncoder().encode(ip),
-  );
-  const hash = Array.from(new Uint8Array(buf))
-    .map(b => b.toString(16).padStart(2, "0"))
-    .join("");
+const hashIp = unstable_cache(
+  async (ip: string) => {
+    // Hash the IP and turn it into a hex string
+    const buf = await crypto.subtle.digest(
+      "SHA-256",
+      new TextEncoder().encode(ip),
+    );
+    const hash = Array.from(new Uint8Array(buf))
+      .map(b => b.toString(16).padStart(2, "0"))
+      .join("");
 
-  return hash;
-}
+    return hash;
+  },
+  [],
+  {
+    // Cache IPs for 1 day and then revalidate to not clutter cache storage with a bunch of IPs
+    revalidate: 60 * 60 * 24,
+  },
+);
