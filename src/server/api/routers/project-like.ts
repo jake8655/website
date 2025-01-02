@@ -74,25 +74,24 @@ export const projectLikeRouter = createTRPCRouter({
         },
       );
 
-      const likes =
-        (await redis.get<number>(
-          ["likes", "projects", input.projectId].join(":"),
-        )) ?? 0;
-
       if (isNew) {
-        await redis.incr(["likes", "projects", input.projectId].join(":"));
+        const newLikes = await redis.incr(
+          ["likes", "projects", input.projectId].join(":"),
+        );
 
         return {
-          likes: likes + 1,
+          likes: newLikes,
           userHasLiked: true,
         };
       }
 
       await redis.decr(["likes", "projects", input.projectId].join(":"));
-      await redis.del(["deduplicate", hash, input.projectId].join(":"));
+      const newLikes = await redis.del(
+        ["deduplicate", hash, input.projectId].join(":"),
+      );
 
       return {
-        likes: likes - 1,
+        likes: newLikes,
         userHasLiked: false,
       };
     }),
