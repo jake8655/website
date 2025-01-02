@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn, msToTime } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import NumberFlow from "@number-flow/react";
 import { toast } from "sonner";
@@ -66,13 +66,21 @@ function ProjectLikeButton({
       // Return the previous data so we can revert if something goes wrong
       return { prevData };
     },
-    onError: (_, __, ctx) => {
+    onError: (err, __, ctx) => {
       // If the mutation fails, use the context-value from onMutate
       utils.projectLike.getProjectLikeCount.setData(
         { projectId },
         ctx!.prevData,
       );
 
+      if (err.data?.ratelimit) {
+        const resetTimestamp = err.data.ratelimit.resetTimestamp;
+        const timeStamp = msToTime(resetTimestamp - Date.now());
+
+        return toast("❌ Error liking the project", {
+          description: `You have exceeded the rate limit for liking projects. Please try again in ${timeStamp}.`,
+        });
+      }
       toast("❌ Error liking the project", {
         description:
           "There was an internal server error while liking the project.",

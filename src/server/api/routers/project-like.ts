@@ -1,9 +1,18 @@
+import { RatelimitError } from "@/lib/utils";
+import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
+import { waitUntil } from "@vercel/functions";
 import { headers } from "next/headers";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 const redis = Redis.fromEnv();
+const ratelimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(20, "5 m"),
+  analytics: true,
+});
+
 const FALLBACK_IP_ADDRESS = "0.0.0.0";
 
 async function getUserIp() {
@@ -25,14 +34,7 @@ export const projectLikeRouter = createTRPCRouter({
     .query(async ({ input }) => {
       const ip = await getUserIp();
 
-      // Hash the IP and turn it into a hex string
-      const buf = await crypto.subtle.digest(
-        "SHA-256",
-        new TextEncoder().encode(ip),
-      );
-      const hash = Array.from(new Uint8Array(buf))
-        .map(b => b.toString(16).padStart(2, "0"))
-        .join("");
+      const hash = await hashIp(ip);
 
       const userHasLiked = await redis.exists(
         ["deduplicate", hash, input.projectId].join(":"),
@@ -55,14 +57,14 @@ export const projectLikeRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       const ip = await getUserIp();
 
-      // Hash the IP and turn it into a hex string
-      const buf = await crypto.subtle.digest(
-        "SHA-256",
-        new TextEncoder().encode(ip),
-      );
-      const hash = Array.from(new Uint8Array(buf))
-        .map(b => b.toString(16).padStart(2, "0"))
-        .join("");
+      const { success, reset, pending } = await ratelimit.limit(ip);
+      waitUntil(pending);
+
+      if (!success) {
+        throw new RatelimitError(reset);
+      }
+
+      const hash = await hashIp(ip);
 
       const isNew = await redis.set(
         ["deduplicate", hash, input.projectId].join(":"),
@@ -95,3 +97,16 @@ export const projectLikeRouter = createTRPCRouter({
       };
     }),
 });
+
+async function hashIp(ip: string) {
+  // Hash the IP and turn it into a hex string
+  const buf = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(ip),
+  );
+  const hash = Array.from(new Uint8Array(buf))
+    .map(b => b.toString(16).padStart(2, "0"))
+    .join("");
+
+  return hash;
+}
