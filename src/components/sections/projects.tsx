@@ -52,7 +52,7 @@ const projects = [
 export default function Projects({ className }: { className?: string }) {
   return (
     <ProjectsSection className={className}>
-      {projects.map(project => (
+      {projects.map((project, index) => (
         <ProjectCard
           key={project.title}
           title={project.title}
@@ -61,6 +61,7 @@ export default function Projects({ className }: { className?: string }) {
           imagePosition={project.imagePosition}
           alt={project.alt}
           id={project.id}
+          last={index === projects.length - 1}
           backGroundColor={project.backgroundColor}
           className="project-card"
         />
@@ -77,6 +78,7 @@ async function ProjectCard({
   alt,
   id,
   className,
+  last,
   backGroundColor,
 }: {
   title: string;
@@ -85,6 +87,7 @@ async function ProjectCard({
   imagePosition?: "left" | "bottom";
   alt: string;
   id: string;
+  last: boolean;
   className?: string;
   backGroundColor: string;
 }) {
@@ -93,7 +96,14 @@ async function ProjectCard({
   return (
     <HydrateClient>
       <div
-        className={cn("mb-[600px] flex flex-col gap-4", className)}
+        className={cn(
+          "flex flex-col gap-4",
+          {
+            "mb-[400px] sm:mb-[600px]": !last,
+            "mb-[200px]": last,
+          },
+          className,
+        )}
         style={{
           transformOrigin: "50% -160%",
         }}
