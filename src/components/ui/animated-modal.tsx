@@ -160,7 +160,7 @@ export const ModalContent = ({
   className?: string;
 }) => {
   return (
-    <div className={cn("flex flex-1 flex-col p-8 md:p-10", className)}>
+    <div className={cn("flex flex-1 flex-col p-8 md:p-9", className)}>
       {children}
     </div>
   );
