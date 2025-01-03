@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Macbook from "../macbook";
 import RevealOnScroll from "../reveal-on-scroll";
+import { ModalTrigger } from "../ui/animated-modal";
 import {
   Tooltip,
   TooltipContent,
@@ -90,7 +91,7 @@ export default function Hero() {
 
 function WorkButton() {
   return (
-    <button className="group relative inline-block cursor-pointer rounded-full bg-slate-800 p-px font-semibold text-white text-xs leading-6 no-underline shadow-2xl shadow-brand">
+    <ModalTrigger className="group relative inline-block cursor-pointer rounded-full bg-slate-800 p-px font-semibold text-xs leading-6 no-underline shadow-2xl shadow-brand">
       <span className="absolute inset-0 overflow-hidden rounded-full">
         <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(56,189,248,0.6)_0%,rgba(56,189,248,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       </span>
@@ -118,6 +119,6 @@ function WorkButton() {
         </svg>
       </div>
       <span className="-bottom-0 absolute left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-purple-400/0 via-purple-400/90 to-purple-400/0 transition-opacity duration-500 group-hover:opacity-40" />
-    </button>
+    </ModalTrigger>
   );
 }

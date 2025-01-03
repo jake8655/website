@@ -13,6 +13,7 @@ import { env } from "@/env";
 import { TRPCReactProvider } from "@/trpc/react";
 
 import "@/app/globals.css";
+import ContactModal from "@/components/contact-modal";
 import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
@@ -38,7 +39,7 @@ export default function Layout({
             <LightBlobMouse className="hidden xl:block" />
             <SnowOverlayNoSSR />
 
-            {children}
+            <ContactModal>{children}</ContactModal>
             <Toaster />
           </TRPCReactProvider>
         </FilteredPostHogProvider>
