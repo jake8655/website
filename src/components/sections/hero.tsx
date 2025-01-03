@@ -1,6 +1,13 @@
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Macbook from "../macbook";
 import RevealOnScroll from "../reveal-on-scroll";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 
 export default function Hero() {
   const date = new Date();
@@ -19,9 +26,29 @@ export default function Hero() {
       >
         <h1 className="font-bold text-4xl leading-tight md:text-5xl lg:text-7xl">
           Hi there! I&apos;m <br />
-          <span className="bg-gradient-to-bl from-brand to-blue-600 bg-clip-text text-transparent leading-normal">
-            Dominik Tóth
-          </span>
+          <TooltipProvider delayDuration={100}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span
+                  className={cn(
+                    "relative cursor-default bg-gradient-to-bl from-brand to-blue-600 bg-clip-text text-transparent leading-normal",
+                    "before:absolute before:bottom-0 before:h-1 before:w-0 before:rounded-full before:bg-gradient-to-bl before:from-brand before:to-blue-600 before:transition-all before:duration-300 before:content-[''] data-[state=delayed-open]:before:w-full",
+                  )}
+                >
+                  Dominik Tóth
+                </span>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-xl">
+                  However, I go by{" "}
+                  <span className="bg-gradient-to-bl from-brand to-blue-600 bg-clip-text font-bold text-transparent">
+                    Jake
+                  </span>{" "}
+                  online
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           .
         </h1>
         <p className="text-balance pt-6 text-xl leading-normal">
