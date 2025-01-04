@@ -1,4 +1,3 @@
-import { fsRouter } from "@/server/api/routers/fs";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 import { projectLikeRouter } from "./routers/project-like";
 
@@ -8,7 +7,6 @@ import { projectLikeRouter } from "./routers/project-like";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  fs: fsRouter,
   projectLike: projectLikeRouter,
 });
 
