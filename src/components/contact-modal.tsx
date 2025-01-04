@@ -56,28 +56,28 @@ export default function ContactModal({
                 name="name"
                 label="Name"
                 placeholder="John Doe"
-                errors={errors}
+                error={errors["name"]}
                 register={register}
               />
               <Field
                 name="email"
                 label="Email Address"
                 placeholder="email@example.com"
-                errors={errors}
+                error={errors["email"]}
                 register={register}
               />
               <Field
                 name="subject"
                 label="Subject"
                 placeholder="Coffee machine website"
-                errors={errors}
+                error={errors["subject"]}
                 register={register}
               />
               <Field
                 name="message"
                 label="Message"
                 placeholder="Hi, I'm interested in..."
-                errors={errors}
+                error={errors["message"]}
                 register={register}
                 textarea
               />
@@ -124,21 +124,18 @@ const LabelInputContainer = ({
   );
 };
 
-// TODO: Instantly reflect when erros change in the UI
-// it worked before but now it doesnt fsr
-// maybe look at https://asrrp.hu/whitelist
 function Field({
   name,
   label,
   placeholder,
-  errors,
+  error,
   register,
   textarea = false,
 }: {
   name: keyof Inputs;
   label: string;
   placeholder: string;
-  errors: FieldErrors<Inputs>;
+  error: FieldErrors<Inputs>[keyof Inputs];
   register: UseFormRegister<Inputs>;
   textarea?: boolean;
 }) {
@@ -151,7 +148,7 @@ function Field({
           placeholder={placeholder}
           className={cn({
             "outline outline-[2px] outline-red-500 ring-0 focus-visible:outline":
-              errors[name],
+              error,
           })}
           {...register(name)}
         />
@@ -161,15 +158,13 @@ function Field({
           placeholder={placeholder}
           className={cn({
             "outline outline-[2px] outline-red-500 ring-0 focus-visible:outline":
-              errors[name],
+              error,
           })}
           {...register(name)}
         />
       )}
-      {errors[name]?.message && (
-        <p className="text-red-500 text-xs md:text-sm">
-          {errors[name].message}
-        </p>
+      {error?.message && (
+        <p className="text-red-500 text-xs md:text-sm">{error.message}</p>
       )}
     </LabelInputContainer>
   );
