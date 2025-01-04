@@ -1,4 +1,4 @@
-import ArrowTitle, { ExperienceTitle } from "@/components/arrow-title";
+import ArrowTitle from "@/components/arrow-title";
 import RevealOnScroll from "@/components/reveal-on-scroll";
 import Experience from "@/components/sections/experience";
 import Hero from "@/components/sections/hero";
