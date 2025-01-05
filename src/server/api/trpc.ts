@@ -7,10 +7,16 @@
  * need to use are documented accordingly near the end.
  */
 
-import type { RatelimitError } from "@/lib/utils";
+import { db } from "@/server/db";
 import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import {
+  type RatelimitError,
+  createRatelimiter,
+  ratelimit,
+  redis,
+} from "../db/redis";
 
 /**
  * 1. CONTEXT
@@ -28,6 +34,10 @@ export const createTRPCContext = async (opts: {
   headers: Headers;
 }) => {
   return {
+    db,
+    redis,
+    ratelimit,
+    createRatelimiter,
     ...opts,
   };
 };

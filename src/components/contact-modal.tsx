@@ -7,87 +7,32 @@ import {
   ModalFooter,
   useModal,
 } from "@/components/ui/animated-modal";
-import { cn } from "@/lib/utils";
+import {
+  type ContactFormSchema,
+  cn,
+  contactFormSchema,
+  msToTime,
+} from "@/lib/utils";
+import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "lucide-react";
 import {
-  type FieldErrors,
-  type SubmitHandler,
+  type FieldError,
   type UseFormRegister,
   useForm,
 } from "react-hook-form";
-import { z } from "zod";
+import { toast } from "sonner";
 import { Input, Textarea } from "./ui/input";
 import { Label } from "./ui/label";
-
-const schema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email"),
-  subject: z.string().min(1, "Subject is required"),
-  message: z.string().min(1, "Message is required"),
-});
-
-type Inputs = z.infer<typeof schema>;
 
 export default function ContactModal({
   children,
 }: { children: React.ReactNode }) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<Inputs>({
-    resolver: zodResolver(schema),
-  });
-  const onSubmit: SubmitHandler<Inputs> = async data => {
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    console.log(data);
-  };
-
   return (
     <Modal>
       <ModalBody>
         <ModalContent>
-          <form className="mt-8" onSubmit={handleSubmit(onSubmit)}>
-            <h3 className="mb-4 text-center font-bold text-3xl">Contact me</h3>
-            <div className="space-y-4">
-              <Field
-                name="name"
-                label="Name"
-                placeholder="John Doe"
-                error={errors["name"]}
-                register={register}
-              />
-              <Field
-                name="email"
-                label="Email Address"
-                placeholder="email@example.com"
-                error={errors["email"]}
-                register={register}
-              />
-              <Field
-                name="subject"
-                label="Subject"
-                placeholder="Coffee machine website"
-                error={errors["subject"]}
-                register={register}
-              />
-              <Field
-                name="message"
-                label="Message"
-                placeholder="Hi, I'm interested in..."
-                error={errors["message"]}
-                register={register}
-                textarea
-              />
-
-              <div className="flex w-full gap-4">
-                <CancelButton />
-                <SendButton isSubmitting={isSubmitting} />
-              </div>
-            </div>
-          </form>
+          <Form />
         </ModalContent>
         <ModalFooter className="flex items-center gap-2">
           {/* TODO: On specific viewports, the Link icon is shrunken */}
@@ -98,6 +43,87 @@ export default function ContactModal({
       </ModalBody>
       {children}
     </Modal>
+  );
+}
+
+function Form() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<ContactFormSchema>({
+    resolver: zodResolver(contactFormSchema),
+  });
+
+  const { setOpen } = useModal();
+
+  const { mutate, isPending } = api.contact.createContactMessage.useMutation({
+    onSuccess: () => {
+      toast("✅ Successfully sent contact message", {
+        description: "Thank you for reaching out! I will get back to you soon.",
+      });
+      reset();
+      setTimeout(() => setOpen(false), 1000);
+    },
+
+    onError: err => {
+      if (err.data?.ratelimit) {
+        const resetTimestamp = err.data.ratelimit.resetTimestamp;
+        const timeStamp = msToTime(resetTimestamp - Date.now());
+
+        return toast("❌ Error sending message", {
+          description: `You have exceeded the rate limit for sending messages. Please try again in ${timeStamp}.`,
+        });
+      }
+
+      toast("❌ Error sending message", {
+        description:
+          "There was an internal server error while sending the message.",
+      });
+    },
+  });
+
+  return (
+    <form className="mt-8" onSubmit={handleSubmit(data => mutate(data))}>
+      <h3 className="mb-4 text-center font-bold text-3xl">Contact me</h3>
+      <div className="space-y-4">
+        <Field
+          name="name"
+          label="Name"
+          placeholder="John Doe"
+          error={errors["name"]}
+          register={register}
+        />
+        <Field
+          name="email"
+          label="Email Address"
+          placeholder="email@example.com"
+          error={errors["email"]}
+          register={register}
+        />
+        <Field
+          name="subject"
+          label="Subject"
+          placeholder="Coffee machine website"
+          error={errors["subject"]}
+          register={register}
+        />
+        <Field
+          name="message"
+          label="Message"
+          placeholder="Hi, I'm interested in..."
+          error={errors["message"]}
+          register={register}
+          textarea
+        />
+
+        <div className="flex w-full gap-4">
+          <CancelButton />
+          <SendButton isSubmitting={isPending} />
+        </div>
+      </div>
+    </form>
   );
 }
 
@@ -132,11 +158,11 @@ function Field({
   register,
   textarea = false,
 }: {
-  name: keyof Inputs;
+  name: keyof ContactFormSchema;
   label: string;
   placeholder: string;
-  error: FieldErrors<Inputs>[keyof Inputs];
-  register: UseFormRegister<Inputs>;
+  error: FieldError | undefined;
+  register: UseFormRegister<ContactFormSchema>;
   textarea?: boolean;
 }) {
   return (
