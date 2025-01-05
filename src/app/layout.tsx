@@ -39,8 +39,8 @@ export default function Layout({
             <LightBlobMouse className="hidden xl:block" />
             <SnowOverlayNoSSR />
 
-            <ContactModal>{children}</ContactModal>
             <Toaster />
+            <ContactModal>{children}</ContactModal>
           </TRPCReactProvider>
         </FilteredPostHogProvider>
       </body>
