@@ -60,7 +60,7 @@ function Form() {
 
   const { mutate, isPending } = api.contact.createContactMessage.useMutation({
     onSuccess: () => {
-      toast("✅ Successfully sent contact message", {
+      toast.success("Successfully sent contact message", {
         description: "Thank you for reaching out! I will get back to you soon.",
       });
       reset();
@@ -72,12 +72,12 @@ function Form() {
         const resetTimestamp = err.data.ratelimit.resetTimestamp;
         const timeStamp = msToTime(resetTimestamp - Date.now());
 
-        return toast("❌ Error sending message", {
+        return toast.error("Error sending message", {
           description: `You have exceeded the rate limit for sending messages. Please try again in ${timeStamp}.`,
         });
       }
 
-      toast("❌ Error sending message", {
+      toast.error("Error sending message", {
         description:
           "There was an internal server error while sending the message.",
       });

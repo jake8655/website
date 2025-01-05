@@ -77,11 +77,11 @@ function ProjectLikeButton({
         const resetTimestamp = err.data.ratelimit.resetTimestamp;
         const timeStamp = msToTime(resetTimestamp - Date.now());
 
-        return toast("❌ Error liking the project", {
+        return toast.error("Error liking the project", {
           description: `You have exceeded the rate limit for liking projects. Please try again in ${timeStamp}.`,
         });
       }
-      toast("❌ Error liking the project", {
+      toast.error("Error liking the project", {
         description:
           "There was an internal server error while liking the project.",
         action: {
@@ -96,7 +96,7 @@ function ProjectLikeButton({
     },
     onSuccess: ({ userHasLiked }) => {
       if (userHasLiked)
-        return toast("✅ Successfully liked the project", {
+        return toast.success("Successfully liked the project", {
           description: "Thank you for liking the project!",
           action: {
             label: "Undo",
@@ -104,7 +104,7 @@ function ProjectLikeButton({
           },
         });
 
-      toast("✅ Successfully removed like from the project", {
+      toast.success("Successfully removed like from the project", {
         action: {
           label: "Undo",
           onClick: () => mutate({ projectId }),
