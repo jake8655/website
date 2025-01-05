@@ -19,6 +19,9 @@ export const env = createEnv({
     KV_URL: z.string().url(),
     DATABASE_URL: z.string().url(),
     DATABASE_TOKEN: z.string(),
+    GITHUB_CLIENT_ID: z.string(),
+    GITHUB_CLIENT_SECRET: z.string(),
+    MY_GITHUB_ID: z.preprocess(Number, z.number()),
   },
 
   /**
@@ -46,6 +49,9 @@ export const env = createEnv({
     KV_URL: process.env.KV_URL,
     DATABASE_URL: process.env.DATABASE_URL,
     DATABASE_TOKEN: process.env.DATABASE_TOKEN,
+    GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
+    GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+    MY_GITHUB_ID: process.env.MY_GITHUB_ID,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

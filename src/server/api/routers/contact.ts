@@ -1,6 +1,6 @@
 import { contactFormSchema } from "@/lib/utils";
 import { RatelimitError } from "@/server/db/redis";
-import { contactPosts } from "@/server/db/schema";
+import { contactPostTable } from "@/server/db/schema";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const contactRouter = createTRPCRouter({
@@ -15,7 +15,7 @@ export const contactRouter = createTRPCRouter({
         throw new RatelimitError(reset);
       }
 
-      await ctx.db.insert(contactPosts).values({
+      await ctx.db.insert(contactPostTable).values({
         name: input.name,
         email: input.email,
         subject: input.subject,
