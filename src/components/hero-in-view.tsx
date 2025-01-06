@@ -15,7 +15,6 @@ export default function HeroInView({
   const [, setActiveIdx] = useActiveIdx();
 
   useEffect(() => {
-    console.log(inView);
     if (inView) {
       setActiveIdx(0);
     }
