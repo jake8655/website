@@ -72,7 +72,11 @@ export default function Navbar() {
           once
         >
           <Wrapper size="sm">
-            <ul className="flex items-center justify-between rounded-xl border-2 border-brand px-2 py-3 font-semibold text-sm backdrop-blur-lg md:p-4 md:text-xl md:backdrop-blur">
+            <ul
+              role="navigation"
+              aria-label="Main navigation"
+              className="flex items-center justify-between rounded-xl border-2 border-brand px-2 py-3 font-semibold text-sm backdrop-blur-lg md:p-4 md:text-xl md:backdrop-blur"
+            >
               <li>
                 <Link href="/">
                   <Image
@@ -132,6 +136,12 @@ function SectionLink({
         "text-brand": active,
       })}
       onClick={() => navigate(idx)}
+      role="menuitem"
+      onKeyDown={e => {
+        if (e.key === "Enter") {
+          navigate(idx);
+        }
+      }}
     >
       <AnimatePresence>
         {active && (
