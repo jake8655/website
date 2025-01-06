@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import HeroInView from "../hero-in-view";
 import Macbook from "../macbook";
 import RevealOnScroll from "../reveal-on-scroll";
 import { ModalTrigger } from "../ui/animated-modal";
@@ -10,15 +11,20 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip";
 
-export default function Hero() {
+function calculateAge() {
   const date = new Date();
   let age = date.getFullYear() - 2007;
   if (date.getMonth() < 4 || (date.getMonth() === 4 && date.getDate() < 25)) {
     age--;
   }
+  return age;
+}
+
+export default function Hero({ id }: { id?: string }) {
+  const age = calculateAge();
 
   return (
-    <section className="grid grid-cols-1 items-start gap-12 md:min-h-[40rem] md:grid-cols-2">
+    <HeroInView id={id}>
       <RevealOnScroll
         variants={{
           hidden: { x: "-50%", opacity: 0 },
@@ -85,7 +91,7 @@ export default function Hero() {
       >
         <Macbook />
       </RevealOnScroll>
-    </section>
+    </HeroInView>
   );
 }
 

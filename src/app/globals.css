@@ -86,7 +86,6 @@
 
   html {
     scrollbar-width: thin;
-    scroll-behavior: smooth;
     scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
   }
 }

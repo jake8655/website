@@ -19,6 +19,7 @@ export default function RevealOnScroll({
   once,
   className,
   outerClassName,
+  id,
 }: {
   children: React.ReactNode;
   variants: { hidden: Variant; visible: Variant };
@@ -27,6 +28,7 @@ export default function RevealOnScroll({
   once?: boolean;
   className?: string;
   outerClassName?: string;
+  id?: string;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInview = useInView(containerRef);
@@ -48,6 +50,7 @@ export default function RevealOnScroll({
         initial={initial || "hidden"}
         animate={mainControls}
         className={cn(className)}
+        id={id}
         transition={{
           duration: 0.7,
           ease: "easeOut",

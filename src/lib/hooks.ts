@@ -1,5 +1,6 @@
 "use client";
 
+import { atom, useAtom } from "jotai";
 import { useEffect, useRef } from "react";
 import { useScreen } from "usehooks-ts";
 
@@ -32,4 +33,10 @@ export function useDebouncedCallback(
   };
 
   return startTimeout;
+}
+
+const activeIdx = atom(0);
+export function useActiveIdx() {
+  const [idx, setIdx] = useAtom(activeIdx);
+  return [idx, setIdx] as const;
 }

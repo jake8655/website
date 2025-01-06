@@ -1,5 +1,6 @@
 "use client";
-import { motion, useScroll, useTransform } from "motion/react";
+import { useActiveIdx } from "@/lib/hooks";
+import { motion, useInView, useScroll, useTransform } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
 
 interface TimelineEntry {
@@ -11,6 +12,16 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   const ref = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
+  const [, setActiveIdx] = useActiveIdx();
+  const inView = useInView(ref, {
+    margin: "-500px 0px -445px 0px",
+  });
+
+  useEffect(() => {
+    if (inView) {
+      setActiveIdx(1);
+    }
+  }, [inView, setActiveIdx]);
 
   useEffect(() => {
     if (ref.current) {
@@ -35,7 +46,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
             key={index}
             className="flex justify-start pt-10 lg:gap-10 lg:pt-40"
           >
-            <div className="sticky top-40 z-40 flex max-w-xs flex-col items-center self-start lg:w-full lg:max-w-sm lg:flex-row">
+            <div className="sticky top-40 z-30 flex max-w-xs flex-col items-center self-start lg:w-full lg:max-w-sm lg:flex-row">
               <div className="absolute left-3 flex h-10 w-10 items-center justify-center rounded-full bg-black lg:left-3">
                 <div className="h-4 w-4 rounded-full border border-neutral-700 bg-neutral-800 p-2" />
               </div>

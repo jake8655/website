@@ -8,7 +8,13 @@ export default function ArrowTitle({
   text,
   slideDirection,
   className,
-}: { text: string; slideDirection: "bottom" | "top"; className?: string }) {
+  id,
+}: {
+  text: string;
+  slideDirection: "bottom" | "top";
+  className?: string;
+  id?: string;
+}) {
   return (
     <RevealOnScroll
       className={cn("group flex gap-4 md:gap-12", className)}
@@ -22,6 +28,7 @@ export default function ArrowTitle({
           y: 0,
         },
       }}
+      id={id}
     >
       <Image
         src="/images/arrow.svg"
@@ -29,7 +36,7 @@ export default function ArrowTitle({
         width={50}
         height={50}
         loading="eager"
-        className="repeat-[2] group-hover:-translate-y-4 animate-bounce duration-500 ease-out"
+        className="group-hover:-translate-y-4 duration-500 ease-out"
       />
       <h2 className="text-balance text-center font-semibold text-3xl lg:text-5xl">
         {text}
@@ -40,7 +47,7 @@ export default function ArrowTitle({
         width={50}
         height={50}
         loading="eager"
-        className="repeat-[2] group-hover:-translate-y-4 animate-bounce duration-500 ease-out"
+        className="group-hover:-translate-y-4 duration-500 ease-out"
       />
     </RevealOnScroll>
   );
