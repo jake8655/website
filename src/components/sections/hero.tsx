@@ -11,12 +11,17 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip";
 
-export default function Hero({ id }: { id?: string }) {
+function calculateAge() {
   const date = new Date();
   let age = date.getFullYear() - 2007;
   if (date.getMonth() < 4 || (date.getMonth() === 4 && date.getDate() < 25)) {
     age--;
   }
+  return age;
+}
+
+export default function Hero({ id }: { id?: string }) {
+  const age = calculateAge();
 
   return (
     <HeroInView id={id}>
