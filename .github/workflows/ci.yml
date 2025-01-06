@@ -16,11 +16,10 @@ env:
 jobs:
   db-migrate:
     runs-on: ubuntu-latest
+    needs: [format-lint-typecheck]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-        with:
-         fetch-depth: 0
 
       - name: Setup
         uses: ./.github/actions/setup
@@ -61,6 +60,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    needs: [db-migrate]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
