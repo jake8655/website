@@ -1,5 +1,6 @@
 import ArrowTitle from "@/components/arrow-title";
 import CustomErrorToast from "@/components/custom-error-toast";
+import Navbar from "@/components/navbar";
 import RevealOnScroll from "@/components/reveal-on-scroll";
 import Experience from "@/components/sections/experience";
 import Hero from "@/components/sections/hero";
@@ -20,9 +21,10 @@ export default async function Home() {
   const error = cookieStore.get("custom_error")?.value;
 
   return (
-    <>
+    <div id="home">
       <CustomErrorToast error={error} />
-      <main className="pt-16 md:pt-32 lg:pt-64">
+      <Navbar />
+      <main className="pt-16 md:pt-32 lg:pt-48">
         <Wrapper>
           <Hero />
         </Wrapper>
@@ -46,12 +48,13 @@ export default async function Home() {
             text="My Experience"
             slideDirection="bottom"
             key="experience"
+            id="experience"
           />
         </RevealOnScroll>
         <Experience />
         <div className="relative">
           <div className="mt-64 grid place-items-center">
-            <ArrowTitle text="My Projects" slideDirection="top" />
+            <ArrowTitle text="My Projects" slideDirection="top" id="projects" />
           </div>
           <Wrapper>
             <Projects className="mt-32 w-full" />
@@ -61,6 +64,6 @@ export default async function Home() {
         </div>
         <BackgroundBeams className="-z-[1]" />
       </main>
-    </>
+    </div>
   );
 }

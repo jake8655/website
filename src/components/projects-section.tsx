@@ -1,10 +1,12 @@
 "use client";
 
+import { useActiveIdx } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import { useRef } from "react";
+import { useInView } from "motion/react";
+import { useEffect, useRef } from "react";
 
 export default function ProjectsSection({
   className,
@@ -15,6 +17,17 @@ export default function ProjectsSection({
   const cardTexts = useRef<HTMLDivElement[]>(null);
   const firstCardST = useRef<ScrollTrigger>(null);
   const lastCardST = useRef<ScrollTrigger>(null);
+
+  const [, setActiveIdx] = useActiveIdx();
+  const inView = useInView(containerRef, {
+    margin: "0px 0px -500px 0px",
+  });
+
+  useEffect(() => {
+    if (inView) {
+      setActiveIdx(2);
+    }
+  }, [inView, setActiveIdx]);
 
   useGSAP(
     () => {
