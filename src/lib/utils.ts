@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { z } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -18,11 +19,24 @@ export function msToTime(time: number) {
   return `${pad(mins)}:${pad(secs)}`;
 }
 
-export class RatelimitError extends Error {
-  reset: number;
+export const contactFormSchema = z.object({
+  name: z
+    .string()
+    .min(1, "Name is required")
+    .max(50, "Name must be 50 characters or less"),
+  email: z
+    .string()
+    .min(1, "Email is required")
+    .email("Invalid email")
+    .max(100, "Email must be 100 characters or less"),
+  subject: z
+    .string()
+    .min(1, "Subject is required")
+    .max(200, "Subject must be 200 characters or less"),
+  message: z
+    .string()
+    .min(1, "Message is required")
+    .max(1000, "Message must be 1000 characters or less"),
+});
 
-  constructor(reset: number) {
-    super("Too many requests");
-    this.reset = reset;
-  }
-}
+export type ContactFormSchema = z.infer<typeof contactFormSchema>;

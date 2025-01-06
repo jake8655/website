@@ -46,6 +46,8 @@ export default {
           DEFAULT: "hsl(var(--brand))",
           light: "hsl(var(--brand-light))",
           dark: "hsl(var(--brand-dark))",
+          darker: "hsl(var(--brand-darker))",
+          darkest: "hsl(var(--brand-darkest))",
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",
@@ -129,6 +131,7 @@ export default {
       },
       boxShadow: {
         glow: "0 0 50px 0 rgba(109, 154, 238, 0.3)",
+        input: `0px 2px 3px -1px rgba(0,0,0,0.1), 0px 1px 0px 0px rgba(25,28,33,0.02), 0px 0px 0px 1px rgba(25,28,33,0.08)`,
       },
       backgroundImage: {
         "gradient-var":

@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { HydrateClient, api } from "@/trpc/server";
 import Image from "next/image";
 import ProjectLikes from "../project-likes";
 import ProjectsSection from "../projects-section";
@@ -70,7 +69,7 @@ export default function Projects({ className }: { className?: string }) {
   );
 }
 
-async function ProjectCard({
+function ProjectCard({
   title,
   href,
   image,
@@ -91,54 +90,50 @@ async function ProjectCard({
   className?: string;
   backGroundColor: string;
 }) {
-  await api.projectLike.getProjectLikeCount.prefetch({ projectId: id });
-
   return (
-    <HydrateClient>
-      <div
+    <div
+      className={cn(
+        "flex flex-col gap-4",
+        {
+          "mb-[400px] sm:mb-[600px]": !last,
+          "mb-[200px]": last,
+        },
+        className,
+      )}
+      style={{
+        transformOrigin: "50% -160%",
+      }}
+    >
+      <a
         className={cn(
-          "flex flex-col gap-4",
-          {
-            "mb-[400px] sm:mb-[600px]": !last,
-            "mb-[200px]": last,
-          },
-          className,
+          "group block min-h-[400px] w-full rounded-[46px] p-4 sm:min-h-[600px]",
+          backGroundColor,
         )}
-        style={{
-          transformOrigin: "50% -160%",
-        }}
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
       >
-        <a
-          className={cn(
-            "group block min-h-[400px] w-full rounded-[46px] p-4 sm:min-h-[600px]",
-            backGroundColor,
-          )}
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <div className="relative h-full w-full overflow-hidden rounded-[30px]">
-            <Image
-              src={image}
-              alt={alt}
-              fill
-              className={cn(
-                "rounded-[30px] object-cover transition-transform duration-300 group-hover:scale-105",
-                {
-                  "object-left": imagePosition === "left",
-                  "object-bottom": imagePosition === "bottom",
-                },
-              )}
-            />
-          </div>
-        </a>
-        <div className="project-text flex h-full">
-          <h3 className="pl-4 font-bold text-xl">{title}</h3>
-          <div className="ml-auto flex items-center gap-8 pr-4 font-bold text-lg">
-            <ProjectLikes projectId={id} />
-          </div>
+        <div className="relative h-full w-full overflow-hidden rounded-[30px]">
+          <Image
+            src={image}
+            alt={alt}
+            fill
+            className={cn(
+              "rounded-[30px] object-cover transition-transform duration-300 group-hover:scale-105",
+              {
+                "object-left": imagePosition === "left",
+                "object-bottom": imagePosition === "bottom",
+              },
+            )}
+          />
+        </div>
+      </a>
+      <div className="project-text flex h-full">
+        <h3 className="pl-4 font-bold text-xl">{title}</h3>
+        <div className="ml-auto flex items-center gap-8 pr-4 font-bold text-lg">
+          <ProjectLikes projectId={id} />
         </div>
       </div>
-    </HydrateClient>
+    </div>
   );
 }

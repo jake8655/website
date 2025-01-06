@@ -1,33 +1,7 @@
-import { RatelimitError } from "@/lib/utils";
-import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis";
-import { waitUntil } from "@vercel/functions";
+import { RatelimitError, getUserIp } from "@/server/db/redis";
 import { unstable_cache } from "next/cache";
-import { headers } from "next/headers";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
-
-const redis = Redis.fromEnv();
-const ratelimit = new Ratelimit({
-  redis,
-  limiter: Ratelimit.slidingWindow(20, "5 m"),
-  analytics: true,
-});
-
-async function getUserIp() {
-  const heads = await headers();
-
-  const forwardedFor = heads.get("x-forwarded-for");
-  if (forwardedFor) {
-    const [ip] = forwardedFor.split(",");
-    if (ip) return ip;
-    throw new Error("No IP found in X-Forwarded-For header");
-  }
-
-  const ip = heads.get("x-real-ip");
-  if (ip) return ip;
-  throw new Error("No IP found in X-Real-IP header");
-}
 
 export const projectLikeRouter = createTRPCRouter({
   getProjectLikeCount: publicProcedure
@@ -36,17 +10,17 @@ export const projectLikeRouter = createTRPCRouter({
         projectId: z.string(),
       }),
     )
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
       const ip = await getUserIp();
 
       const hash = await hashIp(ip);
 
-      const userHasLiked = await redis.exists(
+      const userHasLiked = await ctx.redis.exists(
         ["deduplicate", hash, input.projectId].join(":"),
       );
 
       const likes =
-        (await redis.get<number>(
+        (await ctx.redis.get<number>(
           ["likes", "projects", input.projectId].join(":"),
         )) ?? 0;
 
@@ -59,19 +33,19 @@ export const projectLikeRouter = createTRPCRouter({
         projectId: z.string(),
       }),
     )
-    .mutation(async ({ input }) => {
-      const ip = await getUserIp();
-
-      const { success, reset, pending } = await ratelimit.limit(ip);
-      waitUntil(pending);
+    .mutation(async ({ input, ctx }) => {
+      const { success, reset } = await ctx.ratelimit(
+        ctx.createRatelimiter(20, "5 m"),
+      );
 
       if (!success) {
         throw new RatelimitError(reset);
       }
 
+      const ip = await getUserIp();
       const hash = await hashIp(ip);
 
-      const isNew = await redis.set(
+      const isNew = await ctx.redis.set(
         ["deduplicate", hash, input.projectId].join(":"),
         "1",
         {
@@ -80,7 +54,7 @@ export const projectLikeRouter = createTRPCRouter({
       );
 
       if (isNew) {
-        const newLikes = await redis.incr(
+        const newLikes = await ctx.redis.incr(
           ["likes", "projects", input.projectId].join(":"),
         );
 
@@ -90,7 +64,7 @@ export const projectLikeRouter = createTRPCRouter({
         };
       }
 
-      const [newLikes] = await redis
+      const [newLikes] = await ctx.redis
         .multi()
         .decr(["likes", "projects", input.projectId].join(":"))
         .del(["deduplicate", hash, input.projectId].join(":"))
