@@ -1,0 +1,1 @@
+ALTER TABLE `contact_posts` ALTER COLUMN "created_at" TO "created_at" integer NOT NULL DEFAULT (strftime('%s','now'));

@@ -10,8 +10,24 @@ on:
 
 env:
   SKIP_ENV_VALIDATION: true
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  DATABASE_TOKEN: ${{ secrets.DATABASE_TOKEN }}
 
 jobs:
+  db-migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+         fetch-depth: 0
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Migrate DB
+        run: bun run db:migrate
+
   format-lint-typecheck:
     runs-on: ubuntu-latest
     steps:
