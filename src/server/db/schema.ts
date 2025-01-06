@@ -8,7 +8,7 @@ export const contactPostTable = table("contact_posts", {
   email: t.text("email").notNull(),
   subject: t.text("subject").notNull(),
   message: t.text("message").notNull(),
-  createdAt: t.text("created_at").default(sql`(CURRENT_TIMESTAMP)`).notNull(),
+  createdAt: t.integer("created_at", { mode: "timestamp" }).default(sql`(strftime('%s','now'))`).notNull(),
 });
 
 export const userTable = table("users", {
