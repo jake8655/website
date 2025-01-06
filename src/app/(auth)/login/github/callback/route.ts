@@ -41,7 +41,7 @@ export async function GET(request: Request): Promise<Response> {
   const githubUserId = githubUser.id;
   const githubUsername = githubUser.login;
 
-  if (githubUsername !== env.MY_GITHUB_ID) {
+  if (githubUserId !== env.MY_GITHUB_ID) {
     cookieStore.set(
       "custom_error",
       "You cannot login as an admin unless you are me :)",
