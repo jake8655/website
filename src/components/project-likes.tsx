@@ -3,6 +3,8 @@
 import { cn, msToTime } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import NumberFlow from "@number-flow/react";
+import { useInView } from "motion/react";
+import { useRef } from "react";
 import { toast } from "sonner";
 import {
   Tooltip,
@@ -12,20 +14,33 @@ import {
 } from "./ui/tooltip";
 
 export default function ProjectLikes({ projectId }: { projectId: string }) {
-  const { data, isLoading } = api.projectLike.getProjectLikeCount.useQuery({
-    projectId,
+  const containerRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(containerRef, {
+    margin: "0px 0px 500px 0px",
   });
 
-  // Should not happen because data is prefetched on the server
-  if (isLoading || !data) return null;
+  const { data } = api.projectLike.getProjectLikeCount.useQuery(
+    {
+      projectId,
+    },
+    {
+      // Only fetch when the project is in view + margin
+      enabled: inView,
+      refetchOnWindowFocus: false,
+    },
+  );
 
   return (
-    <div className="fade-in slide-in-from-right flex animate-in items-start gap-2 duration-700">
-      <NumberFlow value={data.likes} />
-      <ProjectLikeButton
-        projectId={projectId}
-        userHasLiked={data.userHasLiked}
-      />
+    <div ref={containerRef}>
+      {data ? (
+        <div className="fade-in slide-in-from-right flex animate-in items-start gap-2 duration-700">
+          <NumberFlow value={data.likes} />
+          <ProjectLikeButton
+            projectId={projectId}
+            userHasLiked={data.userHasLiked}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }
