@@ -8,14 +8,21 @@ export const contactPostTable = table("contact_posts", {
   email: t.text("email").notNull(),
   subject: t.text("subject").notNull(),
   message: t.text("message").notNull(),
-  createdAt: t.integer("created_at", { mode: "timestamp" }).default(sql`(strftime('%s','now'))`).notNull(),
+  createdAt: t
+    .integer("created_at", { mode: "timestamp" })
+    .default(sql`(strftime('%s','now'))`)
+    .notNull(),
 });
 
-export const userTable = table("users", {
-  id: t.integer("id").primaryKey({ autoIncrement: true }).notNull(),
-  githubId: t.integer("github_id").notNull(),
-  username: t.text("username").notNull(),
-});
+export const userTable = table(
+  "users",
+  {
+    id: t.integer("id").primaryKey({ autoIncrement: true }).notNull(),
+    githubId: t.integer("github_id").notNull(),
+    username: t.text("username").notNull(),
+  },
+  table => [t.index("users_github_id_idx").on(table.githubId)],
+);
 
 export const sessionTable = table("sessions", {
   id: t.text("id").primaryKey(),
