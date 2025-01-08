@@ -20,11 +20,14 @@ function calculateAge() {
   return age;
 }
 
-export default function Hero({ id }: { id?: string }) {
+export default function Hero({
+  id,
+  className,
+}: { id?: string; className?: string }) {
   const age = calculateAge();
 
   return (
-    <HeroInView id={id}>
+    <HeroInView id={id} className={className}>
       <RevealOnScroll
         variants={{
           hidden: { x: "-50%", opacity: 0 },

@@ -62,7 +62,7 @@
     @apply border-border;
   }
 
-  html {
+  #background {
     background-color: #13151a;
     background-image: linear-gradient(
       45deg,
@@ -79,19 +79,12 @@
       hsl(240deg 60% 7%) 81%,
       hsl(240deg 59% 7%) 100%
     );
-
-    --scrollbar-thumb: #005cb8;
-    --scrollbar-track: hsl(240deg 53% 8%);
   }
 
   html {
     scrollbar-width: thin;
     scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    --scrollbar-thumb: #005cb8;
+    --scrollbar-track: hsl(240deg 53% 8%);
   }
-}
-
-@property --gradient-angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
 }

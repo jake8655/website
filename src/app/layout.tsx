@@ -14,6 +14,7 @@ import { TRPCReactProvider } from "@/trpc/react";
 
 import "@/app/globals.css";
 import ContactModal from "@/components/contact-modal";
+import Footer from "@/components/footer";
 import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
@@ -41,6 +42,9 @@ export default function Layout({
 
             <Toaster />
             <ContactModal>{children}</ContactModal>
+            {/* Empty div to make the footer visible at the bottom */}
+            <div className="pointer-events-none min-h-[59vh] w-full text-black"></div>
+            <Footer className="fixed bottom-0 w-full pt-[11vh]" />
           </TRPCReactProvider>
         </FilteredPostHogProvider>
       </body>

@@ -50,7 +50,7 @@ const projects = [
 
 export default function Projects({ className }: { className?: string }) {
   return (
-    <ProjectsSection className={className}>
+    <ProjectsSection className={cn("pb-[200px]", className)}>
       {projects.map((project, index) => (
         <ProjectCard
           key={project.title}
@@ -96,7 +96,6 @@ function ProjectCard({
         "flex flex-col gap-4",
         {
           "mb-[400px] sm:mb-[600px]": !last,
-          "mb-[200px]": last,
         },
         className,
       )}

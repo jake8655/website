@@ -21,12 +21,21 @@ export default async function Home() {
   const error = cookieStore.get("custom_error")?.value;
 
   return (
-    <div id="home">
-      <CustomErrorToast error={error} />
-      <Navbar />
-      <main className="pt-16 md:pt-32 lg:pt-48">
+    <>
+      <div id="home" className="relative z-10">
+        <div
+          id="background"
+          className="-z-20 absolute min-h-full w-full rounded-b-[100px]"
+        ></div>
+        <CustomErrorToast error={error} />
+        <div className="-z-[1] absolute h-screen w-full">
+          <div className="relative h-full w-full">
+            <BackgroundBeams />
+          </div>
+        </div>
+        <Navbar />
         <Wrapper>
-          <Hero />
+          <Hero className="pt-16 md:pt-32 lg:pt-48" />
         </Wrapper>
         <RevealOnScroll
           className="grid place-items-center"
@@ -62,8 +71,7 @@ export default async function Home() {
           <ShootingStars className="-z-10" />
           <StarsBackground className="-z-10" />
         </div>
-        <BackgroundBeams className="-z-[1]" />
-      </main>
-    </div>
+      </div>
+    </>
   );
 }
