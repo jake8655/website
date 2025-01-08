@@ -75,7 +75,7 @@ export default function Navbar() {
             <ul
               role="navigation"
               aria-label="Main navigation"
-              className="flex items-center justify-between rounded-xl border-2 border-brand px-2 py-3 font-semibold text-sm backdrop-blur-lg md:p-4 md:text-xl md:backdrop-blur"
+              className="flex items-center justify-between rounded-xl border-2 border-brand bg-blue-700/30 px-2 py-3 font-semibold text-sm backdrop-blur-lg md:p-4 md:text-xl md:backdrop-blur-xl"
             >
               <li>
                 <Link href="/">
