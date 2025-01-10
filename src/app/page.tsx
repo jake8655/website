@@ -12,7 +12,7 @@ import Wrapper from "@/components/wrapper";
 import { cookies } from "next/headers";
 
 export const metadata = {
-  title: "Dominik Tóth • Home",
+  title: "Dominik Tóth",
   description: "Personal website of Dominik Tóth.",
 };
 
