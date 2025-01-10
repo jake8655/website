@@ -81,9 +81,9 @@ export default {
         "gradient-blue": "#89b4fa",
         "gradient-green": "#94e2d5",
         "gsap-green": "#0ae448",
-        "tailwind-blue": "#38bdf8",
-        "react-blue": "#61dafb",
-        "bluesky-blue": "#0b7ce9",
+        "tailwind-blue": "#06b6d4",
+        "trpc-blue": "#2596be",
+        "bluesky-blue": "#0285ff",
         "discord-blue": "#5865f2",
       },
       borderRadius: {
