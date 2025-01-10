@@ -61,7 +61,7 @@ export default function Footer({ className }: { className?: string }) {
               <FooterEntry href="https://nextjs.org">
                 <Image
                   src="/images/nextjs-icon.svg"
-                  alt="Next.js"
+                  alt="Next.js logo"
                   width={24}
                   height={24}
                 />{" "}

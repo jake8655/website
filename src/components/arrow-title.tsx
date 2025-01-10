@@ -9,11 +9,13 @@ export default function ArrowTitle({
   slideDirection,
   className,
   id,
+  priority,
 }: {
   text: string;
   slideDirection: "bottom" | "top";
   className?: string;
   id?: string;
+  priority?: boolean;
 }) {
   return (
     <RevealOnScroll
@@ -35,7 +37,7 @@ export default function ArrowTitle({
         alt="Chevron arrows pointing down"
         width={50}
         height={50}
-        loading="eager"
+        priority={priority}
         className="group-hover:-translate-y-4 duration-500 ease-out"
       />
       <h2 className="text-balance text-center font-semibold text-3xl lg:text-5xl">
@@ -46,7 +48,7 @@ export default function ArrowTitle({
         alt="Chevron arrows pointing down"
         width={50}
         height={50}
-        loading="eager"
+        priority={priority}
         className="group-hover:-translate-y-4 duration-500 ease-out"
       />
     </RevealOnScroll>

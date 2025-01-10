@@ -213,7 +213,7 @@ function ProjectCard({
     >
       <a
         className={cn(
-          "group block min-h-[400px] w-full rounded-[46px] p-4 sm:min-h-[600px]",
+          "group block h-[400px] w-full rounded-[38px] p-2 sm:h-[600px] md:rounded-[46px] md:p-4",
           backgroundColor,
         )}
         href={deployedHref ?? sourceHref}
@@ -224,9 +224,10 @@ function ProjectCard({
           <Image
             src={image}
             alt={alt}
-            fill
+            width={1920}
+            height={1080}
             className={cn(
-              "rounded-[30px] object-cover transition-transform duration-300 group-hover:scale-105",
+              "h-full w-full rounded-[30px] object-cover transition-transform duration-300 group-hover:scale-105",
               {
                 "object-left": imagePosition === "left",
                 "object-bottom": imagePosition === "bottom",
@@ -235,7 +236,7 @@ function ProjectCard({
           />
         </div>
       </a>
-      <div className="project-text flex h-full">
+      <div className="project-text flex h-full flex-col gap-2 md:flex-row md:gap-0">
         <div className="flex flex-col items-start gap-2 pl-4">
           <div className="flex items-center gap-2">
             <h3 className="font-bold text-xl">{title}</h3>

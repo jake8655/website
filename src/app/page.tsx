@@ -57,6 +57,7 @@ export default async function Home() {
           slideDirection="bottom"
           key="experience"
           id="experience"
+          priority
         />
       </RevealOnScroll>
       <Experience />

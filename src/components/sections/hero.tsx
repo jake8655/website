@@ -1,5 +1,5 @@
+import { env } from "@/env";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 import HeroInView from "../hero-in-view";
 import Macbook from "../macbook";
 import RevealOnScroll from "../reveal-on-scroll";
@@ -71,14 +71,8 @@ export default function Hero({
           <span className="text-brand">student</span>,{" "}
           <span className="text-brand">web developer</span>,{" "}
           <span className="text-brand">linux</span> and{" "}
-          <span className="text-brand">aviation</span> enthusiast from Slovakia.
-          <Image
-            src="/images/slovakia-flag.png"
-            alt="Slovaki flag"
-            className="ml-2 inline-block align-top"
-            width={30}
-            height={30}
-          />
+          <span className="text-brand">aviation</span> enthusiast from Slovakia.{" "}
+          <span className="font-emoji">{env.NEXT_PUBLIC_SLOVAKIA_EMOJI}</span>
         </p>
       </RevealOnScroll>
 
