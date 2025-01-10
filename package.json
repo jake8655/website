@@ -19,6 +19,7 @@
   "dependencies": {
     "@gsap/react": "^2.1.1",
     "@hookform/resolvers": "^3.9.1",
+    "@icons-pack/react-simple-icons": "^11.0.0",
     "@libsql/client": "^0.14.0",
     "@number-flow/react": "^0.5.0",
     "@oslojs/crypto": "^1.0.1",
@@ -54,6 +55,7 @@
     "posthog-js": "^1.194.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-github-btn": "^1.4.0",
     "react-hook-form": "^7.54.2",
     "react-snow-overlay": "^1.0.12",
     "sonner": "^1.7.1",
