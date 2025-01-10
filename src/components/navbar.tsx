@@ -84,7 +84,7 @@ export default function Navbar() {
                     width={50}
                     height={50}
                     className="h-8 w-8 md:h-12 md:w-12"
-                    alt="Dominik Toth"
+                    alt="Dominik Tóth"
                   />
                 </Link>
               </li>
