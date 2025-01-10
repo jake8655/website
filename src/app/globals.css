@@ -62,6 +62,7 @@
     @apply border-border;
   }
 
+  html,
   #background {
     background-color: #13151a;
     background-image: linear-gradient(
