@@ -32,7 +32,7 @@ export const env = createEnv({
   client: {
     NEXT_PUBLIC_POSTHOG_HOST: z.string().url(),
     NEXT_PUBLIC_POSTHOG_KEY: z.string(),
-    NEXT_PUBLIC_HEART_EMOJI: z.string(),
+    NEXT_PUBLIC_HEART_EMOJI: z.string().emoji().max(2),
   },
 
   /**
