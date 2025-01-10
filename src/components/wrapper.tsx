@@ -13,7 +13,7 @@ export default function Wrapper({
           "md:max-w-screen-xl": size === "lg",
           "md:max-w-screen-md": size === "sm",
         },
-        className
+        className,
       )}
     >
       {children}
