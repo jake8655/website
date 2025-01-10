@@ -80,6 +80,11 @@ export default {
         "gradient-purple": "#cba6f7",
         "gradient-blue": "#89b4fa",
         "gradient-green": "#94e2d5",
+        "gsap-green": "#0ae448",
+        "tailwind-blue": "#38bdf8",
+        "react-blue": "#61dafb",
+        "bluesky-blue": "#0b7ce9",
+        "discord-blue": "#5865f2",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -113,12 +118,12 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        borderAngle: {
+        shimmer: {
           from: {
-            "--gradient-angle": "0deg",
+            backgroundPosition: "0 0",
           },
           to: {
-            "--gradient-angle": "360deg",
+            backgroundPosition: "-200% 0",
           },
         },
       },
@@ -127,7 +132,7 @@ export default {
         blinkText: "blinkText 1s infinite steps(1, start)",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        borderAngle: "borderAngle 10s linear infinite",
+        shimmer: "shimmer 2s linear infinite",
       },
       boxShadow: {
         glow: "0 0 50px 0 rgba(109, 154, 238, 0.3)",

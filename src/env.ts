@@ -32,6 +32,7 @@ export const env = createEnv({
   client: {
     NEXT_PUBLIC_POSTHOG_HOST: z.string().url(),
     NEXT_PUBLIC_POSTHOG_KEY: z.string(),
+    NEXT_PUBLIC_HEART_EMOJI: z.string().emoji().max(2),
   },
 
   /**
@@ -52,6 +53,7 @@ export const env = createEnv({
     GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
     GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
     MY_GITHUB_ID: process.env.MY_GITHUB_ID,
+    NEXT_PUBLIC_HEART_EMOJI: process.env.NEXT_PUBLIC_HEART_EMOJI,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
