@@ -58,8 +58,9 @@ export const Card = ({
         <Image
           src={card.src}
           alt={card.alt}
-          fill
-          className="absolute inset-0 object-cover"
+          width={500}
+          height={500}
+          className="h-full w-full object-cover"
         />
         <div
           className={cn(
