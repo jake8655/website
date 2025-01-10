@@ -197,7 +197,6 @@ function ProjectCard({
 }: Project & {
   last: boolean;
   className?: string;
-  backgroundColor: string;
 }) {
   return (
     <div
