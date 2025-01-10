@@ -6,8 +6,8 @@ import {
   SiBluesky,
   SiDiscord,
   SiGithub,
-  SiReact,
   SiTailwindcss,
+  SiTrpc,
 } from "@icons-pack/react-simple-icons";
 import { Mail } from "lucide-react";
 import Image from "next/image";
@@ -67,8 +67,8 @@ export default function Footer({ className }: { className?: string }) {
                 />{" "}
                 Next.js
               </FooterEntry>
-              <FooterEntry href="https://react.dev">
-                <SiReact className="text-react-blue" /> React
+              <FooterEntry href="https://trpc.io">
+                <SiTrpc className="text-trpc-blue" /> tRPC
               </FooterEntry>
               <FooterEntry href="https://tailwindcss.com">
                 <SiTailwindcss className="text-tailwind-blue" /> TailwindCSS

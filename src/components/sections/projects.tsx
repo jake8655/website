@@ -1,47 +1,156 @@
 import { cn } from "@/lib/utils";
+import { SiGithub } from "@icons-pack/react-simple-icons";
+import { ExternalLink } from "lucide-react";
 import Image from "next/image";
 import ProjectLikes from "../project-likes";
 import ProjectsSection from "../projects-section";
+import { Badge } from "../ui/badge";
+import { Separator } from "../ui/separator";
 
-const projects = [
+type Project = {
+  title: string;
+  description: string;
+  technologies: { name: string; color: string; href: string }[];
+  backgroundColor: string;
+  deployedHref?: string;
+  sourceHref?: string;
+  image: string;
+  alt: string;
+  id: string;
+  imagePosition?: "left" | "bottom";
+};
+
+const projects: Project[] = [
   {
     title: "ASR RolePlay",
+    description: "Website for a FiveM roleplay server.",
+    technologies: [
+      {
+        name: "TypeScript",
+        color: "bg-[#3178c6]",
+        href: "https://www.typescriptlang.org",
+      },
+      { name: "Next.js", color: "bg-black", href: "https://nextjs.org" },
+      {
+        name: "Auth.js",
+        color: "bg-[#bc3cd2]",
+        href: "https://authjs.dev",
+      },
+      {
+        name: "tRPC",
+        color: "bg-trpc-blue",
+        href: "https://trpc.io",
+      },
+      {
+        name: "PostgreSQL",
+        color: "bg-[#336791]",
+        href: "https://www.postgresql.org",
+      },
+      {
+        name: "Drizzle ORM",
+        color: "bg-[#c5f74f]",
+        href: "https://orm.drizzle.team/",
+      },
+    ],
     backgroundColor: "bg-gradient-to-br from-blue-600 to-blue-800",
-    href: "https://asrrp.hu",
+    deployedHref: "https://asrrp.hu",
     image: "/images/asrrp.png",
     alt: "ASR RolePlay",
     id: "asr-roleplay",
   },
   {
     title: "Access-Bot",
+    description:
+      "Discord bot for quizzing people about rules before entering the server.",
+    technologies: [
+      {
+        name: "JavaScript",
+        color: "bg-[#f7df1e]",
+        href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+      },
+      {
+        name: "Discord.js",
+        color: "bg-discord-blue",
+        href: "https://discord.js.org",
+      },
+      {
+        name: "Node.js",
+        color: "bg-[#5fa04e]",
+        href: "https://nodejs.org",
+      },
+    ],
     backgroundColor: "bg-gradient-to-br from-green-600 to-green-800",
-    href: "https://github.com/jake8655/Access-Bot",
+    sourceHref: "https://github.com/jake8655/Access-Bot",
     image: "/images/access-bot.png",
     alt: "Access-Bot",
     id: "access-bot",
   },
   {
     title: "Tic-Tac-Toe Game & Bot",
+    description: "Tic-Tac-Toe Game with a bot against the player.",
+    technologies: [
+      {
+        name: "Python",
+        color: "bg-[#3776ab]",
+        href: "https://www.python.org",
+      },
+      {
+        name: "Tkinter",
+        color: "bg-[#4d6e9f]",
+        href: "https://docs.python.org/3/library/tkinter.html",
+      },
+    ],
     backgroundColor: "bg-gradient-to-br from-red-600 to-red-800",
-    href: "https://github.com/jake8655/tkinter-app",
+    sourceHref: "https://github.com/jake8655/tkinter-app",
+    deployedHref: "https://jake8655.itch.io/tic-tac-toe",
     image: "/images/tic-tac-toe.png",
     alt: "Tic-Tac-Toe Game & Bot",
     id: "tic-tac-toe",
   },
   {
     title: "Gymgol Simulator",
+    description:
+      "Game about my school where the goal is to avoid the teachers asking questions.",
+    technologies: [
+      {
+        name: "Python",
+        color: "bg-[#3776ab]",
+        href: "https://www.python.org",
+      },
+      {
+        name: "Pygame",
+        color: "bg-[#10d223]",
+        href: "https://www.pygame.org",
+      },
+    ],
     backgroundColor: "bg-gradient-to-br from-teal-600 to-teal-800",
-    href: "https://github.com/jake8655/gymgol-simulator",
+    sourceHref: "https://github.com/jake8655/gymgol-simulator",
+    deployedHref: "https://jake8655.itch.io/gymgol-simulator",
     image: "/images/gymgol-simulator.png",
-    imagePosition: "bottom" as const,
+    imagePosition: "bottom",
     alt: "Gymgol Simulator",
     id: "gymgol-simulator",
   },
   {
     title: "Asteroids",
+    description:
+      "My first game, where you shoot asteroids using a flying spaceship.",
+    technologies: [
+      {
+        name: "C#",
+        color: "bg-[#a08ed8]",
+        href: "https://dotnet.microsoft.com/en-us/languages/csharp",
+      },
+      {
+        name: "MonoGame",
+        href: "https://www.monogame.net",
+        color: "bg-[#e73c00]",
+      },
+    ],
     backgroundColor: "bg-gradient-to-br from-slate-300 to-slate-400",
-    imagePosition: "left" as const,
-    href: "https://github.com/jake8655/asteroids",
+    imagePosition: "left",
+    sourceHref: "https://github.com/jake8655/asteroids",
+    deployedHref: "https://jake8655.itch.io/asteroids",
     image: "/images/asteroids.png",
     alt: "Asteroids Game",
     id: "asteroids",
@@ -55,13 +164,16 @@ export default function Projects({ className }: { className?: string }) {
         <ProjectCard
           key={project.title}
           title={project.title}
-          href={project.href}
+          description={project.description}
+          technologies={project.technologies}
+          deployedHref={project.deployedHref}
+          sourceHref={project.sourceHref}
           image={project.image}
           imagePosition={project.imagePosition}
           alt={project.alt}
           id={project.id}
           last={index === projects.length - 1}
-          backGroundColor={project.backgroundColor}
+          backgroundColor={project.backgroundColor}
           className="project-card"
         />
       ))}
@@ -71,24 +183,20 @@ export default function Projects({ className }: { className?: string }) {
 
 function ProjectCard({
   title,
-  href,
+  description,
+  technologies,
+  deployedHref,
+  sourceHref,
   image,
   imagePosition,
   alt,
   id,
   className,
   last,
-  backGroundColor,
-}: {
-  title: string;
-  href: string;
-  image: string;
-  imagePosition?: "left" | "bottom";
-  alt: string;
-  id: string;
+  backgroundColor,
+}: Project & {
   last: boolean;
   className?: string;
-  backGroundColor: string;
 }) {
   return (
     <div
@@ -106,9 +214,9 @@ function ProjectCard({
       <a
         className={cn(
           "group block min-h-[400px] w-full rounded-[46px] p-4 sm:min-h-[600px]",
-          backGroundColor,
+          backgroundColor,
         )}
-        href={href}
+        href={deployedHref ?? sourceHref}
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -128,7 +236,56 @@ function ProjectCard({
         </div>
       </a>
       <div className="project-text flex h-full">
-        <h3 className="pl-4 font-bold text-xl">{title}</h3>
+        <div className="flex flex-col items-start gap-2 pl-4">
+          <div className="flex items-center gap-2">
+            <h3 className="font-bold text-xl">{title}</h3>
+            {deployedHref || sourceHref ? (
+              <Separator orientation="vertical" />
+            ) : null}
+            {deployedHref && (
+              <a
+                href={deployedHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-brand"
+              >
+                <ExternalLink size={20} />
+              </a>
+            )}
+            {sourceHref && (
+              <a
+                href={sourceHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-brand"
+              >
+                <SiGithub size={20} />
+              </a>
+            )}
+          </div>
+          <p>{description}</p>
+          <ul className="flex flex-wrap gap-2 text-sm">
+            {technologies.map((tech, idx) => (
+              <li key={idx}>
+                <Badge
+                  variant="secondary"
+                  className="flex gap-1"
+                  href={tech.href}
+                >
+                  <span className="relative flex h-3 w-3">
+                    <span
+                      className={cn(
+                        "absolute inline-flex h-full w-full rounded-full bg-sky-400",
+                        tech.color,
+                      )}
+                    ></span>
+                  </span>
+                  {tech.name}
+                </Badge>
+              </li>
+            ))}
+          </ul>
+        </div>
         <div className="ml-auto flex items-center gap-8 pr-4 font-bold text-lg">
           <ProjectLikes projectId={id} />
         </div>
