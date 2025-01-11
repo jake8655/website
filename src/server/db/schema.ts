@@ -8,6 +8,7 @@ export const contactPostTable = table("contact_posts", {
   email: t.text("email").notNull(),
   subject: t.text("subject").notNull(),
   message: t.text("message").notNull(),
+  archived: t.integer("archived", { mode: "boolean" }).default(false),
   createdAt: t
     .integer("created_at", { mode: "timestamp" })
     .default(sql`(strftime('%s','now'))`)
@@ -39,3 +40,4 @@ export const sessionTable = table("sessions", {
 
 export type User = InferSelectModel<typeof userTable>;
 export type Session = InferSelectModel<typeof sessionTable>;
+export type Contact = InferSelectModel<typeof contactPostTable>;
