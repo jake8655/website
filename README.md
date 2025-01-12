@@ -1,4 +1,4 @@
-# dominiktoth.vercel.app
+# dominiktoth.com
 
 My personal website and portfolio built with [Next.js](https://nextjs.org).
 
