@@ -12,16 +12,14 @@ import { ShootingStars } from "@/components/ui/shooting-stars";
 import { StarsBackground } from "@/components/ui/stars-background";
 import Wrapper from "@/components/wrapper";
 import { cookies } from "next/headers";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "Dominik Tóth",
   description: "Personal website of Dominik Tóth.",
 };
 
-export default async function Home() {
-  const cookieStore = await cookies();
-  const error = cookieStore.get("custom_error")?.value;
-
+export default function Home() {
   return (
     <ContactModal>
       <div id="home" className="relative z-10">
@@ -29,7 +27,9 @@ export default async function Home() {
           id="background"
           className="-z-20 absolute min-h-full w-full rounded-b-[100px]"
         ></div>
-        <CustomErrorToast error={error} />
+        <Suspense>
+          <CustomError />
+        </Suspense>
         <div className="-z-[1] absolute h-screen w-full">
           <div className="relative h-full w-full">
             <BackgroundBeams />
@@ -117,4 +117,11 @@ export default async function Home() {
       <Footer className="fixed bottom-0 w-full pt-[11vh]" />
     </ContactModal>
   );
+}
+
+async function CustomError() {
+  const cookieStore = await cookies();
+  const error = cookieStore.get("custom_error")?.value;
+
+  return <CustomErrorToast error={error} />;
 }
