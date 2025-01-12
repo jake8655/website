@@ -3,13 +3,11 @@
 import type { Contact } from "@/server/db/schema";
 import type { ColumnDef } from "@tanstack/react-table";
 import {
-  Archive,
   ArrowDown,
   ArrowUp,
   ArrowUpDown,
   ExternalLink,
   MoreHorizontal,
-  Trash2,
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
@@ -21,6 +19,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { ArchiveButton, DeleteButton } from "./action-buttons";
 
 export const columns: ColumnDef<Contact>[] = [
   {
@@ -46,6 +45,7 @@ export const columns: ColumnDef<Contact>[] = [
     enableHiding: false,
   },
   {
+    id: "name",
     accessorKey: "name",
     header: ({ column }) => {
       return (
@@ -68,6 +68,7 @@ export const columns: ColumnDef<Contact>[] = [
     },
   },
   {
+    id: "email",
     accessorKey: "email",
     header: ({ column }) => {
       return (
@@ -90,6 +91,7 @@ export const columns: ColumnDef<Contact>[] = [
     },
   },
   {
+    id: "subject",
     accessorKey: "subject",
     header: ({ column }) => {
       return (
@@ -112,6 +114,7 @@ export const columns: ColumnDef<Contact>[] = [
     },
   },
   {
+    id: "message",
     accessorKey: "message",
     header: ({ column }) => {
       return (
@@ -134,6 +137,7 @@ export const columns: ColumnDef<Contact>[] = [
     },
   },
   {
+    id: "date",
     accessorKey: "createdAt",
     header: ({ column }) => {
       return (
@@ -154,16 +158,16 @@ export const columns: ColumnDef<Contact>[] = [
       return date.toLocaleDateString();
     },
     sortingFn: (rowA, rowB) => {
-      const dateA = rowA.getValue("createdAt") as Date;
-      const dateB = rowB.getValue("createdAt") as Date;
+      const dateA = rowA.getValue("date") as Date;
+      const dateB = rowB.getValue("date") as Date;
       return dateA.getTime() - dateB.getTime();
     },
     sortDescFirst: false,
   },
   {
     id: "actions",
-    cell: () => {
-      // const post = row.original;
+    cell: ({ row }) => {
+      const post = row.original;
 
       return (
         <DropdownMenu>
@@ -179,13 +183,8 @@ export const columns: ColumnDef<Contact>[] = [
               <ExternalLink /> View entire message
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Archive /> Archive
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Trash2 />
-              Delete
-            </DropdownMenuItem>
+            <ArchiveButton id={post.id} archived={post.archived!} />
+            {post.archived ? <DeleteButton id={post.id} /> : null}
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -194,8 +193,8 @@ export const columns: ColumnDef<Contact>[] = [
   },
   {
     id: "archived",
+    accessorKey: "archived",
     enableHiding: false,
     enableSorting: false,
-    accessorFn: data => data.archived,
   },
 ];

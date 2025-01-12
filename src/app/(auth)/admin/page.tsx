@@ -1,13 +1,10 @@
-import { columns } from "@/components/admin/columns";
-import { DataTable } from "@/components/admin/data-table";
+import DataTable from "@/components/admin/data-table";
 import { AdminNavbar } from "@/components/navbar";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import Wrapper from "@/components/wrapper";
 import { env } from "@/env";
 import { getCurrentSession } from "@/server/auth/session";
-import { db } from "@/server/db";
-import { contactPostTable } from "@/server/db/schema";
-import { desc } from "drizzle-orm";
+import { api, HydrateClient } from "@/trpc/server";
 import { redirect } from "next/navigation";
 
 // {post.message
@@ -24,11 +21,6 @@ export default async function AdminDashboard() {
   const { user } = await getCurrentSession();
   if (user?.githubId !== env.MY_GITHUB_ID) return redirect("/");
 
-  const data = await db
-    .select()
-    .from(contactPostTable)
-    .orderBy(desc(contactPostTable.createdAt));
-
   return (
     <div className="relative z-30">
       <div className="-z-[1] absolute h-screen w-full">
@@ -41,8 +33,19 @@ export default async function AdminDashboard() {
         <h1 className="mb-8 text-center font-bold text-4xl md:text-5xl">
           Contact Posts
         </h1>
-        <DataTable columns={columns} data={data} />
+        <DataTableWithPrefetching />
       </Wrapper>
     </div>
+  );
+}
+
+// Prefetch the data on the server and stream in result
+async function DataTableWithPrefetching() {
+  void api.admin.getMessageData.prefetch();
+
+  return (
+    <HydrateClient>
+      <DataTable />
+    </HydrateClient>
   );
 }

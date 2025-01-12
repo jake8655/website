@@ -20,7 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Archive, Trash2 } from "lucide-react";
+import { api } from "@/trpc/react";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import {
@@ -37,19 +37,64 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { Skeleton } from "../ui/skeleton";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
+import { ArchiveBulkButton, DeleteBulkButton } from "./action-buttons";
+import { columns } from "./columns";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export function DataTable<TData, TValue>({
+export default function DataTable() {
+  const { data, isLoading } = api.admin.getMessageData.useQuery();
+
+  // idk why it requires actual data, it should accept Array({})
+  const tableData = isLoading
+    ? [
+        ...Array(10).fill({
+          id: "",
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+          archived: false,
+          createdAt: new Date(),
+        }),
+        ...Array(10).fill({
+          id: "",
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+          archived: true,
+          createdAt: new Date(),
+        }),
+      ]
+    : data!;
+
+  const tableColumns = isLoading
+    ? columns.map(col => ({
+        ...col,
+        header: col.id === "select" ? null : col.header,
+        cell: () =>
+          ["select", "actions"].includes(col.id!) ? null : (
+            <Skeleton className="h-6 w-full rounded-full" />
+          ),
+      }))
+    : columns;
+
+  // @ts-expect-error some porblem with the types, idk idc
+  return <TableView columns={tableColumns} data={tableData as Contact[]} />;
+}
+
+function TableView<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -98,7 +143,7 @@ export function DataTable<TData, TValue>({
         />
         <div className="ml-auto flex gap-2">
           <Select
-            defaultValue="not-archived"
+            defaultValue="active"
             onValueChange={option =>
               table.getColumn("archived")?.setFilterValue(option === "archived")
             }
@@ -108,7 +153,7 @@ export function DataTable<TData, TValue>({
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="archived">Archived</SelectItem>
-              <SelectItem value="not-archived">Not Archived</SelectItem>
+              <SelectItem value="active">Active</SelectItem>
             </SelectContent>
           </Select>
           <DropdownMenu>
@@ -129,7 +174,7 @@ export function DataTable<TData, TValue>({
                         column.toggleVisibility(!!value)
                       }
                     >
-                      {column.id === "createdAt" ? "Date" : column.id}
+                      {column.id}
                     </DropdownMenuCheckboxItem>
                   );
                 })}
@@ -196,27 +241,29 @@ export function DataTable<TData, TValue>({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="warning" size="sm">
-                  <Archive />
-                </Button>
+                <ArchiveBulkButton
+                  rows={table.getFilteredSelectedRowModel().rows}
+                />
               </TooltipTrigger>
               <TooltipContent>
                 <p>Archive</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="destructive" size="sm">
-                  <Trash2 />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Delete</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          {table.getColumn("archived")?.getFilterValue() ? (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <DeleteBulkButton
+                    rows={table.getFilteredSelectedRowModel().rows}
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Delete</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          ) : null}
         </div>
         <Button
           variant="outline"
