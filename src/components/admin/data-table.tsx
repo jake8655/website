@@ -40,12 +40,6 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Skeleton } from "../ui/skeleton";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../ui/tooltip";
 import { ArchiveBulkButton, DeleteBulkButton } from "./action-buttons";
 import { columns } from "./columns";
 
