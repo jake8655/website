@@ -121,7 +121,7 @@ function TableView<TData, TValue>({
         <Input
           placeholder="Search..."
           onChange={event => table.setGlobalFilter(String(event.target.value))}
-          className="max-w-sm"
+          className="max-w-sm bg-background"
         />
         <div className="ml-auto flex gap-2">
           <Select
