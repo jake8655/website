@@ -7,10 +7,12 @@
  * need to use are documented accordingly near the end.
  */
 
+import { env } from "@/env";
 import { db } from "@/server/db";
-import { initTRPC } from "@trpc/server";
+import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { getCurrentSession } from "../auth/session";
 import {
   type RatelimitError,
   createRatelimiter,
@@ -33,7 +35,10 @@ import {
 export const createTRPCContext = async (opts: {
   headers: Headers;
 }) => {
+  const { user } = await getCurrentSession();
+
   return {
+    user,
     db,
     redis,
     ratelimit,
@@ -120,3 +125,26 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  * are logged in.
  */
 export const publicProcedure = t.procedure.use(timingMiddleware);
+
+/**
+ * Protected (authenticated) procedure
+ *
+ * If you want a query or mutation to ONLY be accessible to admins, use this. It verifies
+ * the session is valid and guarantees the user is an admin.
+ * Ratelimiting is not required, because only I can access these endpoints.
+ *
+ * @see https://trpc.io/docs/procedures
+ */
+export const protectedProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(({ ctx, next }) => {
+    if (!ctx.user || ctx.user.githubId !== env.MY_GITHUB_ID) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+    return next({
+      ctx: {
+        // infers the `user` as non-nullable
+        user: ctx.user,
+      },
+    });
+  });

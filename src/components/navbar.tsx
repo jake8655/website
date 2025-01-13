@@ -2,6 +2,7 @@
 
 import { useActiveIdx } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
+import { logout } from "@/server/auth/actions";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ScrollToPlugin from "gsap/ScrollToPlugin";
@@ -29,6 +30,79 @@ const sections = [
   },
 ];
 
+export function AdminNavbar() {
+  return (
+    <>
+      {/* Empty div to move navbar lower so the sticky positioning triggers later */}
+      <div className="h-16 w-full"></div>
+      <nav className="sticky top-8 z-50">
+        <RevealOnScroll
+          variants={{
+            hidden: {
+              opacity: 0,
+              y: "-100%",
+            },
+            visible: {
+              opacity: 1,
+              y: 0,
+            },
+          }}
+          transition={{
+            delay: 0.2,
+          }}
+          once
+        >
+          <Wrapper size="sm">
+            <ul
+              role="navigation"
+              aria-label="Main navigation"
+              className="flex items-center justify-between rounded-xl border-2 border-brand bg-blue-700/30 px-2 py-3 font-semibold text-sm backdrop-blur-lg md:p-4 md:text-xl md:backdrop-blur-xl"
+            >
+              <li>
+                <Image
+                  src="/images/memoji.png"
+                  width={50}
+                  height={50}
+                  className="h-8 w-8 md:h-12 md:w-12"
+                  alt="Dominik Tóth"
+                  priority
+                />
+              </li>
+              <li className="mx-2 ml-auto md:mx-4 md:ml-auto">
+                <Link
+                  className="relative transition-colors hover:text-brand"
+                  role="menuitem"
+                  href="/"
+                >
+                  Homepage
+                </Link>
+              </li>
+              <li className="mx-2 md:mx-4">
+                <Link
+                  className="relative transition-colors hover:text-brand"
+                  role="menuitem"
+                  href="/admin"
+                >
+                  Dashboard
+                </Link>
+              </li>
+              <li className="mx-2 md:mx-4">
+                <button
+                  className="relative transition-colors hover:text-brand"
+                  role="menuitem"
+                  onClick={logout}
+                >
+                  Sign out
+                </button>
+              </li>
+            </ul>
+          </Wrapper>
+        </RevealOnScroll>
+      </nav>
+    </>
+  );
+}
+
 export default function Navbar() {
   const { setOpen } = useModal();
 
@@ -54,7 +128,7 @@ export default function Navbar() {
     <>
       {/* Empty div to move navbar lower so the sticky positioning triggers later */}
       <div className="h-16 w-full"></div>
-      <nav className="nav sticky top-8 z-50">
+      <nav className="sticky top-8 z-50">
         <RevealOnScroll
           variants={{
             hidden: {

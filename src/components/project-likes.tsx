@@ -81,7 +81,7 @@ function ProjectLikeButton({
       // Return the previous data so we can revert if something goes wrong
       return { prevData };
     },
-    onError: (err, __, ctx) => {
+    onError: (err, _, ctx) => {
       // If the mutation fails, use the context-value from onMutate
       utils.projectLike.getProjectLikeCount.setData(
         { projectId },
