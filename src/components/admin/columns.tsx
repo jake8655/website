@@ -2,6 +2,7 @@
 
 import type { Contact } from "@/server/db/schema";
 import type { ColumnDef } from "@tanstack/react-table";
+import { CalendarDays, Mail } from "lucide-react";
 import {
   ArrowDown,
   ArrowUp,
@@ -9,6 +10,13 @@ import {
   ExternalLink,
   MoreHorizontal,
 } from "lucide-react";
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  useModal,
+} from "../ui/animated-modal";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import {
@@ -170,23 +178,23 @@ export const columns: ColumnDef<Contact>[] = [
       const post = row.original;
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>
-              <ExternalLink /> View entire message
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <ArchiveButton id={post.id} archived={post.archived!} />
-            {post.archived ? <DeleteButton id={post.id} /> : null}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <MessageModal post={post}>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <ViewMessageButton />
+              <DropdownMenuSeparator />
+              <ArchiveButton id={post.id} archived={post.archived!} />
+              {post.archived ? <DeleteButton id={post.id} /> : null}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </MessageModal>
       );
     },
     enableHiding: false,
@@ -198,3 +206,47 @@ export const columns: ColumnDef<Contact>[] = [
     enableSorting: false,
   },
 ];
+
+function ViewMessageButton() {
+  const { setOpen } = useModal();
+
+  return (
+    <DropdownMenuItem onClick={() => setOpen(true)}>
+      <ExternalLink /> View entire message
+    </DropdownMenuItem>
+  );
+}
+
+function MessageModal({
+  post,
+  children,
+}: { post: Contact; children: React.ReactNode }) {
+  return (
+    <Modal>
+      <ModalBody>
+        <ModalContent>
+          <h3 className="mb-4 text-center font-bold text-3xl">{post.name}</h3>
+          <div className="space-y-4">
+            <p className="text-center text-base text-neutral-300">
+              {post.subject}
+            </p>
+            <p className="text-balance text-neutral-500 text-sm">
+              {post.message
+                .split("")
+                .map((char, i) =>
+                  char === "\n" ? <br key={i} /> : <span key={i}>{char}</span>,
+                )}
+            </p>
+          </div>
+        </ModalContent>
+        <ModalFooter className="flex items-center gap-2">
+          <CalendarDays size={16} className="shrink-0" />
+          <p>Posted on {post.createdAt.toLocaleDateString()}</p>
+          <p className="ml-auto">{post.email}</p>
+          <Mail size={16} className="shrink-0" />
+        </ModalFooter>
+      </ModalBody>
+      {children}
+    </Modal>
+  );
+}
