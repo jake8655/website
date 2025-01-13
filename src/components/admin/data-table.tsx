@@ -55,28 +55,13 @@ interface DataTableProps<TData, TValue> {
 export default function DataTable() {
   const { data, isLoading } = api.admin.getMessageData.useQuery();
 
-  // idk why it requires actual data, it should accept Array({})
   const tableData = isLoading
-    ? [
-        ...Array(10).fill({
-          id: "",
-          name: "",
-          email: "",
-          subject: "",
-          message: "",
-          archived: false,
-          createdAt: new Date(),
-        }),
-        ...Array(10).fill({
-          id: "",
-          name: "",
-          email: "",
-          subject: "",
-          message: "",
-          archived: true,
-          createdAt: new Date(),
-        }),
-      ]
+    ? Array(20)
+        .fill(0)
+        .map((_, i) => ({
+          // `archived` is a required key because its used in the initial filter state
+          archived: i % 2 === 0,
+        }))
     : data!;
 
   const tableColumns = isLoading
