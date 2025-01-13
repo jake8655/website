@@ -35,8 +35,7 @@ export default function ContactModal({
           <Form />
         </ModalContent>
         <ModalFooter className="flex items-center gap-2">
-          {/* TODO: On specific viewports, the Link icon is shrunken */}
-          <Link size={16} />
+          <Link size={16} className="shrink-0" />
           Please feel free to contact me if you have any questions or ideas
           you'd like to discuss.
         </ModalFooter>
