@@ -1,10 +1,17 @@
 "use client";
+import type { Contact } from "@/server/db/schema";
 import { api } from "@/trpc/react";
 import type { Row } from "@tanstack/react-table";
 import { Archive, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { DropdownMenuItem } from "../ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 
 export function ArchiveButton({
   id,
@@ -130,22 +137,153 @@ export function DeleteButton({ id }: { id: number }) {
   );
 }
 
-export function ArchiveBulkButton<TData>({ rows }: { rows: Row<TData>[] }) {
-  if (rows.length === 0) return null;
+export function ArchiveBulkButton({
+  rows,
+  resetSelection,
+}: { rows: Row<Contact>[]; resetSelection: () => void }) {
+  const ids = rows.map(row => row.original.id);
+  const utils = api.useUtils();
 
-  return (
-    <Button variant="warning" size="sm">
-      <Archive />
-    </Button>
-  );
+  const { mutate, isPending } = api.admin.archiveBulk.useMutation({
+    onMutate: async () => {
+      // Cancel outgoing fetches (so they don't overwrite our optimistic update)
+      await utils.admin.getMessageData.cancel();
+
+      // Get the data from the queryCache
+      const prevData = utils.admin.getMessageData.getData()!;
+
+      // Optimistically update the data with our new post
+      utils.admin.getMessageData.setData(undefined, old => {
+        return old!.map(post => {
+          if (ids.includes(post.id))
+            return { ...post, archived: !post.archived };
+          return post;
+        });
+      });
+
+      // Return the previous data so we can revert if something goes wrong
+      return { prevData };
+    },
+    onError: (_, vars, ctx) => {
+      // If the mutation fails, use the context-value from onMutate
+      utils.admin.getMessageData.setData(undefined, ctx!.prevData);
+      const previousArchived = ctx!.prevData.find(
+        post => post.id === vars[0],
+      )!.archived;
+
+      toast.error(
+        `Error ${previousArchived ? "restoring" : "archiving"} messages`,
+        {
+          description: `There was an internal server error while ${
+            previousArchived ? "restoring" : "archiving"
+          } the messages.`,
+          action: {
+            label: "Try again",
+            onClick: () => mutate(ids),
+          },
+        },
+      );
+    },
+    onSettled: () => {
+      // Sync with server once mutation has settled
+      utils.admin.getMessageData.invalidate();
+    },
+    onSuccess: (_, vars, ctx) => {
+      const previousArchived = ctx!.prevData.find(
+        post => post.id === vars[0],
+      )!.archived;
+
+      toast.success(
+        `Successfully ${previousArchived ? "restored" : "archived"} messages`,
+      );
+      resetSelection();
+    },
+  });
+
+  return rows.length > 0 ? (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant={rows[0]!.original.archived ? "success" : "warning"}
+            size="sm"
+            onClick={() => mutate(ids)}
+            disabled={isPending}
+          >
+            <Archive />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{rows[0]!.original.archived ? "Restore" : "Archive"}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  ) : null;
 }
 
-export function DeleteBulkButton<TData>({ rows }: { rows: Row<TData>[] }) {
-  if (rows.length === 0) return null;
+export function DeleteBulkButton({
+  rows,
+  resetSelection,
+}: { rows: Row<Contact>[]; resetSelection: () => void }) {
+  const ids = rows.map(row => row.original.id);
+  const utils = api.useUtils();
 
-  return (
-    <Button variant="destructive" size="sm">
-      <Trash2 />
-    </Button>
-  );
+  const { mutate, isPending } = api.admin.deleteBulk.useMutation({
+    onMutate: async () => {
+      // Cancel outgoing fetches (so they don't overwrite our optimistic update)
+      await utils.admin.getMessageData.cancel();
+
+      // Get the data from the queryCache
+      const prevData = utils.admin.getMessageData.getData()!;
+
+      // Optimistically update the data with our new post
+      utils.admin.getMessageData.setData(undefined, old =>
+        old!.filter(post => !ids.includes(post.id)),
+      );
+
+      // Return the previous data so we can revert if something goes wrong
+      return { prevData };
+    },
+    onError: (_, __, ctx) => {
+      // If the mutation fails, use the context-value from onMutate
+      utils.admin.getMessageData.setData(undefined, ctx!.prevData);
+
+      toast.error("Error deleting messages", {
+        description:
+          "There was an internal server error while deleting messages.",
+        action: {
+          label: "Try again",
+          onClick: () => mutate(ids),
+        },
+      });
+    },
+    onSettled: () => {
+      // Sync with server once mutation has settled
+      utils.admin.getMessageData.invalidate();
+    },
+    onSuccess: () => {
+      toast.success("Successfully deleted messages");
+      resetSelection();
+    },
+  });
+
+  return rows.length > 0 ? (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={() => mutate(ids)}
+            disabled={isPending}
+          >
+            <Trash2 />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Delete</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  ) : null;
 }

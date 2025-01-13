@@ -205,6 +205,12 @@ export const columns: ColumnDef<Contact>[] = [
     enableHiding: false,
     enableSorting: false,
   },
+  {
+    id: "id",
+    accessorKey: "id",
+    enableHiding: false,
+    enableSorting: false,
+  },
 ];
 
 function ViewMessageButton() {

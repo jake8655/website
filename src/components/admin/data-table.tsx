@@ -20,8 +20,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import type { Contact } from "@/server/db/schema";
 import { api } from "@/trpc/react";
 import { useState } from "react";
+import RevealOnScroll from "../reveal-on-scroll";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -61,6 +63,7 @@ export default function DataTable() {
         .map((_, i) => ({
           // `archived` is a required key because its used in the initial filter state
           archived: i % 2 === 0,
+          id: i,
         }))
     : data!;
 
@@ -79,16 +82,14 @@ export default function DataTable() {
   return <TableView columns={tableColumns} data={tableData as Contact[]} />;
 }
 
-function TableView<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
+function TableView<TValue>({ columns, data }: DataTableProps<Contact, TValue>) {
   // Disable react compiler for this component because the table doesnt update if the compiler is enabled
   // eslint-disable-next-line react-compiler/react-compiler
   "use no memo";
 
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     archived: false,
+    id: false,
   });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
     { id: "archived", value: false },
@@ -116,7 +117,19 @@ function TableView<TData, TValue>({
   });
 
   return (
-    <div>
+    <RevealOnScroll
+      once
+      variants={{
+        hidden: {
+          y: "100%",
+          opacity: 0,
+        },
+        visible: {
+          y: 0,
+          opacity: 1,
+        },
+      }}
+    >
       <div className="flex items-center py-4">
         <Input
           placeholder="Search..."
@@ -220,31 +233,15 @@ function TableView<TData, TValue>({
             {table.getFilteredSelectedRowModel().rows.length} of{" "}
             {table.getFilteredRowModel().rows.length} row(s) selected.
           </p>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <ArchiveBulkButton
-                  rows={table.getFilteredSelectedRowModel().rows}
-                />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Archive</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <ArchiveBulkButton
+            rows={table.getFilteredSelectedRowModel().rows}
+            resetSelection={table.resetRowSelection}
+          />
           {table.getColumn("archived")?.getFilterValue() ? (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <DeleteBulkButton
-                    rows={table.getFilteredSelectedRowModel().rows}
-                  />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Delete</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <DeleteBulkButton
+              rows={table.getFilteredSelectedRowModel().rows}
+              resetSelection={table.resetRowSelection}
+            />
           ) : null}
         </div>
         <Button
@@ -267,6 +264,6 @@ function TableView<TData, TValue>({
           Next
         </Button>
       </div>
-    </div>
+    </RevealOnScroll>
   );
 }
