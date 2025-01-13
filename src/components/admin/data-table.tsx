@@ -134,11 +134,8 @@ function TableView<TData, TValue>({
     <div>
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={event =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
+          placeholder="Search..."
+          onChange={event => table.setGlobalFilter(String(event.target.value))}
           className="max-w-sm"
         />
         <div className="ml-auto flex gap-2">
