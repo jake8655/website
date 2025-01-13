@@ -1,5 +1,6 @@
 import DataTable from "@/components/admin/data-table";
 import { AdminNavbar } from "@/components/navbar";
+import RevealOnScroll from "@/components/reveal-on-scroll";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import Wrapper from "@/components/wrapper";
 import { env } from "@/env";
@@ -20,9 +21,20 @@ export default async function AdminDashboard() {
       </div>
       <AdminNavbar />
       <Wrapper className="pt-16 pb-16 md:pt-32 lg:pt-48">
-        <h1 className="mb-8 text-center font-bold text-4xl md:text-5xl">
-          Contact Posts
-        </h1>
+        <RevealOnScroll
+          once
+          variants={{
+            hidden: { y: "-100%", opacity: 0 },
+            visible: { y: 0, opacity: 1 },
+          }}
+          transition={{
+            delay: 0.6,
+          }}
+        >
+          <h1 className="mb-8 text-center font-bold text-4xl md:text-5xl">
+            Contact Posts
+          </h1>
+        </RevealOnScroll>
         <DataTableWithPrefetching />
       </Wrapper>
     </div>
