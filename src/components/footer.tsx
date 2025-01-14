@@ -49,9 +49,8 @@ export default function Footer({ className }: { className?: string }) {
               <FooterEntry href="https://discord.com/users/300963276223807488">
                 <SiDiscord className="text-discord-blue" /> @jake8655
               </FooterEntry>
-              <FooterEntry href="https://bsky.app/profile/jake8655.bsky.social">
-                <SiBluesky className="text-bluesky-blue" />{" "}
-                @jake8655.bsky.social
+              <FooterEntry href="https://bsky.app/profile/dominiktoth.com">
+                <SiBluesky className="text-bluesky-blue" /> @dominiktoth.com
               </FooterEntry>
             </div>
             <div className="space-y-2">
