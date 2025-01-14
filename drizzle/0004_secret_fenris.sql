@@ -1,0 +1,1 @@
+ALTER TABLE `contact_posts` ADD `archived` integer DEFAULT false;
