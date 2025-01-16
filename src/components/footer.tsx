@@ -40,8 +40,8 @@ export default function Footer({ className }: { className?: string }) {
               <h4 className="mb-4 font-semibold text-xl md:text-2xl">
                 Socials
               </h4>
-              <FooterEntry href="mailto:dominik8655@gmail.com">
-                <Mail className="text-white" /> dominik8655@gmail.com
+              <FooterEntry href="mailto:info@dominiktoth.com">
+                <Mail className="text-white" /> info@dominiktoth.com
               </FooterEntry>
               <FooterEntry href="https://github.com/jake8655">
                 <SiGithub className="text-white" /> @jake8655
