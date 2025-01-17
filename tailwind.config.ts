@@ -34,7 +34,7 @@ export default {
       fontFamily: {
         sans: ["var(--font-geist-sans)"],
         mono: ["var(--font-geist-mono)"],
-        emoji: ["Noto Color Emoji, sans-serif"],
+        emoji: ["var(--font-noto-emoji)"],
       },
       colors: {
         border: "hsl(var(--border))",
