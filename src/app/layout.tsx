@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import NextTopLoader from "nextjs-toploader";
@@ -29,6 +30,7 @@ export default function Layout({
       className={`${GeistSans.variable} text-brand-light ${GeistMono.variable} dark antialiased selection:bg-gradient-green selection:text-teal-900`}
     >
       <body className="font-sans">
+        <SpeedInsights />
         <FilteredPostHogProvider>
           <TRPCReactProvider>
             <ReactQueryDevtools />
