@@ -37,9 +37,11 @@ export default function RevealOnScroll({
   const mainControls = useAnimation();
 
   useEffect(() => {
+    if (isSmallScreen) return;
+
     if (isInview) mainControls.start("visible");
 
-    if (isSmallScreen || once) return;
+    if (once) return;
     if (!isInview) mainControls.start("hidden");
   }, [isInview, mainControls, isSmallScreen, once]);
 
@@ -47,7 +49,7 @@ export default function RevealOnScroll({
     <div ref={containerRef} className={cn(outerClassName)}>
       <motion.div
         variants={variants}
-        initial={initial || "hidden"}
+        initial={isSmallScreen ? "visible" : initial || "hidden"}
         animate={mainControls}
         className={cn(className)}
         id={id}

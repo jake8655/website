@@ -41,9 +41,6 @@ export const Card = ({
         hidden: { opacity: 0, scale: 0.5 },
         visible: { opacity: 1, scale: 1 },
       }}
-      transition={{
-        delay: index * 0.2,
-      }}
       once
     >
       <Container

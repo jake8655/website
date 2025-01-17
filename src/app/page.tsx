@@ -51,9 +51,6 @@ export default function Home() {
               y: 0,
             },
           }}
-          transition={{
-            delay: 0.6,
-          }}
         >
           <ArrowTitle
             text="My Experience"

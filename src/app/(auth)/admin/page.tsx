@@ -27,9 +27,6 @@ export default async function AdminDashboard() {
             hidden: { y: "-100%", opacity: 0 },
             visible: { y: 0, opacity: 1 },
           }}
-          transition={{
-            delay: 0.6,
-          }}
         >
           <h1 className="mb-8 text-center font-bold text-4xl md:text-5xl">
             Contact Posts
