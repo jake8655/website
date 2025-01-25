@@ -35,7 +35,7 @@
     "@react-spring/web": "^9.7.5",
     "@react-three/drei": "^9.120.1",
     "@react-three/fiber": "^9.0.0-rc.1",
-    "@t3-oss/env-nextjs": "^0.11.1",
+    "@t3-oss/env-nextjs": "^0.12.0",
     "@tanstack/react-query": "^5.62.3",
     "@tanstack/react-query-devtools": "^5.62.3",
     "@tanstack/react-query-next-experimental": "^5.62.3",
