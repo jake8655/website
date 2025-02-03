@@ -15,7 +15,8 @@ import { Suspense } from "react";
 
 export const metadata = {
   title: "Dominik Tóth",
-  description: "Personal website of Dominik Tóth.",
+  description:
+    "Dominik Tóth's personal website. I am a student and web developer building modern software.",
 };
 
 const BackgroundBeams = dynamic(
