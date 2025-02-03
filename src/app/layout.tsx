@@ -36,6 +36,12 @@ export const metadata: Metadata = {
     "React developer",
     "JavaScript developer",
     "TypeScript developer",
+    "full-stack developer",
+    "web development",
+    "software development",
+    "personal website",
+    "personal portfolio",
+    "tech blog",
   ],
   authors: [
     {
@@ -73,6 +79,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
     nocache: false,
+    noarchive: false,
+    notranslate: false,
+    "max-video-preview": -1,
     googleBot: {
       index: true,
       follow: true,
