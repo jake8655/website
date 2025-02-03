@@ -13,12 +13,6 @@ import dynamic from "next/dynamic";
 import { cookies } from "next/headers";
 import { Suspense } from "react";
 
-export const metadata = {
-  title: "Dominik Tóth",
-  description:
-    "Dominik Tóth's personal website. I am a student and web developer building modern software.",
-};
-
 const BackgroundBeams = dynamic(
   () => import("@/components/ui/background-beams"),
 );

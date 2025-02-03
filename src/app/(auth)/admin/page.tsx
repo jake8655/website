@@ -12,7 +12,7 @@ const BackgroundBeams = dynamic(
 );
 
 export const metadata = {
-  title: "Dominik Tóth • Admin Dashboard",
+  title: "Admin Dashboard",
   description: "Admin Dashboard of Dominik Tóth.",
 };
 

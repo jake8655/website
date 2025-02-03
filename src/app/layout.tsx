@@ -18,8 +18,12 @@ import "@/app/globals.css";
 import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
-  title: "Dominik Tóth",
-  description: "Personal website of Dominik Tóth.",
+  title: {
+    template: "Dominik Tóth • %s",
+    default: "Dominik Tóth",
+  },
+  description:
+    "Dominik Tóth's personal website. I am a student and web developer building modern software.",
 };
 
 const notoEmoji = Noto_Color_Emoji({
