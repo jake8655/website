@@ -11,6 +11,11 @@ const BackgroundBeams = dynamic(
   () => import("@/components/ui/background-beams"),
 );
 
+export const metadata = {
+  title: "Admin Dashboard",
+  description: "Admin Dashboard of Dominik Tóth.",
+};
+
 export default async function AdminDashboard() {
   const { user } = await getCurrentSession();
   if (user?.githubId !== env.MY_GITHUB_ID) return redirect("/");
