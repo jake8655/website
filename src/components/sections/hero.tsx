@@ -2,7 +2,6 @@ import { env } from "@/env";
 import { cn } from "@/lib/utils";
 import HeroInView from "../hero-in-view";
 import Macbook from "../macbook";
-import RevealOnScroll from "../reveal-on-scroll";
 import { ModalTrigger } from "../ui/animated-modal";
 import {
   Tooltip,
@@ -28,16 +27,11 @@ export default function Hero({
 
   return (
     <HeroInView id={id} className={className}>
-      <RevealOnScroll
-        variants={{
-          hidden: { x: "-50%", opacity: 0 },
-          visible: { x: 0, opacity: 1 },
-        }}
-      >
-        <div className="flex w-fit flex-col gap-4">
-          <div className="flex justify-center">
-            <WorkButton />
-          </div>
+      <div className="flex w-fit flex-col gap-4">
+        <div className="flex justify-center">
+          <WorkButton />
+        </div>
+        <div>
           <h1 className="w-fit font-bold text-4xl leading-tight md:text-5xl lg:text-7xl">
             Hi there! I&apos;m <br />
             <TooltipProvider delayDuration={100}>
@@ -74,19 +68,11 @@ export default function Hero({
           <span className="text-brand">aviation</span> enthusiast from Slovakia.{" "}
           <span className="font-emoji">{env.NEXT_PUBLIC_SLOVAKIA_EMOJI}</span>
         </p>
-      </RevealOnScroll>
+      </div>
 
-      <RevealOnScroll
-        outerClassName="h-full min-h-[250px] lg:min-h-0"
-        className="h-full"
-        variants={{
-          hidden: { x: "50%", opacity: 0 },
-          visible: { x: 0, opacity: 1 },
-        }}
-        initial="visible"
-      >
+      <div className="h-full min-h-[250px] lg:min-h-0">
         <Macbook />
-      </RevealOnScroll>
+      </div>
     </HeroInView>
   );
 }

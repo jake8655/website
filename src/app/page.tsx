@@ -3,7 +3,6 @@ import ContactModal from "@/components/contact-modal";
 import CustomErrorToast from "@/components/custom-error-toast";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
-import RevealOnScroll from "@/components/reveal-on-scroll";
 import Experience from "@/components/sections/experience";
 import Hero from "@/components/sections/hero";
 import Projects from "@/components/sections/projects";
@@ -39,19 +38,7 @@ export default function Home() {
         <Wrapper>
           <Hero className="pt-16 md:pt-32 lg:pt-48" />
         </Wrapper>
-        <RevealOnScroll
-          className="grid place-items-center"
-          variants={{
-            hidden: {
-              opacity: 0,
-              y: "-100%",
-            },
-            visible: {
-              opacity: 1,
-              y: 0,
-            },
-          }}
-        >
+        <div className="grid place-items-center">
           <ArrowTitle
             text="My Experience"
             slideDirection="bottom"
@@ -59,7 +46,7 @@ export default function Home() {
             id="experience"
             priority
           />
-        </RevealOnScroll>
+        </div>
         <Experience />
         <div className="relative">
           <div className="mt-64 grid place-items-center">
