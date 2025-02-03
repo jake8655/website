@@ -27,11 +27,11 @@ export default function Hero({
 
   return (
     <HeroInView id={id} className={className}>
-      <div className="flex w-fit flex-col gap-4">
-        <div className="flex justify-center">
-          <WorkButton />
-        </div>
-        <div>
+      <div>
+        <div className="flex w-fit flex-col gap-4">
+          <div className="flex justify-center">
+            <WorkButton />
+          </div>
           <h1 className="w-fit font-bold text-4xl leading-tight md:text-5xl lg:text-7xl">
             Hi there! I&apos;m <br />
             <TooltipProvider delayDuration={100}>
