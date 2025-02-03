@@ -53,6 +53,8 @@ export default function Footer({ className }: { className?: string }) {
                   alt="Next.js logo"
                   width={24}
                   height={24}
+                  priority={false}
+                  loading="lazy"
                 />{" "}
                 Next.js
               </FooterEntry>

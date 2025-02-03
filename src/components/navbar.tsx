@@ -76,6 +76,8 @@ export default function Navbar() {
                   src="/images/memoji.png"
                   width={50}
                   height={50}
+                  quality={90}
+                  sizes="50px"
                   className="h-8 w-8 md:h-12 md:w-12"
                   alt="Dominik Tóth"
                   priority
