@@ -6,10 +6,10 @@ import Navbar from "@/components/navbar";
 import Experience from "@/components/sections/experience";
 import Hero from "@/components/sections/hero";
 import Projects from "@/components/sections/projects";
-import { BackgroundBeams } from "@/components/ui/background-beams";
 import { ShootingStars } from "@/components/ui/shooting-stars";
 import { StarsBackground } from "@/components/ui/stars-background";
 import Wrapper from "@/components/wrapper";
+import dynamic from "next/dynamic";
 import { cookies } from "next/headers";
 import { Suspense } from "react";
 
@@ -17,6 +17,10 @@ export const metadata = {
   title: "Dominik Tóth",
   description: "Personal website of Dominik Tóth.",
 };
+
+const BackgroundBeams = dynamic(
+  () => import("@/components/ui/background-beams"),
+);
 
 export default function Home() {
   return (

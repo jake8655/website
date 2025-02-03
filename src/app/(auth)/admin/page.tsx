@@ -1,11 +1,15 @@
 import DataTable from "@/components/admin/data-table";
 import { AdminNavbar } from "@/components/navbar";
-import { BackgroundBeams } from "@/components/ui/background-beams";
 import Wrapper from "@/components/wrapper";
 import { env } from "@/env";
 import { getCurrentSession } from "@/server/auth/session";
 import { HydrateClient, api } from "@/trpc/server";
+import dynamic from "next/dynamic";
 import { redirect } from "next/navigation";
+
+const BackgroundBeams = dynamic(
+  () => import("@/components/ui/background-beams"),
+);
 
 export default async function AdminDashboard() {
   const { user } = await getCurrentSession();
