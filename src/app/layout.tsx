@@ -24,6 +24,77 @@ export const metadata: Metadata = {
   },
   description:
     "Dominik Tóth's personal website. I am a student and web developer building modern software.",
+
+  generator: "Next.js",
+  applicationName: "Dominik Tóth",
+  referrer: "origin-when-cross-origin",
+  keywords: [
+    "Dominik Tóth",
+    "software engineer",
+    "web developer",
+    "Next.js developer",
+    "React developer",
+    "JavaScript developer",
+    "TypeScript developer",
+  ],
+  authors: [
+    {
+      name: "Dominik Tóth",
+      url: "https://dominiktoth.com",
+    },
+  ],
+  creator: "Dominik Tóth",
+  publisher: "Dominik Tóth",
+  formatDetection: {
+    telephone: false,
+    address: false,
+    email: true,
+  },
+
+  openGraph: {
+    title: "Dominik Tóth",
+    description:
+      "Dominik Tóth's personal website. I am a student and web developer building modern software.",
+    url: "https://dominiktoth.com",
+    siteName: "Dominik Tóth",
+    images: [
+      {
+        url: "https://dominiktoth.com/images/memoji.png",
+        width: 421,
+        height: 421,
+        alt: "Dominik Tóth",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Dominik Tóth",
+    description:
+      "Dominik Tóth's personal website. I am a student and web developer building modern software.",
+    siteId: "1556401454931476484",
+    creator: "@jake8655",
+    creatorId: "1556401454931476484",
+    images: ["https://dominiktoth.com/images/memoji.png"],
+  },
+
+  assets: ["https://dominiktoth.com/images"],
+  category: "technology",
 };
 
 const notoEmoji = Noto_Color_Emoji({
