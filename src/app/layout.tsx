@@ -4,6 +4,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
+import { Noto_Color_Emoji } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 
 import LightBlob from "@/components/light-blob";
@@ -21,13 +22,19 @@ export const metadata: Metadata = {
   description: "Personal website of Dominik Tóth.",
 };
 
+const notoEmoji = Noto_Color_Emoji({
+  variable: "--font-noto-emoji",
+  weight: "400",
+  subsets: ["emoji"],
+});
+
 export default function Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
       lang="en"
-      className={`${GeistSans.variable} text-brand-light ${GeistMono.variable} dark antialiased selection:bg-gradient-green selection:text-teal-900`}
+      className={`${GeistSans.variable} ${notoEmoji.variable} text-brand-light ${GeistMono.variable} dark antialiased selection:bg-gradient-green selection:text-teal-900`}
     >
       <body className="font-sans">
         <SpeedInsights />

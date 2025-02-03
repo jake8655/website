@@ -1,12 +1,15 @@
 import DataTable from "@/components/admin/data-table";
 import { AdminNavbar } from "@/components/navbar";
-import RevealOnScroll from "@/components/reveal-on-scroll";
-import { BackgroundBeams } from "@/components/ui/background-beams";
 import Wrapper from "@/components/wrapper";
 import { env } from "@/env";
 import { getCurrentSession } from "@/server/auth/session";
 import { HydrateClient, api } from "@/trpc/server";
+import dynamic from "next/dynamic";
 import { redirect } from "next/navigation";
+
+const BackgroundBeams = dynamic(
+  () => import("@/components/ui/background-beams"),
+);
 
 export default async function AdminDashboard() {
   const { user } = await getCurrentSession();
@@ -21,20 +24,9 @@ export default async function AdminDashboard() {
       </div>
       <AdminNavbar />
       <Wrapper className="pt-16 pb-16 md:pt-32 lg:pt-48">
-        <RevealOnScroll
-          once
-          variants={{
-            hidden: { y: "-100%", opacity: 0 },
-            visible: { y: 0, opacity: 1 },
-          }}
-          transition={{
-            delay: 0.6,
-          }}
-        >
-          <h1 className="mb-8 text-center font-bold text-4xl md:text-5xl">
-            Contact Posts
-          </h1>
-        </RevealOnScroll>
+        <h1 className="mb-8 text-center font-bold text-4xl md:text-5xl">
+          Contact Posts
+        </h1>
         <DataTableWithPrefetching />
       </Wrapper>
     </div>

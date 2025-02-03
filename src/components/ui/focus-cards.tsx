@@ -2,7 +2,6 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import React, { useState } from "react";
-import RevealOnScroll from "../reveal-on-scroll";
 
 type ContainerProps = {
   href?: string;
@@ -36,46 +35,36 @@ export const Card = ({
   setHoveredAction: React.Dispatch<number | null>;
 }) => {
   return (
-    <RevealOnScroll
-      variants={{
-        hidden: { opacity: 0, scale: 0.5 },
-        visible: { opacity: 1, scale: 1 },
-      }}
-      transition={{
-        delay: index * 0.2,
-      }}
-      once
+    <Container
+      href={card.href}
+      onMouseEnter={() => setHoveredAction(index)}
+      onMouseLeave={() => setHoveredAction(null)}
+      className={cn(
+        "relative block h-60 w-full overflow-hidden rounded-lg transition-all duration-300 ease-out",
+        hovered !== null && hovered !== index && "scale-[0.98] blur-sm",
+      )}
     >
-      <Container
-        href={card.href}
-        onMouseEnter={() => setHoveredAction(index)}
-        onMouseLeave={() => setHoveredAction(null)}
+      <Image
+        src={card.src}
+        alt={card.alt}
+        width={500}
+        height={500}
+        loading="lazy"
+        className="h-full w-full object-cover"
+      />
+      <div
         className={cn(
-          "relative block h-60 w-full overflow-hidden rounded-lg transition-all duration-300 ease-out",
-          hovered !== null && hovered !== index && "scale-[0.98] blur-sm",
+          "absolute inset-0 flex items-end bg-black/50 px-4 py-8 transition-opacity duration-300",
+          hovered === index ? "opacity-100" : "opacity-0",
         )}
       >
-        <Image
-          src={card.src}
-          alt={card.alt}
-          width={500}
-          height={500}
-          className="h-full w-full object-cover"
-        />
-        <div
-          className={cn(
-            "absolute inset-0 flex items-end bg-black/50 px-4 py-8 transition-opacity duration-300",
-            hovered === index ? "opacity-100" : "opacity-0",
-          )}
-        >
-          <div className="bg-gradient-to-b from-neutral-50 to-neutral-200 bg-clip-text text-lg text-transparent md:text-xl">
-            {card.text.split("\n").map((line, idx) => (
-              <p key={idx}>{line}</p>
-            ))}
-          </div>
+        <div className="bg-gradient-to-b from-neutral-50 to-neutral-200 bg-clip-text text-lg text-transparent md:text-xl">
+          {card.text.split("\n").map((line, idx) => (
+            <p key={idx}>{line}</p>
+          ))}
         </div>
-      </Container>
-    </RevealOnScroll>
+      </div>
+    </Container>
   );
 };
 

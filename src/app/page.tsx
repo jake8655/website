@@ -3,14 +3,13 @@ import ContactModal from "@/components/contact-modal";
 import CustomErrorToast from "@/components/custom-error-toast";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
-import RevealOnScroll from "@/components/reveal-on-scroll";
 import Experience from "@/components/sections/experience";
 import Hero from "@/components/sections/hero";
 import Projects from "@/components/sections/projects";
-import { BackgroundBeams } from "@/components/ui/background-beams";
 import { ShootingStars } from "@/components/ui/shooting-stars";
 import { StarsBackground } from "@/components/ui/stars-background";
 import Wrapper from "@/components/wrapper";
+import dynamic from "next/dynamic";
 import { cookies } from "next/headers";
 import { Suspense } from "react";
 
@@ -18,6 +17,10 @@ export const metadata = {
   title: "Dominik Tóth",
   description: "Personal website of Dominik Tóth.",
 };
+
+const BackgroundBeams = dynamic(
+  () => import("@/components/ui/background-beams"),
+);
 
 export default function Home() {
   return (
@@ -39,22 +42,7 @@ export default function Home() {
         <Wrapper>
           <Hero className="pt-16 md:pt-32 lg:pt-48" />
         </Wrapper>
-        <RevealOnScroll
-          className="grid place-items-center"
-          variants={{
-            hidden: {
-              opacity: 0,
-              y: "-100%",
-            },
-            visible: {
-              opacity: 1,
-              y: 0,
-            },
-          }}
-          transition={{
-            delay: 0.6,
-          }}
-        >
+        <div className="grid place-items-center">
           <ArrowTitle
             text="My Experience"
             slideDirection="bottom"
@@ -62,7 +50,7 @@ export default function Home() {
             id="experience"
             priority
           />
-        </RevealOnScroll>
+        </div>
         <Experience />
         <div className="relative">
           <div className="mt-64 grid place-items-center">

@@ -40,3 +40,20 @@ export const contactFormSchema = z.object({
 });
 
 export type ContactFormSchema = z.infer<typeof contactFormSchema>;
+
+export const navigationSections = [
+  {
+    title: "Home",
+    hash: "#home",
+  },
+  {
+    title: "Experience",
+    hash: "#experience",
+    offset: 100,
+  },
+  {
+    title: "Projects",
+    hash: "#projects",
+    offset: 260,
+  },
+];

@@ -23,7 +23,6 @@ import {
 import type { Contact } from "@/server/db/schema";
 import { api } from "@/trpc/react";
 import { useState } from "react";
-import RevealOnScroll from "../reveal-on-scroll";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -111,19 +110,7 @@ function TableView<TValue>({ columns, data }: DataTableProps<Contact, TValue>) {
   });
 
   return (
-    <RevealOnScroll
-      once
-      variants={{
-        hidden: {
-          y: "100%",
-          opacity: 0,
-        },
-        visible: {
-          y: 0,
-          opacity: 1,
-        },
-      }}
-    >
+    <>
       <div className="flex items-center py-4">
         <Input
           placeholder="Search..."
@@ -258,6 +245,6 @@ function TableView<TValue>({ columns, data }: DataTableProps<Contact, TValue>) {
           Next
         </Button>
       </div>
-    </RevealOnScroll>
+    </>
   );
 }

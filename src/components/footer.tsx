@@ -1,5 +1,3 @@
-"use client";
-
 import { env } from "@/env";
 import { cn } from "@/lib/utils";
 import {
@@ -13,13 +11,10 @@ import { Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import GitHubButton from "react-github-btn";
-import { useModal } from "./ui/animated-modal";
+import FooterButton, { StarButton } from "./footer-button";
 import Wrapper from "./wrapper";
 
 export default function Footer({ className }: { className?: string }) {
-  const { setOpen } = useModal();
-
   return (
     <footer
       className={cn(
@@ -29,12 +24,7 @@ export default function Footer({ className }: { className?: string }) {
     >
       <div className="pt-16 text-slate-100">
         <Wrapper size="sm">
-          <button
-            className="mb-12 h-24 w-full animate-shimmer rounded-full border border-slate-800 bg-[length:200%_100%] bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] px-12 font-bold text-3xl text-slate-400 shadow-[0_10px_14px_0_rgb(0,255,255,39%)] transition hover:shadow-[0_10px_20px_0_rgb(0,255,255,39%)] md:text-6xl"
-            onClick={() => setOpen(true)}
-          >
-            Let's connect!
-          </button>
+          <FooterButton />
           <div className="grid grid-cols-1 gap-6 md:grid-cols-[auto_auto] md:justify-between">
             <div className="space-y-2">
               <h4 className="mb-4 font-semibold text-xl md:text-2xl">
@@ -63,6 +53,8 @@ export default function Footer({ className }: { className?: string }) {
                   alt="Next.js logo"
                   width={24}
                   height={24}
+                  priority={false}
+                  loading="lazy"
                 />{" "}
                 Next.js
               </FooterEntry>
@@ -101,21 +93,12 @@ export default function Footer({ className }: { className?: string }) {
               </FooterEntry>
             </div>
           </div>
-          <div className="mt-12 flex flex-col items-center justify-center gap-4">
+          <div className="mt-12 mb-2 flex flex-col items-center justify-center gap-4 md:mb-0">
             <p>
               Made with {env.NEXT_PUBLIC_HEART_EMOJI} by{" "}
               <Link href="/">Dominik Tóth</Link>
             </p>
-            <GitHubButton
-              href="https://github.com/jake8655/website"
-              data-icon="octicon-star"
-              data-size="large"
-              data-show-count="true"
-              aria-label="Star jake8655/website on GitHub"
-              data-color-scheme="dark"
-            >
-              Star
-            </GitHubButton>
+            <StarButton />
           </div>
         </Wrapper>
       </div>
