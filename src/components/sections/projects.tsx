@@ -17,12 +17,12 @@ type Project = {
   image: string;
   alt: string;
   id: string;
-  imagePosition?: "left" | "bottom";
+  imagePosition?: "top" | "bottom" | "left" | "right";
 };
 
 const projects: Project[] = [
   {
-    title: "ASR RolePlay",
+    title: "ASR RolePlay Website",
     description: "Website for a FiveM roleplay server.",
     technologies: [
       {
@@ -54,9 +54,60 @@ const projects: Project[] = [
     ],
     backgroundColor: "bg-gradient-to-br from-blue-600 to-blue-800",
     deployedHref: "https://asrrp.hu",
-    image: "/images/asrrp.png",
-    alt: "ASR RolePlay",
-    id: "asr-roleplay",
+    image: "/images/asrrp_website.png",
+    alt: "ASR RolePlay Website",
+    id: "asr-roleplay-website",
+  },
+  {
+    title: "ASR RolePlay Dashboard",
+    description: "Player dashboard script for a FiveM roleplay server.",
+    technologies: [
+      {
+        name: "Lua",
+        href: "https://www.lua.org",
+        color: "bg-[#040376]",
+      },
+      {
+        name: "MySQL",
+        color: "bg-[#036b84]",
+        href: "https://www.mysql.com",
+      },
+      {
+        name: "TypeScript",
+        color: "bg-[#3178c6]",
+        href: "https://www.typescriptlang.org",
+      },
+      {
+        name: "React.js",
+        color: "bg-[#5cc9e7]",
+        href: "https://react.dev",
+      },
+      {
+        name: "React Router",
+        color: "bg-[#e23f4d]",
+        href: "https://reactrouter.com",
+      },
+      {
+        name: "Motion",
+        color: "bg-[#e2d82e]",
+        href: "https://motion.dev",
+      },
+      {
+        name: "Tanstack Query",
+        color: "bg-[#2361d7]",
+        href: "https://tanstack.com/query",
+      },
+      {
+        name: "Tanstack Table",
+        color: "bg-[#df8e10]",
+        href: "https://tanstack.com/table",
+      },
+    ],
+    backgroundColor: "bg-gradient-to-br from-slate-300 to-slate-400",
+    deployedHref: "https://discord.gg/4jVGE6tFhA",
+    image: "/images/asrrp_dashboard.png",
+    alt: "ASR RolePlay Dashboard",
+    id: "asr-roleplay-dashboard",
   },
   {
     title: "Access-Bot",
@@ -82,6 +133,7 @@ const projects: Project[] = [
     backgroundColor: "bg-gradient-to-br from-green-600 to-green-800",
     sourceHref: "https://github.com/jake8655/Access-Bot",
     image: "/images/access-bot.png",
+    imagePosition: "top",
     alt: "Access-Bot",
     id: "access-bot",
   },
@@ -99,6 +151,7 @@ const projects: Project[] = [
     sourceHref: "https://github.com/AGoodGuyAdam/GameJam25",
     deployedHref: "https://agoodguyadam.itch.io/hypoxia",
     image: "/images/hypoxia.png",
+    imagePosition: "bottom",
     alt: "Hypoxia",
     id: "hypoxia",
   },
@@ -125,30 +178,6 @@ const projects: Project[] = [
     imagePosition: "bottom",
     alt: "Gymgol Simulator",
     id: "gymgol-simulator",
-  },
-  {
-    title: "Asteroids",
-    description:
-      "My first game, where you shoot asteroids using a flying spaceship.",
-    technologies: [
-      {
-        name: "C#",
-        color: "bg-[#a08ed8]",
-        href: "https://dotnet.microsoft.com/en-us/languages/csharp",
-      },
-      {
-        name: "MonoGame",
-        href: "https://www.monogame.net",
-        color: "bg-[#e73c00]",
-      },
-    ],
-    backgroundColor: "bg-gradient-to-br from-slate-300 to-slate-400",
-    imagePosition: "left",
-    sourceHref: "https://github.com/jake8655/asteroids",
-    deployedHref: "https://jake8655.itch.io/asteroids",
-    image: "/images/asteroids.png",
-    alt: "Asteroids Game",
-    id: "asteroids",
   },
 ];
 
@@ -224,8 +253,10 @@ function ProjectCard({
             className={cn(
               "h-full w-full rounded-[30px] object-cover transition-transform duration-300 group-hover:scale-105",
               {
-                "object-left": imagePosition === "left",
+                "object-top": imagePosition === "top",
                 "object-bottom": imagePosition === "bottom",
+                "object-left": imagePosition === "left",
+                "object-right": imagePosition === "right",
               },
             )}
           />
