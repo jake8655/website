@@ -87,7 +87,7 @@ const projects: Project[] = [
   },
   {
     title: "Hypoxia",
-    description: "RPG Game made in 24 hours for Game Jam Nitra 2025.",
+    description: "RPG game made in 24 hours for Game Jam Nitra 2025.",
     technologies: [
       {
         name: "Godot",
