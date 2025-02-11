@@ -5,7 +5,7 @@
       "name": "website",
       "dependencies": {
         "@gsap/react": "^2.1.1",
-        "@hookform/resolvers": "^3.9.1",
+        "@hookform/resolvers": "^4.0.0",
         "@icons-pack/react-simple-icons": "^11.0.0",
         "@libsql/client": "^0.14.0",
         "@number-flow/react": "^0.5.0",
@@ -270,7 +270,7 @@
 
     "@gsap/react": ["@gsap/react@2.1.1", "", { "dependencies": { "gsap": "^3.12.5", "react": ">=16" } }, "sha512-apGPRrmpqxvl1T6Io1KgT8tFU+IuACI6z4zmT7t8+PASserJeLVRFJdSNUFA2Xb/eVkZI1noE8LIrY/w/oJECw=="],
 
-    "@hookform/resolvers": ["@hookform/resolvers@3.10.0", "", { "peerDependencies": { "react-hook-form": "^7.0.0" } }, "sha512-79Dv+3mDF7i+2ajj7SkypSKHhl1cbln1OGavqrsF7p6mbUv11xpqpacPsGDCTRvCSjEEIez2ef1NveSVL3b0Ag=="],
+    "@hookform/resolvers": ["@hookform/resolvers@4.0.0", "", { "peerDependencies": { "react-hook-form": "^7.0.0" } }, "sha512-93ZueVlTaeMF0pRbrLbcnzrxeb2mGA/xyO3RgfrsKs5OCtcfjoWcdjBJm+N7096Jfg/JYlGPjuyQCgqVEodSTg=="],
 
     "@humanfs/core": ["@humanfs/core@0.19.1", "", {}, "sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA=="],
 
