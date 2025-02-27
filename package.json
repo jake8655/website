@@ -68,7 +68,7 @@
     "sonner": "^1.7.1",
     "superjson": "^2.2.2",
     "tailwind-merge": "^3.0.0",
-    "three": "^0.173.0",
+    "three": "^0.174.0",
     "usehooks-ts": "^3.1.0"
   },
   "devDependencies": {
@@ -80,7 +80,7 @@
     "@types/node": "^22.10.1",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.1",
-    "@types/three": "^0.173.0",
+    "@types/three": "^0.174.0",
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "@typescript-eslint/parser": "^8.17.0",
     "drizzle-kit": "^0.30.1",
