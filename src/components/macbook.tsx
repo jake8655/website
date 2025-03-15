@@ -23,9 +23,7 @@ export default function Macbook() {
         <Suspense
           fallback={
             <Html center>
-              <div className="md:-top-16 relative h-32 w-32 md:h-52 md:w-52">
-                <div className="absolute inset-0 animate-ping rounded-full border-2 border-gray-700" />
-              </div>
+              <div className="md:-top-16 relative h-32 w-32 animate-ping rounded-full border-2 border-gray-700 md:h-52 md:w-52" />
             </Html>
           }
         >
