@@ -1,16 +1,13 @@
 "use client";
 
-import { useSmallScreen } from "@/lib/hooks";
-import { type Interpolation, useSpring } from "@react-spring/core";
-import { a as three } from "@react-spring/three";
-import { ContactShadows, Environment, useGLTF } from "@react-three/drei";
+import { ContactShadows, Environment, Html } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Suspense, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import MacbookModel from "./macbook-model";
 
 export default function Macbook() {
   const [open, setOpen] = useState(false);
-  const props = useSpring({ open: Number(open) });
 
   useEffect(() => {
     setTimeout(() => setOpen(true), 2000);
@@ -19,15 +16,23 @@ export default function Macbook() {
   return (
     <Canvas dpr={[1, 2]} camera={{ position: [0, 0, -30], fov: 35 }}>
       <pointLight position={[10, 10, 10]} intensity={1.5} color={"#f0f0f0"} />
-      <Suspense fallback={null}>
-        <group
-          rotation={[0, Math.PI, 0]}
-          onClick={e => (e.stopPropagation(), setOpen(!open))}
+      <group
+        rotation={[0, Math.PI, 0]}
+        onClick={e => (e.stopPropagation(), setOpen(!open))}
+      >
+        <Suspense
+          fallback={
+            <Html center>
+              <div className="md:-top-16 relative h-32 w-32 md:h-52 md:w-52">
+                <div className="absolute inset-0 animate-ping rounded-full border-2 border-gray-700" />
+              </div>
+            </Html>
+          }
         >
-          <Model open={open} hinge={props.open.to([0, 1], [1.575, -0.425])} />
-        </group>
-        <Environment preset="city" />
-      </Suspense>
+          <Model open={open} />
+          <Environment preset="city" />
+        </Suspense>
+      </group>
       <ContactShadows
         position={[0, -4.5, 0]}
         opacity={0.4}
@@ -39,14 +44,9 @@ export default function Macbook() {
   );
 }
 
-function Model({
-  open,
-  hinge,
-}: { open: boolean; hinge: Interpolation<number> }) {
+function Model({ open }: { open: boolean }) {
   const group = useRef<THREE.Group<THREE.Object3DEventMap>>(null);
-  const { nodes, materials } = useGLTF("/macbook.glb");
   const [hovered, setHovered] = useState(false);
-  const smallScreen = useSmallScreen();
 
   useEffect(
     () => void (document.body.style.cursor = hovered ? "pointer" : "auto"),
@@ -81,66 +81,12 @@ function Model({
   });
 
   return (
-    <group
+    <MacbookModel
+      open={open}
       ref={group}
       onPointerOver={e => (e.stopPropagation(), setHovered(true))}
       onPointerOut={_ => setHovered(false)}
       dispose={null}
-      scale={smallScreen ? 1.4 : 1}
-    >
-      {/* Lid + Screen */}
-      {/* @ts-expect-error Bad types */}
-      <three.group
-        rotation-x={hinge}
-        position={[0, smallScreen ? -0.04 : 3.46, 0.41]}
-      >
-        <group position={[0, 2.96, -0.13]} rotation={[Math.PI / 2, 0, 0]}>
-          <mesh
-            material={materials.aluminium}
-            // @ts-expect-error Bad types
-            geometry={nodes["Cube008"]!.geometry}
-          />
-          <mesh
-            material={materials["matte.001"]}
-            // @ts-expect-error Bad types
-            geometry={nodes["Cube008_1"]!.geometry}
-          />
-          <mesh
-            material={materials["screen.001"]}
-            // @ts-expect-error Bad types
-            geometry={nodes["Cube008_2"]!.geometry}
-          />
-        </group>
-        {/* @ts-expect-error Bad types */}
-      </three.group>
-
-      {/* Keyboard */}
-      <mesh
-        material={materials.keys}
-        // @ts-expect-error Bad types
-        geometry={nodes.keyboard!.geometry}
-        position={[1.79, smallScreen ? 0 : 3.5, 3.45]}
-      />
-      {/* Body */}
-      <group position={[0, smallScreen ? -0.1 : 3.4, 3.39]}>
-        <mesh
-          material={materials.aluminium}
-          // @ts-expect-error Bad types
-          geometry={nodes["Cube002"]!.geometry}
-        />
-        <mesh
-          material={materials.trackpad}
-          // @ts-expect-error Bad types
-          geometry={nodes["Cube002_1"]!.geometry}
-        />
-      </group>
-      {/* Touchpad */}
-      <mesh
-        material={materials.touchbar}
-        // @ts-expect-error Bad types
-        geometry={nodes.touchbar!.geometry}
-        position={[0, smallScreen ? -0.03 : 3.47, 1.2]}
-      />
-    </group>
+    />
   );
 }
