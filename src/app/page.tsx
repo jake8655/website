@@ -6,7 +6,6 @@ import Navbar from "@/components/navbar";
 import Experience from "@/components/sections/experience";
 import Hero from "@/components/sections/hero";
 import Projects from "@/components/sections/projects";
-import { ShootingStars } from "@/components/ui/shooting-stars";
 import { StarsBackground } from "@/components/ui/stars-background";
 import Wrapper from "@/components/wrapper";
 import dynamic from "next/dynamic";
@@ -54,7 +53,6 @@ export default function Home() {
           <Wrapper>
             <Projects className="mt-32 w-full" />
           </Wrapper>
-          <ShootingStars className="-z-10" />
           <StarsBackground className="-z-10" />
         </div>
       </div>
