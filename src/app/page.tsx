@@ -56,9 +56,9 @@ export default function Home() {
           <StarsBackground className="-z-10" />
         </div>
       </div>
-      {/* Empty div to make the footer visible at the bottom */}
-      <div className="pointer-events-none min-h-[79vh] w-full text-black md:min-h-[59vh]"></div>
-      <Footer className="fixed bottom-0 w-full pt-[11vh]" />
+      <div className="-mt-[100vh] min-h-[180vh] bg-gradient-to-br from-20% from-slate-700 to-slate-900 md:min-h-[160vh]">
+        <Footer className="sticky top-[20vh] w-full pt-[40vh]" />
+      </div>
     </ContactModal>
   );
 }
