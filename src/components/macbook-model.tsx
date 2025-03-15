@@ -33,7 +33,7 @@ export default function MacbookModel(
     open: boolean;
   },
 ) {
-  const { nodes, materials } = useGLTF("/macbook.glb") as GLTFResult;
+  const { nodes, materials } = useGLTF("/macbook.glb") as unknown as GLTFResult;
   const spring = useSpring({ open: Number(props.open) });
   const smallScreen = useSmallScreen();
 

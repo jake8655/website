@@ -18,16 +18,16 @@ export default function ProjectsSection({
   const firstCardST = useRef<ScrollTrigger>(null);
   const lastCardST = useRef<ScrollTrigger>(null);
 
-  const [, setActiveIdx] = useActiveIdx();
+  const [activeIdx, setActiveIdx] = useActiveIdx();
   const inView = useInView(containerRef, {
     margin: "0px 0px -500px 0px",
   });
 
   useEffect(() => {
-    if (inView) {
+    if (inView && activeIdx !== 2) {
       setActiveIdx(2);
     }
-  }, [inView, setActiveIdx]);
+  }, [inView, setActiveIdx, activeIdx]);
 
   useGSAP(
     () => {

@@ -138,33 +138,41 @@ void main() {
 }
 `;
 
+type CustomMaterial = THREE.ShaderMaterial & {
+  uniforms: {
+    u_time: { value: number };
+    u_intensity: { value: number };
+  };
+};
+
 export default function Blob() {
   return (
     <div className="-z-10 absolute top-0 h-full w-full">
       <div className="sticky top-0 h-screen opacity-70">
-        <Canvas camera={{ position: [0, 0, 8] }}>
+        <Canvas
+          camera={{ position: [0, 0, 8] }}
+          gl={{ antialias: false, powerPreference: "high-performance" }}
+        >
           <pointLight position={[0, 0, 8]} intensity={1} color={"#ffffff"} />
           <BlobMesh />
         </Canvas>
-        <div className="-z-20 -translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-[600px] max-h-[100vh] w-[600px] max-w-[100vw] rounded-full bg-gradient-to-b from-green-500 to-blue-800 opacity-70 blur-[150px]"></div>
+        <div className="-z-20 -translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-[600px] max-h-[100vh] w-[600px] max-w-[100vw] transform-gpu rounded-full bg-gradient-to-b from-green-500 to-blue-800 opacity-70 blur-[150px]"></div>
       </div>
     </div>
   );
 }
 
 function BlobMesh() {
-  const mesh = useRef<THREE.Mesh>(null);
+  const mesh =
+    useRef<THREE.Mesh<THREE.IcosahedronGeometry, CustomMaterial>>(null);
 
   useFrame(state => {
     if (!mesh.current) return;
 
     const { clock } = state;
 
-    // @ts-expect-error bad types
     mesh.current.material.uniforms.u_time.value = 0.4 * clock.getElapsedTime();
-    // @ts-expect-error bad types
     mesh.current.material.uniforms.u_intensity.value = THREE.MathUtils.lerp(
-      // @ts-expect-error bad types
       mesh.current.material.uniforms.u_intensity.value,
       0.15,
       0.02,
@@ -173,7 +181,7 @@ function BlobMesh() {
 
   return (
     <mesh ref={mesh} scale={1.5} position={[0, 0, 0]}>
-      <icosahedronGeometry args={[2, 20]} />
+      <icosahedronGeometry args={[2, 15]} />
       <shaderMaterial
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
@@ -181,6 +189,7 @@ function BlobMesh() {
           u_time: { value: 0 },
           u_intensity: { value: 0.3 },
         }}
+        needsUpdate={false}
       />
     </mesh>
   );
