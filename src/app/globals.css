@@ -44,7 +44,7 @@
   --border: hsl(214.3 31.8% 91.4%);
   --input: hsl(214.3 31.8% 91.4%);
   --ring: hsl(221.2 83.2% 53.3%);
-  --radius: hsl(0.5rem);
+  --radius: 0.5rem;
   --warning: hsl(48 80% 39%);
   --warning-foreground: hsl(210 40% 98%);
 }
