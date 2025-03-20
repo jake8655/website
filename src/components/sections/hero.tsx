@@ -39,8 +39,8 @@ export default function Hero({
                 <TooltipTrigger asChild>
                   <span
                     className={cn(
-                      "relative cursor-default bg-gradient-to-bl from-brand to-blue-600 bg-clip-text text-transparent leading-normal",
-                      "before:absolute before:bottom-0 before:h-1 before:w-full before:rounded-full before:bg-gradient-to-bl before:from-brand before:to-blue-600 before:transition-all before:duration-300 before:content-[''] data-[state=closed]:before:w-0",
+                      "relative cursor-default bg-linear-to-bl from-brand to-blue-600 bg-clip-text text-transparent leading-normal",
+                      "before:absolute before:bottom-0 before:h-1 before:w-full before:rounded-full before:bg-linear-to-bl before:from-brand before:to-blue-600 before:transition-all before:duration-300 before:content-[''] data-[state=closed]:before:w-0",
                     )}
                   >
                     Dominik Tóth
@@ -49,7 +49,7 @@ export default function Hero({
                 <TooltipContent>
                   <p className="text-xl">
                     However, I go by{" "}
-                    <span className="bg-gradient-to-bl from-brand to-blue-600 bg-clip-text font-bold text-transparent">
+                    <span className="bg-linear-to-bl from-brand to-blue-600 bg-clip-text font-bold text-transparent">
                       Jake
                     </span>{" "}
                     online
@@ -106,7 +106,7 @@ function WorkButton() {
           />
         </svg>
       </div>
-      <span className="-bottom-0 absolute left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-purple-400/0 via-purple-400/90 to-purple-400/0 transition-opacity duration-500 group-hover:opacity-40" />
+      <span className="-bottom-0 absolute left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-linear-to-r from-purple-400/0 via-purple-400/90 to-purple-400/0 transition-opacity duration-500 group-hover:opacity-40" />
     </ModalTrigger>
   );
 }

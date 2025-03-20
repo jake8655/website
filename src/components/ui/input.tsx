@@ -43,7 +43,7 @@ const Input = React.forwardRef<
       <input
         type={type}
         className={cn(
-          `flex h-10 w-full rounded-md border-none bg-zinc-800 px-3 py-2 text-sm placeholder-text-neutral-600 shadow-[0px_0px_1px_1px_var(--neutral-700)] shadow-input transition duration-400 file:border-0 file:bg-transparent file:font-medium file:text-sm focus-visible:outline-none focus-visible:ring-[2px] focus-visible:ring-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 group-hover/input:shadow-none`,
+          `flex h-10 w-full rounded-md border-none bg-zinc-800 px-3 py-2 text-sm placeholder-text-neutral-600 shadow-[0px_0px_1px_1px_var(--neutral-700)] shadow-input transition duration-400 file:border-0 file:bg-transparent file:font-medium file:text-sm focus-visible:outline-hidden focus-visible:ring-[2px] focus-visible:ring-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 group-hover/input:shadow-none`,
           className,
         )}
         ref={ref}
@@ -92,7 +92,7 @@ const Textarea = React.forwardRef<
     >
       <textarea
         className={cn(
-          `flex h-48 w-full rounded-md border-none bg-zinc-800 px-3 py-2 text-sm placeholder-text-neutral-600 shadow-[0px_0px_1px_1px_var(--neutral-700)] shadow-input transition duration-400 file:border-0 file:bg-transparent file:font-medium file:text-sm focus-visible:outline-none focus-visible:ring-[2px] focus-visible:ring-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 group-hover/input:shadow-none`,
+          `flex h-48 w-full rounded-md border-none bg-zinc-800 px-3 py-2 text-sm placeholder-text-neutral-600 shadow-[0px_0px_1px_1px_var(--neutral-700)] shadow-input transition duration-400 file:border-0 file:bg-transparent file:font-medium file:text-sm focus-visible:outline-hidden focus-visible:ring-[2px] focus-visible:ring-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 group-hover/input:shadow-none`,
           className,
         )}
         ref={ref}

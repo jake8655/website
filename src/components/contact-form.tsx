@@ -148,7 +148,7 @@ function CancelButton() {
 
   return (
     <button
-      className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br bg-zinc-800 from-zinc-800 to-zinc-900 font-medium shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
+      className="group/btn relative block h-10 w-full rounded-md bg-linear-to-br bg-zinc-800 from-zinc-800 to-zinc-900 font-medium shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
       type="button"
       onClick={() => setOpen(false)}
     >
@@ -166,7 +166,7 @@ function SendButton({
   return (
     <button
       className={cn(
-        "group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-blue-700 to-blue-800 font-medium shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]",
+        "group/btn relative block h-10 w-full rounded-md bg-linear-to-br from-blue-700 to-blue-800 font-medium shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]",
         {
           "cursor-not-allowed from-blue-800 to-blue-900": isSubmitting,
         },

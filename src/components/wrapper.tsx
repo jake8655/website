@@ -10,8 +10,8 @@ export default function Wrapper({
       className={cn(
         "px-8 md:mx-auto md:px-12",
         {
-          "md:max-w-screen-xl": size === "lg",
-          "md:max-w-screen-md": size === "sm",
+          "md:max-w-(--breakpoint-xl)": size === "lg",
+          "md:max-w-(--breakpoint-md)": size === "sm",
         },
         className,
       )}
