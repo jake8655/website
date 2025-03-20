@@ -1,20 +1,6 @@
 import type { Config } from "tailwindcss";
 import colors from "tailwindcss/colors";
-// @ts-expect-error this lib has no typedefs
-import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette";
 import type { PluginCreator } from "tailwindcss/types/config";
-
-// This plugin adds each Tailwind color as a global CSS variable, e.g. var(--gray-200).
-const addVariablesForColors: PluginCreator = ({ addBase, theme }) => {
-  const allColors = flattenColorPalette(theme("colors"));
-  const newVars = Object.fromEntries(
-    Object.entries(allColors as object).map(([key, val]) => [`--${key}`, val]),
-  );
-
-  addBase({
-    ":root": newVars,
-  });
-};
 
 export default {
   content: [
@@ -151,6 +137,5 @@ export default {
   plugins: [
     require("tailwindcss-animate"),
     require("tailwind-scrollbar-hide"),
-    addVariablesForColors,
   ] as PluginCreator[],
 } satisfies Config;
