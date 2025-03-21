@@ -41,7 +41,7 @@ export const Card = ({
       onMouseLeave={() => setHoveredAction(null)}
       className={cn(
         "relative block h-60 w-full overflow-hidden rounded-lg transition-all duration-300 ease-out",
-        hovered !== null && hovered !== index && "scale-[0.98] blur-sm",
+        hovered !== null && hovered !== index && "scale-[0.98] blur-xs",
       )}
     >
       <Image
@@ -58,7 +58,7 @@ export const Card = ({
           hovered === index ? "opacity-100" : "opacity-0",
         )}
       >
-        <div className="bg-gradient-to-b from-neutral-50 to-neutral-200 bg-clip-text text-lg text-transparent md:text-xl">
+        <div className="bg-linear-to-b from-neutral-50 to-neutral-200 bg-clip-text text-lg text-transparent md:text-xl">
           {card.text.split("\n").map((line, idx) => (
             <p key={idx}>{line}</p>
           ))}

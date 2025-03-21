@@ -1,5 +1,7 @@
 "use client";
+
 import { useActiveIdx } from "@/lib/hooks";
+import { cn } from "@/lib/utils";
 import { motion, useInView, useScroll, useTransform } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -8,7 +10,10 @@ interface TimelineEntry {
   content: React.ReactNode;
 }
 
-export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
+export const Timeline = ({
+  data,
+  className,
+}: { data: TimelineEntry[]; className?: string }) => {
   const ref = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
@@ -39,7 +44,10 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   const opacityTransform = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
 
   return (
-    <div className="w-full font-sans lg:px-10" ref={containerRef}>
+    <div
+      className={cn("w-full font-sans lg:px-10", className)}
+      ref={containerRef}
+    >
       <div ref={ref} className="relative mx-auto max-w-7xl pb-20">
         {data.map((item, index) => (
           <div
@@ -67,14 +75,14 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
           style={{
             height: height + "px",
           }}
-          className="absolute top-0 left-8 w-[2px] overflow-hidden bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] from-[0%] from-transparent via-neutral-700 to-[99%] to-transparent [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)] lg:left-8 "
+          className="absolute top-0 left-8 w-[2px] overflow-hidden bg-gradient-to-b from-0% from-transparent via-neutral-700 to-99% to-transparent [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)] lg:left-8 "
         >
           <motion.div
             style={{
               height: heightTransform,
               opacity: opacityTransform,
             }}
-            className="absolute inset-x-0 top-0 w-[2px] rounded-full bg-gradient-to-t from-[0%] from-gradient-green via-[10%] via-brand-dark to-transparent"
+            className="absolute inset-x-0 top-0 w-[2px] rounded-full bg-linear-to-t from-0% from-gradient-green via-10% via-brand-dark to-transparent"
           />
         </div>
       </div>

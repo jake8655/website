@@ -63,9 +63,7 @@ const BackgroundBeams = ({ className }: { className?: string }) => {
   const [show, setShow] = useState(true);
 
   useEffect(() => {
-    if (smallScreen && show) {
-      setShow(false);
-    }
+    if (smallScreen && show) setShow(false);
   }, [smallScreen, show]);
 
   return !show ? null : (
@@ -76,7 +74,7 @@ const BackgroundBeams = ({ className }: { className?: string }) => {
       )}
     >
       <svg
-        className=" pointer-events-none absolute z-0 h-full w-full "
+        className="pointer-events-none absolute z-0 h-full w-full"
         width="100%"
         height="100%"
         viewBox="0 0 696 316"
@@ -138,8 +136,11 @@ const BackgroundBeams = ({ className }: { className?: string }) => {
             gradientUnits="userSpaceOnUse"
             gradientTransform="translate(352 34) rotate(90) scale(555 1560.62)"
           >
-            <stop offset="0.0666667" stopColor="var(--neutral-300)"></stop>
-            <stop offset="0.243243" stopColor="var(--neutral-300)"></stop>
+            <stop
+              offset="0.0666667"
+              stopColor="var(--color-neutral-300)"
+            ></stop>
+            <stop offset="0.243243" stopColor="var(--color-neutral-300)"></stop>
             <stop offset="0.43594" stopColor="white" stopOpacity="0"></stop>
           </radialGradient>
         </defs>

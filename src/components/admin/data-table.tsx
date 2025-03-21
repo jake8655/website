@@ -115,7 +115,7 @@ function TableView<TValue>({ columns, data }: DataTableProps<Contact, TValue>) {
         <Input
           placeholder="Search..."
           onChange={event => table.setGlobalFilter(String(event.target.value))}
-          className="max-w-sm bg-background"
+          className="max-w-sm bg-background shadow-[0px_0px_1px_1px_var(--color-neutral-700)]"
         />
         <div className="ml-auto flex gap-2">
           <Select

@@ -27,7 +27,7 @@ export default function Home() {
         <Suspense>
           <CustomError />
         </Suspense>
-        <div className="-z-[1] absolute h-screen w-full">
+        <div className="-z-1 absolute h-screen w-full">
           <div className="relative h-full w-full">
             <BackgroundBeams />
           </div>
@@ -56,7 +56,7 @@ export default function Home() {
           <StarsBackground className="-z-10" />
         </div>
       </div>
-      <div className="-mt-[100vh] min-h-[180vh] bg-gradient-to-br from-20% from-slate-700 to-slate-900 md:min-h-[160vh]">
+      <div className="-mt-[100vh] min-h-[180vh] bg-linear-to-br from-20% from-slate-700 to-slate-900 md:min-h-[160vh]">
         <Footer className="sticky top-[20vh] w-full pt-[40vh]" />
       </div>
     </ContactModal>

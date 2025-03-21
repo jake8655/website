@@ -156,7 +156,7 @@ export default function Blob() {
           <pointLight position={[0, 0, 8]} intensity={1} color={"#ffffff"} />
           <BlobMesh />
         </Canvas>
-        <div className="-z-20 -translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-[600px] max-h-[100vh] w-[600px] max-w-[100vw] transform-gpu rounded-full bg-gradient-to-b from-green-500 to-blue-800 opacity-70 blur-[150px]"></div>
+        <div className="-z-20 -translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-[600px] max-h-[100vh] w-[600px] max-w-[100vw] transform-gpu rounded-full bg-linear-to-b from-green-500 to-blue-800 opacity-70 blur-[150px]"></div>
       </div>
     </div>
   );
