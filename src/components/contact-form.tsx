@@ -120,8 +120,7 @@ function Field({
           id={name}
           placeholder={placeholder}
           className={cn({
-            "outline outline-[2px] outline-red-500 ring-0 focus-visible:outline":
-              error,
+            "outline-[2px] outline-red-500 ring-0 focus-visible:outline": error,
           })}
           {...register(name)}
         />
@@ -130,8 +129,7 @@ function Field({
           id={name}
           placeholder={placeholder}
           className={cn({
-            "outline outline-[2px] outline-red-500 ring-0 focus-visible:outline":
-              error,
+            "outline-[2px] outline-red-500 ring-0 focus-visible:outline": error,
           })}
           {...register(name)}
         />
