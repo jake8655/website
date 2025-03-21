@@ -1,21 +1,30 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
 @layer base {
+  /*
+    The default border color has changed to `currentColor` in Tailwind CSS v4,
+    so we've added these compatibility styles to make sure everything still
+    looks the same as it did with Tailwind CSS v3.
+
+    If we ever want to remove these styles, we need to add an explicit border
+    color utility to any element that depends on these defaults.
+  */
   *,
   ::after,
   ::before,
   ::backdrop,
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
+  }
+
+  /*
+    Buttons now use cursor: default instead of cursor: pointer to match the default browser behavior.
+    If you'd like to continue using cursor: pointer by default, add these base styles to your CSS:
+  */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
   }
 }
 
@@ -151,9 +160,6 @@
   --animate-shimmer: shimmer 2s linear infinite;
 
   --shadow-glow: 0 0 50px 0 rgba(109, 154, 238, 0.3);
-  --shadow-input:
-    0px 2px 3px -1px rgba(0, 0, 0, 0.1), 0px 1px 0px 0px rgba(25, 28, 33, 0.02),
-    0px 0px 0px 1px rgba(25, 28, 33, 0.08);
 
   --background-image-gradient-var: linear-gradient(
     var(--gradient-angle),
