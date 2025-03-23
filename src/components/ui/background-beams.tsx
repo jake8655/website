@@ -69,9 +69,12 @@ const BackgroundBeams = ({ className }: { className?: string }) => {
   return !show ? null : (
     <div
       className={cn(
-        "absolute inset-0 flex h-full w-full transform-gpu items-center justify-center will-change-transform [mask-repeat:no-repeat] [mask-size:40px]",
+        "absolute inset-0 flex h-full w-full items-center justify-center will-change-transform [mask-repeat:no-repeat] [mask-size:40px]",
         className,
       )}
+      style={{
+        transform: "translateZ(0)",
+      }}
     >
       <svg
         className="pointer-events-none absolute z-0 h-full w-full"

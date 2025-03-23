@@ -157,6 +157,7 @@ export default function Blob() {
           <BlobMesh />
         </Canvas>
         <div
+          // TODO: Investigate why `transform-gpu` is not working and inline-styles do
           className="-z-20 -translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-[600px] max-h-[100dvh] w-[600px] max-w-[100vw] rounded-full bg-linear-to-b from-green-500 to-blue-800 opacity-70 blur-[150px]"
           style={{ transform: "translateZ(0)" }}
         ></div>
