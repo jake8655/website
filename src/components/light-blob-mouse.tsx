@@ -18,12 +18,13 @@ export default function LightBlobMouse({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "-translate-x-1/2 -translate-y-1/2 pointer-events-none fixed z-20 h-20 w-20 transform-gpu rounded-full bg-brand blur-[150px]",
+        "-translate-x-1/2 -translate-y-1/2 pointer-events-none fixed z-20 h-20 w-20 rounded-full bg-brand blur-[150px]",
         className,
       )}
       style={{
         top: position.y,
         left: position.x,
+        transform: "translateZ(0)",
       }}
     />
   );
