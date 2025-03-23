@@ -16,8 +16,8 @@ import Wrapper from "./wrapper";
 
 export default function Footer({ className }: { className?: string }) {
   return (
-    <footer className={cn("min-h-[90vh] md:min-h-[70vh]", className)}>
-      <div className="mt-[calc(4rem-20vh)] text-slate-100">
+    <footer className={cn("min-h-[90dvh] md:min-h-[70dvh]", className)}>
+      <div className="mt-[calc(4rem-20dvh)] text-slate-100">
         <Wrapper size="sm">
           <FooterButton />
           <div className="grid grid-cols-1 gap-6 md:grid-cols-[auto_auto] md:justify-between">
