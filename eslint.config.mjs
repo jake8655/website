@@ -1,8 +1,11 @@
+// @ts-check
+
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
 
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
+// @ts-expect-error no types
 import drizzle from "eslint-plugin-drizzle";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import reactCompiler from "eslint-plugin-react-compiler";
@@ -17,8 +20,10 @@ const compat = new FlatCompat({
 
 /** @type {import("eslint").Linter.Config[]} */
 const config = [
+  // @ts-expect-error bad types
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
+    // @ts-expect-error bad types
     plugins: {
       "@typescript-eslint": typescriptEslint,
       "react-compiler": reactCompiler,
