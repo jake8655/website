@@ -85,7 +85,7 @@
     "@typescript-eslint/eslint-plugin": "^8.27.0",
     "@typescript-eslint/parser": "^8.27.0",
     "babel-plugin-react-compiler": "^19.0.0-beta-3229e95-20250315",
-    "drizzle-kit": "^0.30.5",
+    "drizzle-kit": "^0.31.0",
     "eslint": "^9.23.0",
     "eslint-config-next": "^15.2.3",
     "eslint-plugin-drizzle": "^0.2.3",
