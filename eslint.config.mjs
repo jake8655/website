@@ -57,6 +57,8 @@ const config = [
         "error",
         {
           argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
         },
       ],
 
@@ -83,6 +85,8 @@ const config = [
           drizzleObjectName: ["db", "ctx.db"],
         },
       ],
+
+      "react-hooks/exhaustive-deps": ["off"],
     },
   },
 ];
