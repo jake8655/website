@@ -22,8 +22,6 @@ export async function GET(request: Request): Promise<Response> {
   if (code === null || state === null || storedState !== state)
     return new Response(null, { status: 400 });
 
-  if (state !== storedState) return new Response(null, { status: 400 });
-
   let tokens: OAuth2Tokens;
   try {
     tokens = await github.validateAuthorizationCode(code);
