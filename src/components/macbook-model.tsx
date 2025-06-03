@@ -1,10 +1,9 @@
-import { useSmallScreen } from "@/lib/hooks";
-import { useSpring } from "@react-spring/three";
-import { animated } from "@react-spring/three";
+import { animated, useSpring } from "@react-spring/three";
 import { useGLTF } from "@react-three/drei";
 import React, { type JSX } from "react";
 import type * as THREE from "three";
 import { type GLTF } from "three-stdlib";
+import { useSmallScreen } from "@/lib/hooks";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -40,7 +39,6 @@ export default function MacbookModel(
   return (
     <group {...props} dispose={null} scale={smallScreen ? 1.4 : 1}>
       {/* Lid + Screen */}
-      {/* @ts-expect-error Bad types */}
       <animated.group
         rotation-x={spring.open.to([0, 1], [1.575, -0.425])}
         position={[0, smallScreen ? -0.04 : 3.46, 0.41]}

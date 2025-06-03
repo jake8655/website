@@ -1,15 +1,19 @@
 "use client";
 
-import { useActiveIdx } from "@/lib/hooks";
-import { cn } from "@/lib/utils";
 import { useInView } from "motion/react";
 import { useEffect, useRef } from "react";
+import { useActiveIdx } from "@/lib/hooks";
+import { cn } from "@/lib/utils";
 
 export default function HeroInView({
   children,
   id,
   className,
-}: { children: React.ReactNode; id?: string; className?: string }) {
+}: {
+  children: React.ReactNode;
+  id?: string;
+  className?: string;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, {
     margin: "-500px 0px 0px 0px",

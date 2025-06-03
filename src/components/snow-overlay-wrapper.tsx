@@ -1,8 +1,8 @@
 "use client";
 
-import { useSmallScreen } from "@/lib/hooks";
 import { useReducedMotion } from "motion/react";
 import { SnowOverlay } from "react-snow-overlay";
+import { useSmallScreen } from "@/lib/hooks";
 
 export default function SnowOverlayWrapper() {
   const prefersReducedMotion = useReducedMotion();

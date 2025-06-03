@@ -22,7 +22,10 @@ function calculateAge() {
 export default function Hero({
   id,
   className,
-}: { id?: string; className?: string }) {
+}: {
+  id?: string;
+  className?: string;
+}) {
   const age = calculateAge();
 
   return (

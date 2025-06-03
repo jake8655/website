@@ -1,3 +1,7 @@
+import dynamic from "next/dynamic";
+import { cookies } from "next/headers";
+import { Suspense } from "react";
+
 import ArrowTitle from "@/components/arrow-title";
 import ContactModal from "@/components/contact-modal";
 import CustomErrorToast from "@/components/custom-error-toast";
@@ -8,9 +12,6 @@ import Hero from "@/components/sections/hero";
 import Projects from "@/components/sections/projects";
 import { StarsBackground } from "@/components/ui/stars-background";
 import Wrapper from "@/components/wrapper";
-import dynamic from "next/dynamic";
-import { cookies } from "next/headers";
-import { Suspense } from "react";
 
 const BackgroundBeams = dynamic(
   () => import("@/components/ui/background-beams"),

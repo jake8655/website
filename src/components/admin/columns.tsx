@@ -1,15 +1,16 @@
 "use client";
 
-import type { Contact } from "@/server/db/schema";
 import type { ColumnDef } from "@tanstack/react-table";
-import { CalendarDays, Mail } from "lucide-react";
 import {
   ArrowDown,
   ArrowUp,
   ArrowUpDown,
+  CalendarDays,
   ExternalLink,
+  Mail,
   MoreHorizontal,
 } from "lucide-react";
+import type { Contact } from "@/server/db/schema";
 import {
   Modal,
   ModalBody,
@@ -226,7 +227,10 @@ function ViewMessageButton() {
 function MessageModal({
   post,
   children,
-}: { post: Contact; children: React.ReactNode }) {
+}: {
+  post: Contact;
+  children: React.ReactNode;
+}) {
   return (
     <Modal>
       <ModalBody>

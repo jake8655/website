@@ -1,9 +1,8 @@
-import type { Metadata } from "next";
-
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
+import type { Metadata } from "next";
 import { Noto_Color_Emoji } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 

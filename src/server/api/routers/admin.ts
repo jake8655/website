@@ -1,6 +1,6 @@
-import { contactPostTable } from "@/server/db/schema";
 import { desc, eq, inArray } from "drizzle-orm";
 import { z } from "zod";
+import { contactPostTable } from "@/server/db/schema";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const adminRouter = createTRPCRouter({

@@ -1,3 +1,4 @@
+import { Link } from "lucide-react";
 import {
   Modal,
   ModalBody,
@@ -5,12 +6,13 @@ import {
   ModalFooter,
 } from "@/components/ui/animated-modal";
 import { cn } from "@/lib/utils";
-import { Link } from "lucide-react";
 import Form from "./contact-form";
 
 export default function ContactModal({
   children,
-}: { children: React.ReactNode }) {
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <Modal>
       <ModalBody>

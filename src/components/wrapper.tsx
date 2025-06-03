@@ -4,7 +4,11 @@ export default function Wrapper({
   children,
   size = "lg",
   className,
-}: { children: React.ReactNode; size?: "sm" | "lg"; className?: string }) {
+}: {
+  children: React.ReactNode;
+  size?: "sm" | "lg";
+  className?: string;
+}) {
   return (
     <div
       className={cn(

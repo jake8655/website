@@ -1,3 +1,6 @@
+import type { OAuth2Tokens } from "arctic";
+import { eq } from "drizzle-orm";
+import { cookies } from "next/headers";
 import { env } from "@/env";
 import { github } from "@/server/auth/oath";
 import {
@@ -7,9 +10,6 @@ import {
 } from "@/server/auth/session";
 import { db } from "@/server/db";
 import { userTable } from "@/server/db/schema";
-import type { OAuth2Tokens } from "arctic";
-import { eq } from "drizzle-orm";
-import { cookies } from "next/headers";
 
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);

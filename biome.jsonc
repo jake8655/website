@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.8.1/schema.json",
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "formatter": {
     "enabled": true,
     "formatWithErrors": false,
@@ -9,7 +9,13 @@
     "lineWidth": 80,
     "attributePosition": "auto"
   },
-  "organizeImports": { "enabled": true },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
   "linter": {
     "enabled": true,
     "rules": {
@@ -35,6 +41,11 @@
   "json": {
     "formatter": {
       "trailingCommas": "none"
+    }
+  },
+  "html": {
+    "formatter": {
+      "enabled": true
     }
   }
 }

@@ -7,15 +7,15 @@
  * need to use are documented accordingly near the end.
  */
 
-import { env } from "@/env";
-import { db } from "@/server/db";
-import { TRPCError, initTRPC } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { env } from "@/env";
+import { db } from "@/server/db";
 import { getCurrentSession } from "../auth/session";
 import {
-  type RatelimitError,
   createRatelimiter,
+  type RatelimitError,
   ratelimit,
   redis,
 } from "../db/redis";
@@ -32,9 +32,7 @@ import {
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: {
-  headers: Headers;
-}) => {
+export const createTRPCContext = async (opts: { headers: Headers }) => {
   const { user } = await getCurrentSession();
 
   return {

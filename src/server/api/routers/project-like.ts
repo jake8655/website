@@ -1,6 +1,6 @@
-import { RatelimitError, getUserIp } from "@/server/db/redis";
 import { unstable_cache } from "next/cache";
 import { z } from "zod";
+import { getUserIp, RatelimitError } from "@/server/db/redis";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const projectLikeRouter = createTRPCRouter({
