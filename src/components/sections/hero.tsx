@@ -64,7 +64,7 @@ export default function Hero({
           </h1>
         </div>
         <p className="text-balance pt-6 text-xl leading-normal">
-          A {age} year old highschool{" "}
+          A{age === 18 ? "n" : null} {age} year old highschool{" "}
           <span className="text-brand">student</span>,{" "}
           <span className="text-brand">web developer</span>,{" "}
           <span className="text-brand">linux</span> and{" "}
