@@ -1,9 +1,9 @@
 "use client";
-import type { Contact } from "@/server/db/schema";
-import { api } from "@/trpc/react";
 import type { Row } from "@tanstack/react-table";
 import { Archive, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import type { Contact } from "@/server/db/schema";
+import { api } from "@/trpc/react";
 import { Button } from "../ui/button";
 import { DropdownMenuItem } from "../ui/dropdown-menu";
 import {
@@ -16,7 +16,10 @@ import {
 export function ArchiveButton({
   id,
   archived,
-}: { id: number; archived: boolean }) {
+}: {
+  id: number;
+  archived: boolean;
+}) {
   const utils = api.useUtils();
 
   const { mutate, isPending } = api.admin.toggleMessageArchived.useMutation({
@@ -140,7 +143,10 @@ export function DeleteButton({ id }: { id: number }) {
 export function ArchiveBulkButton({
   rows,
   resetSelection,
-}: { rows: Row<Contact>[]; resetSelection: () => void }) {
+}: {
+  rows: Row<Contact>[];
+  resetSelection: () => void;
+}) {
   const ids = rows.map(row => row.original.id);
   const utils = api.useUtils();
 
@@ -224,7 +230,10 @@ export function ArchiveBulkButton({
 export function DeleteBulkButton({
   rows,
   resetSelection,
-}: { rows: Row<Contact>[]; resetSelection: () => void }) {
+}: {
+  rows: Row<Contact>[];
+  resetSelection: () => void;
+}) {
   const ids = rows.map(row => row.original.id);
   const utils = api.useUtils();
 

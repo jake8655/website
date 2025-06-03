@@ -1,5 +1,12 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  type FieldError,
+  type UseFormRegister,
+  useForm,
+} from "react-hook-form";
+import { toast } from "sonner";
 import {
   type ContactFormSchema,
   cn,
@@ -7,10 +14,6 @@ import {
   msToTime,
 } from "@/lib/utils";
 import { api } from "@/trpc/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { type FieldError, type UseFormRegister } from "react-hook-form";
-import { toast } from "sonner";
 import { BottomGradient, LabelInputContainer } from "./contact-modal";
 import { useModal } from "./ui/animated-modal";
 import { Input, Textarea } from "./ui/input";
@@ -42,9 +45,10 @@ export default function Form() {
         const resetTimestamp = err.data.ratelimit.resetTimestamp;
         const timeStamp = msToTime(resetTimestamp - Date.now());
 
-        return toast.error("Error sending message", {
+        toast.error("Error sending message", {
           description: `You have exceeded the rate limit for sending messages. Please try again in ${timeStamp}.`,
         });
+        return;
       }
 
       toast.error("Error sending message", {
@@ -156,11 +160,7 @@ function CancelButton() {
   );
 }
 
-function SendButton({
-  isSubmitting,
-}: {
-  isSubmitting: boolean;
-}) {
+function SendButton({ isSubmitting }: { isSubmitting: boolean }) {
   return (
     <button
       className={cn(

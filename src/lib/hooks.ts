@@ -4,9 +4,9 @@ import { atom, useAtom } from "jotai";
 import { useEffect, useRef } from "react";
 import { useScreen } from "usehooks-ts";
 
-export function useSmallScreen(width?: number) {
+export function useSmallScreen(width: number = 1280) {
   const screenSize = useScreen();
-  const isSmallScreen = !screenSize || screenSize.width < (width || 1280);
+  const isSmallScreen = !screenSize || screenSize.width < width;
 
   return isSmallScreen;
 }
@@ -29,7 +29,7 @@ export function useDebouncedCallback(
   const startTimeout = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
-    timeoutRef.current = setTimeout(() => cb(), timeOut);
+    timeoutRef.current = setTimeout(cb, timeOut);
   };
 
   return startTimeout;

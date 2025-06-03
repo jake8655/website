@@ -1,17 +1,18 @@
+import type { Metadata } from "next";
+import dynamic from "next/dynamic";
+import { redirect } from "next/navigation";
 import DataTable from "@/components/admin/data-table";
 import { AdminNavbar } from "@/components/navbar";
 import Wrapper from "@/components/wrapper";
 import { env } from "@/env";
 import { getCurrentSession } from "@/server/auth/session";
-import { HydrateClient, api } from "@/trpc/server";
-import dynamic from "next/dynamic";
-import { redirect } from "next/navigation";
+import { api, HydrateClient } from "@/trpc/server";
 
 const BackgroundBeams = dynamic(
   () => import("@/components/ui/background-beams"),
 );
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Admin Dashboard",
   description: "Admin Dashboard of Dominik Tóth.",
 };

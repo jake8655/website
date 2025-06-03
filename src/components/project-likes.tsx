@@ -1,11 +1,11 @@
 "use client";
 
-import { cn, msToTime } from "@/lib/utils";
-import { api } from "@/trpc/react";
 import NumberFlow from "@number-flow/react";
 import { useInView } from "motion/react";
 import { useRef } from "react";
 import { toast } from "sonner";
+import { cn, msToTime } from "@/lib/utils";
+import { api } from "@/trpc/react";
 import {
   Tooltip,
   TooltipContent,
@@ -92,9 +92,10 @@ function ProjectLikeButton({
         const resetTimestamp = err.data.ratelimit.resetTimestamp;
         const timeStamp = msToTime(resetTimestamp - Date.now());
 
-        return toast.error("Error liking the project", {
+        toast.error("Error liking the project", {
           description: `You have exceeded the rate limit for liking projects. Please try again in ${timeStamp}.`,
         });
+        return;
       }
       toast.error("Error liking the project", {
         description:
@@ -110,14 +111,16 @@ function ProjectLikeButton({
       utils.projectLike.getProjectLikeCount.invalidate({ projectId });
     },
     onSuccess: ({ userHasLiked }) => {
-      if (userHasLiked)
-        return toast.success("Successfully liked the project", {
+      if (userHasLiked) {
+        toast.success("Successfully liked the project", {
           description: "Thank you for liking the project!",
           action: {
             label: "Undo",
             onClick: () => mutate({ projectId }),
           },
         });
+        return;
+      }
 
       toast.success("Successfully removed like from the project", {
         action: {
@@ -148,11 +151,7 @@ function ProjectLikeButton({
   );
 }
 
-function ThumbsUp({
-  filled,
-}: {
-  filled: boolean;
-}) {
+function ThumbsUp({ filled }: { filled: boolean }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

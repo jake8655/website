@@ -1,9 +1,9 @@
 "use client";
 
-import { useActiveIdx } from "@/lib/hooks";
-import { cn } from "@/lib/utils";
 import { motion, useInView, useScroll, useTransform } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
+import { useActiveIdx } from "@/lib/hooks";
+import { cn } from "@/lib/utils";
 
 interface TimelineEntry {
   title: string;
@@ -13,7 +13,10 @@ interface TimelineEntry {
 export const Timeline = ({
   data,
   className,
-}: { data: TimelineEntry[]; className?: string }) => {
+}: {
+  data: TimelineEntry[];
+  className?: string;
+}) => {
   const ref = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
@@ -33,7 +36,7 @@ export const Timeline = ({
       const rect = ref.current.getBoundingClientRect();
       setHeight(rect.height);
     }
-  }, [ref]);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,

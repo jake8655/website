@@ -1,7 +1,7 @@
-import { env } from "@/env";
-import { github } from "@/server/auth/oath";
 import { generateState } from "arctic";
 import { cookies } from "next/headers";
+import { env } from "@/env";
+import { github } from "@/server/auth/oath";
 
 export async function GET(): Promise<Response> {
   const state = generateState();

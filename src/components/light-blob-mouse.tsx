@@ -1,7 +1,7 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 export default function LightBlobMouse({ className }: { className?: string }) {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -13,7 +13,7 @@ export default function LightBlobMouse({ className }: { className?: string }) {
   useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  }, [handleMouseMove]);
 
   return (
     <div

@@ -1,9 +1,9 @@
 "use client";
 
+import { motion } from "motion/react";
+import { useEffect, useState } from "react";
 import { useSmallScreen } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
-import { motion } from "motion/react";
-import React, { useEffect, useState } from "react";
 
 const paths = [
   "M-380 -189C-380 -189 -312 216 152 343C616 470 684 875 684 875",

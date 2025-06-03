@@ -1,16 +1,16 @@
 "use client";
-import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "motion/react";
 import React, {
+  createContext,
   type ReactNode,
   type RefObject,
-  createContext,
   use,
   useEffect,
   useRef,
   useState,
 } from "react";
 import { useOnClickOutside } from "usehooks-ts";
+import { cn } from "@/lib/utils";
 
 interface ModalContextType {
   open: boolean;
@@ -34,7 +34,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [handleKeyDown]);
 
   return <ModalContext value={{ open, setOpen }}>{children}</ModalContext>;
 };

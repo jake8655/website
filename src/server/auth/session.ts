@@ -1,4 +1,3 @@
-import { env } from "@/env";
 import { sha256 } from "@oslojs/crypto/sha2";
 import {
   encodeBase32LowerCaseNoPadding,
@@ -7,8 +6,9 @@ import {
 import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { cache } from "react";
+import { env } from "@/env";
 import { db } from "../db";
-import { type Session, type User, sessionTable, userTable } from "../db/schema";
+import { type Session, sessionTable, type User, userTable } from "../db/schema";
 
 export function generateSessionToken(): string {
   const bytes = new Uint8Array(20);

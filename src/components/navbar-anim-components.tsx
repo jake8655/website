@@ -1,12 +1,12 @@
 "use client";
 
-import { useActiveIdx } from "@/lib/hooks";
-import { cn, navigationSections } from "@/lib/utils";
-import { logout } from "@/server/auth/actions";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ScrollToPlugin from "gsap/ScrollToPlugin";
 import { AnimatePresence, motion } from "motion/react";
+import { useActiveIdx } from "@/lib/hooks";
+import { cn, navigationSections } from "@/lib/utils";
+import { logout } from "@/server/auth/actions";
 import { useModal } from "./ui/animated-modal";
 
 export function SignOutButton() {
@@ -34,13 +34,7 @@ export function ContactButton() {
   );
 }
 
-export function SectionLink({
-  title,
-  idx,
-}: {
-  title: string;
-  idx: number;
-}) {
+export function SectionLink({ title, idx }: { title: string; idx: number }) {
   const [activeIdx, setActiveIdx] = useActiveIdx();
   const active = idx === activeIdx;
 

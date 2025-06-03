@@ -1,17 +1,20 @@
 "use client";
 
-import { useActiveIdx } from "@/lib/hooks";
-import { cn } from "@/lib/utils";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { useInView } from "motion/react";
 import { useEffect, useRef } from "react";
+import { useActiveIdx } from "@/lib/hooks";
+import { cn } from "@/lib/utils";
 
 export default function ProjectsSection({
   className,
   children,
-}: { className?: string; children: React.ReactNode }) {
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const cards = useRef<HTMLDivElement[]>(null);
   const cardTexts = useRef<HTMLDivElement[]>(null);

@@ -1,7 +1,7 @@
-import { cn } from "@/lib/utils";
 import { SiGithub } from "@icons-pack/react-simple-icons";
 import { ExternalLink } from "lucide-react";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import ProjectLikes from "../project-likes";
 import ProjectsSection from "../projects-section";
 import { Badge } from "../ui/badge";

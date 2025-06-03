@@ -1,5 +1,5 @@
-import { env } from "@/env";
 import { cookies } from "next/headers";
+import { env } from "@/env";
 
 export async function GET() {
   const cookieStore = await cookies();

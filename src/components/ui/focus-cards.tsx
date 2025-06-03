@@ -1,7 +1,7 @@
 "use client";
-import { cn } from "@/lib/utils";
 import Image from "next/image";
 import React, { useState } from "react";
+import { cn } from "@/lib/utils";
 
 type ContainerProps = {
   href?: string;
@@ -80,7 +80,10 @@ export type Card = {
 export function FocusCards({
   cards,
   className,
-}: { cards: Card[]; className?: string }) {
+}: {
+  cards: Card[];
+  className?: string;
+}) {
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (

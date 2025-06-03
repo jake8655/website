@@ -1,5 +1,3 @@
-import { env } from "@/env";
-import { cn } from "@/lib/utils";
 import {
   SiBluesky,
   SiDiscord,
@@ -11,6 +9,8 @@ import { Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { env } from "@/env";
+import { cn } from "@/lib/utils";
 import FooterButton, { StarButton } from "./footer-button";
 import Wrapper from "./wrapper";
 
@@ -104,7 +104,10 @@ export default function Footer({ className }: { className?: string }) {
 function FooterEntry({
   href,
   children,
-}: { href: string; children: React.ReactNode }) {
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
   return (
     <a
       href={href}

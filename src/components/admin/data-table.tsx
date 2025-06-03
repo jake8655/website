@@ -3,15 +3,15 @@
 import {
   type ColumnDef,
   type ColumnFiltersState,
-  type VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  type VisibilityState,
 } from "@tanstack/react-table";
-
+import { useState } from "react";
 import {
   Table,
   TableBody,
@@ -22,7 +22,6 @@ import {
 } from "@/components/ui/table";
 import type { Contact } from "@/server/db/schema";
 import { api } from "@/trpc/react";
-import { useState } from "react";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
