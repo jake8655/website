@@ -35,12 +35,11 @@ export default function Form() {
 
   useSaveForm(
     "contactForm",
-    z.object({
-      name: z.string(),
-      email: z.string(),
-      subject: z.string(),
-      message: z.string(),
-    }),
+    z.object(
+      Object.fromEntries(
+        Object.keys(contactFormSchema.shape).map(key => [key, z.string()]),
+      ) as Record<keyof ContactFormSchema, z.ZodString>,
+    ),
     setValue,
     subscribe,
   );
