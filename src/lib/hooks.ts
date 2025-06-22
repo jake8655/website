@@ -72,7 +72,7 @@ export function useSaveForm<T extends z.ZodType>(
     keys.forEach(key => {
       setValue(key as Path<z.infer<T>>, values[key]);
     });
-  }, [setValue]);
+  }, [name, schema, setValue, getStorage, clearStorage]);
 
   useEffect(() => {
     const callback = subscribe({
@@ -91,5 +91,5 @@ export function useSaveForm<T extends z.ZodType>(
     });
 
     return () => callback();
-  }, [subscribe]);
+  }, [subscribe, setStorage, clearStorage]);
 }
