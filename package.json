@@ -80,7 +80,7 @@
     "@tailwindcss/postcss": "^4.1.4",
     "@types/eslint": "^9.6.1",
     "@types/eslint-plugin-jsx-a11y": "^6.10.0",
-    "@types/node": "^22.14.1",
+    "@types/node": "^24.0.0",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@types/three": "^0.177.0",
