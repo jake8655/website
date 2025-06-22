@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "fix:turbo": "mv node_modules/@libsql/hrana-client/LICENSE node_modules/@libsql/hrana-client/LICENSE.md",
+    "fix:turbo": "mv node_modules/@libsql/hrana-client/LICENSE node_modules/@libsql/hrana-client/LICENSE.md 2>/dev/null || :",
     "build:turbo": "bun run fix:turbo && next build --turbopack",
     "start": "next start",
     "lint": "next lint",

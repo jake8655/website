@@ -7,6 +7,8 @@ import {
   useForm,
 } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
+import { useSaveForm } from "@/lib/hooks";
 import {
   type ContactFormSchema,
   cn,
@@ -25,9 +27,22 @@ export default function Form() {
     handleSubmit,
     formState: { errors },
     reset,
+    subscribe,
+    setValue,
   } = useForm<ContactFormSchema>({
     resolver: zodResolver(contactFormSchema),
   });
+
+  useSaveForm(
+    "contactForm",
+    z.object(
+      Object.fromEntries(
+        Object.keys(contactFormSchema.shape).map(key => [key, z.string()]),
+      ) as Record<keyof ContactFormSchema, z.ZodString>,
+    ),
+    setValue,
+    subscribe,
+  );
 
   const { setOpen } = useModal();
 
