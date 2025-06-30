@@ -53,7 +53,7 @@ const projects: Project[] = [
       },
     ],
     backgroundColor: "bg-linear-to-br from-blue-600 to-blue-800",
-    deployedHref: "https://asrrp.hu",
+    deployedHref: "https://asrrp.vercel.app",
     image: "/images/asrrp_website.png",
     alt: "ASR RolePlay Website",
     id: "asr-roleplay-website",
