@@ -110,6 +110,39 @@ const projects: Project[] = [
     id: "asr-roleplay-dashboard",
   },
   {
+    title: "Nyaverlose Website",
+    description: "Website for a Minecraft client.",
+    technologies: [
+      {
+        name: "TypeScript",
+        color: "bg-[#3178c6]",
+        href: "https://www.typescriptlang.org",
+      },
+      { name: "Next.js", color: "bg-black", href: "https://nextjs.org" },
+      {
+        name: "Tanstack Query",
+        color: "bg-[#2361d7]",
+        href: "https://tanstack.com/query",
+      },
+      {
+        name: "tRPC",
+        color: "bg-trpc-blue",
+        href: "https://trpc.io",
+      },
+      {
+        name: "Motion",
+        color: "bg-[#e2d82e]",
+        href: "https://motion.dev",
+      },
+    ],
+    backgroundColor: "bg-linear-to-br from-[#febdc7] to-[#a86d77]",
+    deployedHref: "https://www.nyaverlose.cc",
+    image: "/images/nyaverlose.png",
+    imagePosition: "top",
+    alt: "Nyaverlose Website",
+    id: "nyaverlose-website",
+  },
+  {
     title: "Access-Bot",
     description:
       "Discord bot for quizzing people about rules before entering the server.",
@@ -154,30 +187,6 @@ const projects: Project[] = [
     imagePosition: "bottom",
     alt: "Hypoxia",
     id: "hypoxia",
-  },
-  {
-    title: "Gymgol Simulator",
-    description:
-      "Game about my school where the goal is to avoid the teachers asking questions.",
-    technologies: [
-      {
-        name: "Python",
-        color: "bg-[#3776ab]",
-        href: "https://www.python.org",
-      },
-      {
-        name: "Pygame",
-        color: "bg-[#10d223]",
-        href: "https://www.pygame.org",
-      },
-    ],
-    backgroundColor: "bg-linear-to-br from-teal-600 to-teal-800",
-    sourceHref: "https://github.com/jake8655/gymgol-simulator",
-    deployedHref: "https://jake8655.itch.io/gymgol-simulator",
-    image: "/images/gymgol-simulator.png",
-    imagePosition: "bottom",
-    alt: "Gymgol Simulator",
-    id: "gymgol-simulator",
   },
 ];
 
