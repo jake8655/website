@@ -2,7 +2,7 @@
 
 import { atom, useAtom } from "jotai";
 import { useEffect, useRef } from "react";
-import type { Path, UseFormSetValue, UseFromSubscribe } from "react-hook-form";
+import type { Path, UseFormSetValue, UseFormSubscribe } from "react-hook-form";
 import { useScreen } from "usehooks-ts";
 import { type z } from "zod";
 
@@ -47,7 +47,7 @@ export function useSaveForm<T extends z.ZodType>(
   name: string,
   schema: T,
   setValue: UseFormSetValue<z.infer<T>>,
-  subscribe: UseFromSubscribe<z.infer<T>>,
+  subscribe: UseFormSubscribe<z.infer<T>>,
 ) {
   const getStorage = () => window.localStorage.getItem(name);
   const setStorage = (value: string) =>

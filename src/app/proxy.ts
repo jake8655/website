@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { env } from "@/env";
 
-export async function middleware(request: NextRequest): Promise<NextResponse> {
+export async function proxy(request: NextRequest): Promise<NextResponse> {
   if (request.method === "GET") {
     const response = NextResponse.next();
     const token = request.cookies.get("session")?.value ?? null;

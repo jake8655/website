@@ -1,6 +1,6 @@
 import { animated, useSpring } from "@react-spring/three";
 import { useGLTF } from "@react-three/drei";
-import React, { type JSX } from "react";
+import { type JSX } from "react";
 import type * as THREE from "three";
 import { type GLTF } from "three-stdlib";
 import { useSmallScreen } from "@/lib/hooks";

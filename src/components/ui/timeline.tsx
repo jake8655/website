@@ -78,7 +78,7 @@ export const Timeline = ({
           style={{
             height: height + "px",
           }}
-          className="absolute top-0 left-8 w-[2px] overflow-hidden bg-gradient-to-b from-0% from-transparent via-neutral-700 to-99% to-transparent [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)] lg:left-8 "
+          className="absolute top-0 left-8 w-[2px] overflow-hidden bg-gradient-to-b from-0% from-transparent via-neutral-700 to-99% to-transparent [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)] lg:left-8"
         >
           <motion.div
             style={{

@@ -1,15 +1,14 @@
 // @ts-check
 
-import { dirname } from "path";
-import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
-
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
 // @ts-expect-error no types
 import drizzle from "eslint-plugin-drizzle";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import reactCompiler from "eslint-plugin-react-compiler";
 import reactHooks from "eslint-plugin-react-hooks";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -89,6 +88,8 @@ const config = [
       "react-hooks/exhaustive-deps": ["off"],
     },
   },
+  // @ts-expect-error bad types
+  { ignores: [".next/**", "out/**", "build/**", "next-env.d.ts"] },
 ];
 
 export default config;
