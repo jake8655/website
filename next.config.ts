@@ -8,16 +8,13 @@ import "./src/env";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  reactCompiler: true,
   experimental: {
-    reactCompiler: true,
     ppr: true,
   },
   transpilePackages: ["three"],
   typescript: {
     ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
   },
 };
 

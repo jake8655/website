@@ -1,7 +1,7 @@
 "use client";
 
 import { useReducedMotion } from "motion/react";
-import { SnowOverlay } from "react-snow-overlay";
+import { Snowfall } from "react-snowfall";
 import { useSmallScreen } from "@/lib/hooks";
 
 export default function SnowOverlayWrapper() {
@@ -10,11 +10,12 @@ export default function SnowOverlayWrapper() {
   const isSmallScreen = useSmallScreen(768);
   const isDecember = new Date().getMonth() === 11;
 
-  return (
-    <SnowOverlay
-      disabled={!isDecember || !!prefersReducedMotion}
-      maxParticles={lowEndDevice || isSmallScreen ? 25 : 50}
-      aria-hidden
-    />
-  );
+  return isDecember && !prefersReducedMotion ? (
+    <div className="pointer-events-none fixed inset-0 z-50">
+      <Snowfall
+        snowflakeCount={lowEndDevice || isSmallScreen ? 25 : 50}
+        aria-hidden
+      />
+    </div>
+  ) : null;
 }
