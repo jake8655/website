@@ -20,7 +20,7 @@
     "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^5.0.1",
     "@icons-pack/react-simple-icons": "^13.0.0",
-    "@libsql/client": "^0.15.4",
+    "@libsql/client": "^0.17.0",
     "@number-flow/react": "^0.5.9",
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",
