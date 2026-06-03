@@ -1,14 +1,13 @@
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { Noto_Color_Emoji } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 
 import LightBlob from "@/components/light-blob";
 import LightBlobMouse from "@/components/light-blob-mouse";
-import { CSPostHogProvider } from "@/components/posthog-provider";
 import SnowOverlayNoSSR from "@/components/snow-overlay-no-ssr";
 import { env } from "@/env";
 import { TRPCReactProvider } from "@/trpc/react";
@@ -16,7 +15,12 @@ import { TRPCReactProvider } from "@/trpc/react";
 import "@/app/globals.css";
 import { Toaster } from "@/components/ui/sonner";
 
+const CSPostHogProvider = dynamic(() =>
+  import("@/components/posthog-provider").then(mod => mod.CSPostHogProvider),
+);
+
 export const metadata: Metadata = {
+  metadataBase: new URL("https://dominiktoth.com"),
   title: {
     template: "Dominik Tóth • %s",
     default: "Dominik Tóth",
@@ -50,6 +54,9 @@ export const metadata: Metadata = {
   ],
   creator: "Dominik Tóth",
   publisher: "Dominik Tóth",
+  alternates: {
+    canonical: "/",
+  },
   formatDetection: {
     telephone: false,
     address: false,
@@ -123,12 +130,11 @@ export default function Layout({
         <SpeedInsights />
         <FilteredPostHogProvider>
           <TRPCReactProvider>
-            <ReactQueryDevtools />
             <NextTopLoader color="#005cb8" />
             <LightBlob className="-translate-x-1/2 -translate-y-1/2 right-0 left-0" />
             <LightBlob className="right-0 bottom-0 translate-x-1/2 translate-y-1/2" />
             <LightBlobMouse className="hidden xl:block" />
-            <SnowOverlayNoSSR />
+            {new Date().getMonth() === 11 ? <SnowOverlayNoSSR /> : null}
 
             <Toaster />
             {children}

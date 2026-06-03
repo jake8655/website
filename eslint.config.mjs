@@ -1,36 +1,18 @@
-// @ts-check
-
-import { FlatCompat } from "@eslint/eslintrc";
-import typescriptEslint from "@typescript-eslint/eslint-plugin";
-// @ts-expect-error no types
+import { defineConfig, globalIgnores } from "eslint/config";
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTs from "eslint-config-next/typescript";
 import drizzle from "eslint-plugin-drizzle";
-import jsxA11y from "eslint-plugin-jsx-a11y";
 import reactCompiler from "eslint-plugin-react-compiler";
-import reactHooks from "eslint-plugin-react-hooks";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-/** @type {import("eslint").Linter.Config[]} */
-const config = [
-  // @ts-expect-error bad types
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+const config = defineConfig([
+  ...nextVitals,
+  ...nextTs,
   {
-    // @ts-expect-error bad types
+    files: ["**/*.{ts,tsx}"],
     plugins: {
-      "@typescript-eslint": typescriptEslint,
+      drizzle,
       "react-compiler": reactCompiler,
-      "react-hooks": reactHooks,
-      "jsx-a11y": jsxA11y,
-      drizzle: drizzle,
     },
-
     languageOptions: {
       parserOptions: {
         project: true,
@@ -39,7 +21,6 @@ const config = [
         },
       },
     },
-
     rules: {
       "react-compiler/react-compiler": "error",
       "react/no-unescaped-entities": "off",
@@ -70,7 +51,7 @@ const config = [
         },
       ],
 
-      "@typescript-eslint/no-require-imports": ["off"],
+      "@typescript-eslint/no-require-imports": "off",
 
       "drizzle/enforce-delete-with-where": [
         "error",
@@ -85,11 +66,10 @@ const config = [
         },
       ],
 
-      "react-hooks/exhaustive-deps": ["off"],
+      "react-hooks/exhaustive-deps": "off",
     },
   },
-  // @ts-expect-error bad types
-  { ignores: [".next/**", "out/**", "build/**", "next-env.d.ts"] },
-];
+  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
+]);
 
 export default config;

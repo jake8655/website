@@ -9,6 +9,7 @@ import {
 import { toast } from "sonner";
 import { z } from "zod";
 import { useSaveForm } from "@/lib/hooks";
+import { capturePostHogEvent } from "@/lib/posthog";
 import {
   type ContactFormSchema,
   cn,
@@ -20,6 +21,10 @@ import { BottomGradient, LabelInputContainer } from "./contact-modal";
 import { useModal } from "./ui/animated-modal";
 import { Input, Textarea } from "./ui/input";
 import { Label } from "./ui/label";
+
+function getResetTime(resetTimestamp: number) {
+  return msToTime(resetTimestamp - Date.now());
+}
 
 export default function Form() {
   const {
@@ -47,7 +52,12 @@ export default function Form() {
   const { setOpen } = useModal();
 
   const { mutate, isPending } = api.contact.createContactMessage.useMutation({
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
+      void capturePostHogEvent("contact_message_sent", {
+        subject_length: variables.subject.length,
+        message_length: variables.message.length,
+      });
+
       toast.success("Successfully sent contact message", {
         description: "Thank you for reaching out! I will get back to you soon.",
       });
@@ -58,7 +68,7 @@ export default function Form() {
     onError: err => {
       if (err.data?.ratelimit) {
         const resetTimestamp = err.data.ratelimit.resetTimestamp;
-        const timeStamp = msToTime(resetTimestamp - Date.now());
+        const timeStamp = getResetTime(resetTimestamp);
 
         toast.error("Error sending message", {
           description: `You have exceeded the rate limit for sending messages. Please try again in ${timeStamp}.`,
@@ -73,8 +83,13 @@ export default function Form() {
     },
   });
 
+  const onSubmit = handleSubmit(data => {
+    if (isPending) return;
+    mutate(data);
+  });
+
   return (
-    <form className="mt-8" onSubmit={handleSubmit(data => mutate(data))}>
+    <form className="mt-8" onSubmit={onSubmit}>
       <h3 className="mb-4 text-center font-bold text-3xl">Contact me</h3>
       <div className="space-y-4">
         <Field
@@ -131,6 +146,8 @@ function Field({
   register: UseFormRegister<ContactFormSchema>;
   textarea?: boolean;
 }) {
+  const errorId = `${name}-error`;
+
   return (
     <LabelInputContainer>
       <Label htmlFor={name}>{label}</Label>
@@ -138,6 +155,8 @@ function Field({
         <Textarea
           id={name}
           placeholder={placeholder}
+          aria-invalid={!!error}
+          aria-describedby={error ? errorId : undefined}
           className={cn({
             "outline-[2px] outline-red-500 ring-0 focus-visible:outline": error,
           })}
@@ -147,6 +166,8 @@ function Field({
         <Input
           id={name}
           placeholder={placeholder}
+          aria-invalid={!!error}
+          aria-describedby={error ? errorId : undefined}
           className={cn({
             "outline-[2px] outline-red-500 ring-0 focus-visible:outline": error,
           })}
@@ -154,7 +175,9 @@ function Field({
         />
       )}
       {error?.message && (
-        <p className="text-red-500 text-xs md:text-sm">{error.message}</p>
+        <p id={errorId} className="text-red-500 text-xs md:text-sm">
+          {error.message}
+        </p>
       )}
     </LabelInputContainer>
   );
@@ -185,12 +208,14 @@ function SendButton({ isSubmitting }: { isSubmitting: boolean }) {
         },
       )}
       type="submit"
+      disabled={isSubmitting}
     >
       <div className="flex items-center justify-center gap-2">
         Send
         {isSubmitting ? (
           <svg
             className="-ml-1 mr-3 h-5 w-5 animate-spin"
+            aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"

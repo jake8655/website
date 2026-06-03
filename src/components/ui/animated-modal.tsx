@@ -61,6 +61,7 @@ export const ModalTrigger = ({
   const { setOpen } = useModal();
   return (
     <button
+      type="button"
       className={cn(
         "relative overflow-hidden rounded-md px-4 py-2 text-center",
         className,
@@ -75,9 +76,11 @@ export const ModalTrigger = ({
 export const ModalBody = ({
   children,
   className,
+  ariaLabel,
 }: {
   children: ReactNode;
   className?: string;
+  ariaLabel: string;
 }) => {
   const { open } = useModal();
 
@@ -116,6 +119,9 @@ export const ModalBody = ({
 
           <motion.div
             ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label={ariaLabel}
             className={cn(
               "relative z-60 flex max-h-[90%] min-h-[50%] flex-1 flex-col overflow-y-scroll border border-neutral-800 bg-brand-darkest md:max-w-[40%] md:rounded-2xl",
               className,
@@ -199,7 +205,9 @@ const CloseIcon = () => {
   const { setOpen } = useModal();
   return (
     <button
+      type="button"
       onClick={() => setOpen(false)}
+      aria-label="Close modal"
       className="group absolute top-4 right-4"
     >
       <svg

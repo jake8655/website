@@ -1,14 +1,8 @@
 import { env } from "@/env";
-import { cn } from "@/lib/utils";
+import HeroNameTooltip from "../hero-name-tooltip";
 import HeroInView from "../hero-in-view";
 import Macbook from "../macbook";
 import { ModalTrigger } from "../ui/animated-modal";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../ui/tooltip";
 
 function calculateAge() {
   const date = new Date();
@@ -37,29 +31,7 @@ export default function Hero({
           </div>
           <h1 className="w-fit font-bold text-4xl leading-none md:text-5xl lg:text-7xl">
             Hi there! I&apos;m <br />
-            <TooltipProvider delayDuration={100}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span
-                    className={cn(
-                      "relative cursor-default bg-linear-to-bl from-brand to-blue-600 bg-clip-text text-transparent leading-normal",
-                      "before:absolute before:bottom-0 before:h-1 before:w-full before:rounded-full before:bg-linear-to-bl before:from-brand before:to-blue-600 before:transition-all before:duration-300 before:content-[''] data-[state=closed]:before:w-0",
-                    )}
-                  >
-                    Dominik Tóth
-                  </span>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="text-xl">
-                    However, I go by{" "}
-                    <span className="bg-linear-to-bl from-brand to-blue-600 bg-clip-text font-bold text-transparent">
-                      Jake
-                    </span>{" "}
-                    online
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <HeroNameTooltip />
             .
           </h1>
         </div>

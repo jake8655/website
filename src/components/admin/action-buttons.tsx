@@ -4,6 +4,17 @@ import { Archive, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import type { Contact } from "@/server/db/schema";
 import { api } from "@/trpc/react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
 import { Button } from "../ui/button";
 import { DropdownMenuItem } from "../ui/dropdown-menu";
 import {
@@ -46,13 +57,16 @@ export function ArchiveButton({
     onError: (_, __, ctx) => {
       // If the mutation fails, use the context-value from onMutate
       utils.admin.getMessageData.setData(undefined, ctx!.prevData);
+      const previousArchived =
+        ctx!.prevData.find(post => post.id === id)?.archived ?? archived;
+
       toast.error(
-        `Error ${ctx!.prevData[0]!.archived ? "restoring" : "archiving"} message`,
+        `Error ${previousArchived ? "restoring" : "archiving"} message`,
         {
-          description: `There was an internal server error while ${ctx!.prevData[0]!.archived ? "restoring" : "archiving"} the message.`,
+          description: `There was an internal server error while ${previousArchived ? "restoring" : "archiving"} the message.`,
           action: {
             label: "Try again",
-            onClick: () => mutate({ messageId: id }),
+            onClick: () => toggleArchived(),
           },
         },
       );
@@ -62,21 +76,29 @@ export function ArchiveButton({
       utils.admin.getMessageData.invalidate();
     },
     onSuccess: (_, __, { prevData }) => {
+      const previousArchived =
+        prevData.find(post => post.id === id)?.archived ?? archived;
+
       toast.success(
-        `Successfully ${prevData[0]!.archived ? "restored" : "archived"} message`,
+        `Successfully ${previousArchived ? "restored" : "archived"} message`,
         {
           action: {
             label: "Undo",
-            onClick: () => mutate({ messageId: id }),
+            onClick: () => toggleArchived(),
           },
         },
       );
     },
   });
 
+  function toggleArchived() {
+    if (isPending) return;
+    mutate({ messageId: id });
+  }
+
   return (
     <DropdownMenuItem
-      onClick={() => mutate({ messageId: id })}
+      onClick={toggleArchived}
       disabled={isPending}
       className="flex items-center gap-1"
     >
@@ -115,7 +137,7 @@ export function DeleteButton({ id }: { id: number }) {
           "There was an internal server error while deleting the message.",
         action: {
           label: "Try again",
-          onClick: () => mutate({ messageId: id }),
+          onClick: () => deleteMessage(),
         },
       });
     },
@@ -128,15 +150,42 @@ export function DeleteButton({ id }: { id: number }) {
     },
   });
 
+  function deleteMessage() {
+    if (isPending) return;
+    mutate({ messageId: id });
+  }
+
   return (
-    <DropdownMenuItem
-      onClick={() => mutate({ messageId: id })}
-      disabled={isPending}
-      className="flex items-center gap-1"
-    >
-      <Trash2 />
-      Delete
-    </DropdownMenuItem>
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <DropdownMenuItem
+          onSelect={event => event.preventDefault()}
+          disabled={isPending}
+          className="flex items-center gap-1 text-destructive focus:text-destructive"
+        >
+          <Trash2 />
+          Delete
+        </DropdownMenuItem>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Delete message?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This permanently removes the contact message. This action cannot be
+            undone.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            onClick={deleteMessage}
+          >
+            Delete
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 
@@ -151,7 +200,7 @@ export function ArchiveBulkButton({
   const utils = api.useUtils();
 
   const { mutate, isPending } = api.admin.archiveBulk.useMutation({
-    onMutate: async () => {
+    onMutate: async targetIds => {
       // Cancel outgoing fetches (so they don't overwrite our optimistic update)
       await utils.admin.getMessageData.cancel();
 
@@ -161,7 +210,7 @@ export function ArchiveBulkButton({
       // Optimistically update the data with our new post
       utils.admin.getMessageData.setData(undefined, old => {
         return old!.map(post => {
-          if (ids.includes(post.id))
+          if (targetIds.includes(post.id))
             return { ...post, archived: !post.archived };
           return post;
         });
@@ -185,7 +234,7 @@ export function ArchiveBulkButton({
           } the messages.`,
           action: {
             label: "Try again",
-            onClick: () => mutate(ids),
+            onClick: () => archiveMessages(vars),
           },
         },
       );
@@ -206,6 +255,11 @@ export function ArchiveBulkButton({
     },
   });
 
+  function archiveMessages(targetIds = ids) {
+    if (isPending) return;
+    mutate(targetIds);
+  }
+
   return rows.length > 0 ? (
     <TooltipProvider>
       <Tooltip>
@@ -213,7 +267,7 @@ export function ArchiveBulkButton({
           <Button
             variant={rows[0]!.original.archived ? "success" : "warning"}
             size="sm"
-            onClick={() => mutate(ids)}
+            onClick={() => archiveMessages()}
             disabled={isPending}
           >
             <Archive />
@@ -238,7 +292,7 @@ export function DeleteBulkButton({
   const utils = api.useUtils();
 
   const { mutate, isPending } = api.admin.deleteBulk.useMutation({
-    onMutate: async () => {
+    onMutate: async targetIds => {
       // Cancel outgoing fetches (so they don't overwrite our optimistic update)
       await utils.admin.getMessageData.cancel();
 
@@ -247,13 +301,13 @@ export function DeleteBulkButton({
 
       // Optimistically update the data with our new post
       utils.admin.getMessageData.setData(undefined, old =>
-        old!.filter(post => !ids.includes(post.id)),
+        old!.filter(post => !targetIds.includes(post.id)),
       );
 
       // Return the previous data so we can revert if something goes wrong
       return { prevData };
     },
-    onError: (_, __, ctx) => {
+    onError: (_, vars, ctx) => {
       // If the mutation fails, use the context-value from onMutate
       utils.admin.getMessageData.setData(undefined, ctx!.prevData);
 
@@ -262,7 +316,7 @@ export function DeleteBulkButton({
           "There was an internal server error while deleting messages.",
         action: {
           label: "Try again",
-          onClick: () => mutate(ids),
+          onClick: () => deleteMessages(vars),
         },
       });
     },
@@ -276,23 +330,46 @@ export function DeleteBulkButton({
     },
   });
 
+  function deleteMessages(targetIds = ids) {
+    if (isPending) return;
+    mutate(targetIds);
+  }
+
   return rows.length > 0 ? (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={() => mutate(ids)}
-            disabled={isPending}
+    <AlertDialog>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive" size="sm" disabled={isPending}>
+                <Trash2 />
+              </Button>
+            </AlertDialogTrigger>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Delete</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Delete selected messages?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This permanently removes {rows.length} selected contact{" "}
+            {rows.length === 1 ? "message" : "messages"}. This action cannot be
+            undone.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            onClick={() => deleteMessages()}
           >
-            <Trash2 />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Delete</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+            Delete
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   ) : null;
 }
