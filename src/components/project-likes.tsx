@@ -20,9 +20,11 @@ function getResetTime(resetTimestamp: number) {
 
 export default function ProjectLikes({ projectId }: { projectId: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const isPendingRef = useRef(false);
   const inView = useInView(containerRef, {
     margin: "0px 0px 500px 0px",
   });
+  const utils = api.useUtils();
 
   const { data } = api.projectLike.getProjectLikeCount.useQuery(
     {
@@ -35,30 +37,6 @@ export default function ProjectLikes({ projectId }: { projectId: string }) {
     },
   );
 
-  return (
-    <div ref={containerRef}>
-      {data ? (
-        <div className="fade-in slide-in-from-right flex animate-in items-start gap-2 duration-700">
-          <NumberFlow value={data.likes} />
-          <ProjectLikeButton
-            projectId={projectId}
-            userHasLiked={data.userHasLiked}
-          />
-        </div>
-      ) : null}
-    </div>
-  );
-}
-
-function ProjectLikeButton({
-  projectId,
-  userHasLiked,
-}: {
-  projectId: string;
-  userHasLiked: boolean;
-}) {
-  const utils = api.useUtils();
-
   const { mutate, isPending } = api.projectLike.likeProject.useMutation({
     onMutate: async () => {
       // Cancel outgoing fetches (so they don't overwrite our optimistic update)
@@ -67,18 +45,20 @@ function ProjectLikeButton({
       // Get the data from the queryCache
       const prevData = utils.projectLike.getProjectLikeCount.getData({
         projectId,
-      })!;
+      });
 
       // Optimistically update the data with our new post
       utils.projectLike.getProjectLikeCount.setData({ projectId }, old => {
-        if (!old!.userHasLiked)
+        if (!old) return old;
+
+        if (!old.userHasLiked)
           return {
-            likes: old!.likes + 1,
+            likes: old.likes + 1,
             userHasLiked: true,
           };
 
         return {
-          likes: old!.likes - 1,
+          likes: old.likes - 1,
           userHasLiked: false,
         };
       });
@@ -90,7 +70,7 @@ function ProjectLikeButton({
       // If the mutation fails, use the context-value from onMutate
       utils.projectLike.getProjectLikeCount.setData(
         { projectId },
-        ctx!.prevData,
+        ctx?.prevData,
       );
 
       if (err.data?.ratelimit) {
@@ -112,17 +92,20 @@ function ProjectLikeButton({
       });
     },
     onSettled: () => {
+      isPendingRef.current = false;
       // Sync with server once mutation has settled
       utils.projectLike.getProjectLikeCount.invalidate({ projectId });
     },
-    onSuccess: ({ userHasLiked, likes }) => {
+    onSuccess: result => {
+      utils.projectLike.getProjectLikeCount.setData({ projectId }, result);
+
       void capturePostHogEvent("project_like_toggled", {
         project_id: projectId,
-        liked: userHasLiked,
-        like_count: likes,
+        liked: result.userHasLiked,
+        like_count: result.likes,
       });
 
-      if (userHasLiked) {
+      if (result.userHasLiked) {
         toast.success("Successfully liked the project", {
           description: "Thank you for liking the project!",
           action: {
@@ -143,10 +126,36 @@ function ProjectLikeButton({
   });
 
   function toggleLike() {
-    if (isPending) return;
+    if (isPendingRef.current) return;
+    isPendingRef.current = true;
     mutate({ projectId });
   }
 
+  return (
+    <div ref={containerRef}>
+      {data ? (
+        <div className="fade-in slide-in-from-right flex animate-in items-start gap-2 duration-700">
+          <NumberFlow value={data.likes} />
+          <ProjectLikeButton
+            userHasLiked={data.userHasLiked}
+            isPending={isPending}
+            toggleLike={toggleLike}
+          />
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function ProjectLikeButton({
+  userHasLiked,
+  isPending,
+  toggleLike,
+}: {
+  userHasLiked: boolean;
+  isPending: boolean;
+  toggleLike: () => void;
+}) {
   return (
     <TooltipProvider>
       <Tooltip>

@@ -1,6 +1,7 @@
 "use client";
 import type { Row } from "@tanstack/react-table";
 import { Archive, Trash2 } from "lucide-react";
+import { useRef } from "react";
 import { toast } from "sonner";
 import type { Contact } from "@/server/db/schema";
 import { api } from "@/trpc/react";
@@ -32,6 +33,7 @@ export function ArchiveButton({
   archived: boolean;
 }) {
   const utils = api.useUtils();
+  const isPendingRef = useRef(false);
 
   const { mutate, isPending } = api.admin.toggleMessageArchived.useMutation({
     onMutate: async () => {
@@ -72,6 +74,7 @@ export function ArchiveButton({
       );
     },
     onSettled: () => {
+      isPendingRef.current = false;
       // Sync with server once mutation has settled
       utils.admin.getMessageData.invalidate();
     },
@@ -90,9 +93,9 @@ export function ArchiveButton({
       );
     },
   });
-
   function toggleArchived() {
-    if (isPending) return;
+    if (isPendingRef.current) return;
+    isPendingRef.current = true;
     mutate({ messageId: id });
   }
 
@@ -110,6 +113,7 @@ export function ArchiveButton({
 
 export function DeleteButton({ id }: { id: number }) {
   const utils = api.useUtils();
+  const isPendingRef = useRef(false);
 
   const { mutate, isPending } = api.admin.deleteMessage.useMutation({
     onMutate: async () => {
@@ -142,6 +146,7 @@ export function DeleteButton({ id }: { id: number }) {
       });
     },
     onSettled: () => {
+      isPendingRef.current = false;
       // Sync with server once mutation has settled
       utils.admin.getMessageData.invalidate();
     },
@@ -149,9 +154,9 @@ export function DeleteButton({ id }: { id: number }) {
       toast.success(`Successfully deleted message`);
     },
   });
-
   function deleteMessage() {
-    if (isPending) return;
+    if (isPendingRef.current) return;
+    isPendingRef.current = true;
     mutate({ messageId: id });
   }
 
@@ -198,6 +203,7 @@ export function ArchiveBulkButton({
 }) {
   const ids = rows.map(row => row.original.id);
   const utils = api.useUtils();
+  const isPendingRef = useRef(false);
 
   const { mutate, isPending } = api.admin.archiveBulk.useMutation({
     onMutate: async targetIds => {
@@ -240,6 +246,7 @@ export function ArchiveBulkButton({
       );
     },
     onSettled: () => {
+      isPendingRef.current = false;
       // Sync with server once mutation has settled
       utils.admin.getMessageData.invalidate();
     },
@@ -254,9 +261,9 @@ export function ArchiveBulkButton({
       resetSelection();
     },
   });
-
   function archiveMessages(targetIds = ids) {
-    if (isPending) return;
+    if (isPendingRef.current) return;
+    isPendingRef.current = true;
     mutate(targetIds);
   }
 
@@ -290,6 +297,7 @@ export function DeleteBulkButton({
 }) {
   const ids = rows.map(row => row.original.id);
   const utils = api.useUtils();
+  const isPendingRef = useRef(false);
 
   const { mutate, isPending } = api.admin.deleteBulk.useMutation({
     onMutate: async targetIds => {
@@ -321,6 +329,7 @@ export function DeleteBulkButton({
       });
     },
     onSettled: () => {
+      isPendingRef.current = false;
       // Sync with server once mutation has settled
       utils.admin.getMessageData.invalidate();
     },
@@ -329,9 +338,9 @@ export function DeleteBulkButton({
       resetSelection();
     },
   });
-
   function deleteMessages(targetIds = ids) {
-    if (isPending) return;
+    if (isPendingRef.current) return;
+    isPendingRef.current = true;
     mutate(targetIds);
   }
 

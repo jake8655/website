@@ -1,6 +1,6 @@
 import { env } from "@/env";
-import HeroNameTooltip from "../hero-name-tooltip";
 import HeroInView from "../hero-in-view";
+import HeroNameTooltip from "../hero-name-tooltip";
 import Macbook from "../macbook";
 import { ModalTrigger } from "../ui/animated-modal";
 
@@ -31,8 +31,7 @@ export default function Hero({
           </div>
           <h1 className="w-fit font-bold text-4xl leading-none md:text-5xl lg:text-7xl">
             Hi there! I&apos;m <br />
-            <HeroNameTooltip />
-            .
+            <HeroNameTooltip />.
           </h1>
         </div>
         <p className="text-balance pt-6 text-xl leading-normal">
@@ -81,7 +80,7 @@ function WorkButton() {
           />
         </svg>
       </div>
-      <span className="-bottom-0 absolute left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-linear-to-r from-purple-400/0 via-purple-400/90 to-purple-400/0 transition-opacity duration-500 group-hover:opacity-40" />
+      <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-linear-to-r from-purple-400/0 via-purple-400/90 to-purple-400/0 transition-opacity duration-500 group-hover:opacity-40" />
     </ModalTrigger>
   );
 }
