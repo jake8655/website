@@ -52,9 +52,9 @@ export const Timeline = ({
       ref={containerRef}
     >
       <div ref={ref} className="relative mx-auto max-w-7xl pb-20">
-        {data.map((item, index) => (
+        {data.map(item => (
           <div
-            key={index}
+            key={item.title}
             className="flex justify-start pt-10 lg:gap-10 lg:pt-40"
           >
             <div className="sticky top-40 z-30 flex max-w-xs flex-col items-center self-start lg:w-full lg:max-w-sm lg:flex-row">

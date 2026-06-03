@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useSmallScreen } from "@/lib/hooks";
+import { useSyncExternalStore } from "react";
 import { cn } from "@/lib/utils";
 
 const paths = [
@@ -68,10 +68,31 @@ const pathAnimations = paths.map((_, index) => {
   };
 });
 
-const BackgroundBeams = ({ className }: { className?: string }) => {
-  const smallScreen = useSmallScreen();
+const beamsMediaQuery = "(min-width: 1280px)";
 
-  return smallScreen ? null : (
+const subscribeToBeamsMedia = (callback: () => void) => {
+  const query = window.matchMedia(beamsMediaQuery);
+  query.addEventListener("change", callback);
+
+  return () => query.removeEventListener("change", callback);
+};
+
+const getBeamsMediaSnapshot = () => window.matchMedia(beamsMediaQuery).matches;
+
+const getServerBeamsMediaSnapshot = () => false;
+
+const BackgroundBeams = ({ className }: { className?: string }) => {
+  const showBeams = useSyncExternalStore(
+    subscribeToBeamsMedia,
+    getBeamsMediaSnapshot,
+    getServerBeamsMediaSnapshot,
+  );
+
+  if (!showBeams) {
+    return null;
+  }
+
+  return (
     <div
       className={cn(
         "absolute inset-0 flex h-full w-full items-center justify-center will-change-transform [mask-repeat:no-repeat] [mask-size:40px]",

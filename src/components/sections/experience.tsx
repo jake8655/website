@@ -74,7 +74,7 @@ export default function Experience({ className }: { className?: string }) {
     {
       title: "2020",
       content: (
-        <div>
+        <div key="experience-2020">
           <h4 className="mb-8 font-normal text-neutral-200 text-sm md:text-lg">
             <b>FiveM RolePlay Servers</b> - The start of my programming journey
           </h4>
@@ -85,7 +85,7 @@ export default function Experience({ className }: { className?: string }) {
     {
       title: "2021",
       content: (
-        <div>
+        <div key="experience-2021">
           <h4 className="mb-8 font-bold text-neutral-200 text-sm md:text-lg">
             FiveM Script Shop
           </h4>
@@ -104,7 +104,7 @@ export default function Experience({ className }: { className?: string }) {
     {
       title: "2022-2023",
       content: (
-        <div>
+        <div key="experience-2022-2023">
           <h4 className="mb-8 font-bold text-neutral-200 text-sm md:text-lg">
             Intro to Web Development
           </h4>
@@ -118,7 +118,7 @@ export default function Experience({ className }: { className?: string }) {
     {
       title: "2024",
       content: (
-        <div>
+        <div key="experience-2024">
           <h4 className="mb-8 font-bold text-neutral-200 text-sm md:text-lg">
             Stable growth
           </h4>
