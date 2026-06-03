@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Dominik Tóth",
     short_name: "Dominik Tóth",
     description:
-      "Dominik Tóth's personal website. I am a student and web developer building modern software.",
+      "Dominik Tóth's personal website. I am a student and software developer building modern solutions to problems.",
     start_url: "/",
     display: "standalone",
     background_color: "#13151a",

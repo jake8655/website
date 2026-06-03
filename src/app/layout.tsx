@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     default: "Dominik Tóth",
   },
   description:
-    "Dominik Tóth's personal website. I am a student and web developer building modern software.",
+    "Dominik Tóth's personal website. I am a student and software developer building modern solutions to problems.",
 
   generator: "Next.js",
   applicationName: "Dominik Tóth",
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Dominik Tóth",
     description:
-      "Dominik Tóth's personal website. I am a student and web developer building modern software.",
+      "Dominik Tóth's personal website. I am a student and software developer building modern solutions to problems.",
     url: "https://dominiktoth.com",
     siteName: "Dominik Tóth",
     images: [
@@ -101,7 +101,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Dominik Tóth",
     description:
-      "Dominik Tóth's personal website. I am a student and web developer building modern software.",
+      "Dominik Tóth's personal website. I am a student and software developer building modern solutions to problems.",
     siteId: "1556401454931476484",
     creator: "@jake8655",
     creatorId: "1556401454931476484",
