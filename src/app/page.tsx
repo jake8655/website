@@ -23,12 +23,12 @@ export default function Home() {
       <div id="home" className="relative z-10">
         <div
           id="background"
-          className="-z-20 absolute min-h-full w-full rounded-b-[100px]"
+          className="absolute -z-20 min-h-full w-full rounded-b-[100px]"
         ></div>
         <Suspense>
           <CustomError />
         </Suspense>
-        <div className="-z-1 absolute h-[100dvh] w-full">
+        <div className="absolute -z-1 h-[100dvh] w-full">
           <div className="relative h-full w-full">
             <BackgroundBeams />
           </div>

@@ -23,7 +23,7 @@ export default async function AdminDashboard() {
 
   return (
     <div className="relative z-30">
-      <div className="-z-1 absolute h-[100dvh] w-full">
+      <div className="absolute -z-1 h-[100dvh] w-full">
         <div className="relative h-full w-full">
           <BackgroundBeams />
         </div>

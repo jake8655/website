@@ -24,7 +24,7 @@ export function StarButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Star jake8655/website on GitHub"
-      className="inline-flex items-center gap-2 rounded-md border border-slate-700 bg-slate-950 px-3 py-1.5 font-semibold text-sm text-slate-100 transition-colors hover:border-brand hover:text-brand"
+      className="inline-flex items-center gap-2 rounded-md border border-slate-700 bg-slate-950 px-3 py-1.5 font-semibold text-slate-100 text-sm transition-colors hover:border-brand hover:text-brand"
     >
       <Star className="size-4" />
       Star

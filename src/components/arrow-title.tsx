@@ -21,7 +21,7 @@ export default function ArrowTitle({
         width={50}
         height={50}
         priority={priority}
-        className="group-hover:-translate-y-4 duration-500 ease-out"
+        className="duration-500 ease-out group-hover:-translate-y-4"
       />
       <h2 className="text-balance text-center font-semibold text-3xl lg:text-5xl">
         {text}
@@ -32,7 +32,7 @@ export default function ArrowTitle({
         width={50}
         height={50}
         priority={priority}
-        className="group-hover:-translate-y-4 duration-500 ease-out"
+        className="duration-500 ease-out group-hover:-translate-y-4"
       />
     </div>
   );

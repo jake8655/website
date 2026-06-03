@@ -74,7 +74,7 @@ export function SectionLink({ title, idx }: { title: string; idx: number }) {
               duration: 0.4,
               delay: 0.5,
             }}
-            className="-translate-x-1/2 absolute bottom-0 left-1/2 h-[6px] w-[6px] rounded-full bg-brand"
+            className="absolute bottom-0 left-1/2 h-[6px] w-[6px] -translate-x-1/2 rounded-full bg-brand"
           ></motion.div>
         )}
       </AnimatePresence>

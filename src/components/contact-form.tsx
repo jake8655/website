@@ -214,7 +214,7 @@ function SendButton({ isSubmitting }: { isSubmitting: boolean }) {
         Send
         {isSubmitting ? (
           <svg
-            className="-ml-1 mr-3 h-5 w-5 animate-spin"
+            className="mr-3 -ml-1 h-5 w-5 animate-spin"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
