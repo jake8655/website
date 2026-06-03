@@ -233,7 +233,7 @@ function MessageModal({
 }) {
   return (
     <Modal>
-      <ModalBody>
+      <ModalBody ariaLabel={`Message from ${post.name}`}>
         <ModalContent>
           <h3 className="mb-4 text-center font-bold text-3xl">{post.name}</h3>
           <div className="space-y-4">

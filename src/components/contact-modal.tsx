@@ -15,7 +15,7 @@ export default function ContactModal({
 }) {
   return (
     <Modal>
-      <ModalBody>
+      <ModalBody ariaLabel="Contact form">
         <ModalContent>
           <Form />
         </ModalContent>

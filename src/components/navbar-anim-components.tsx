@@ -62,11 +62,6 @@ export function SectionLink({ title, idx }: { title: string; idx: number }) {
         "text-brand": active,
       })}
       onClick={() => navigate(idx)}
-      onKeyDown={e => {
-        if (e.key === "Enter") {
-          navigate(idx);
-        }
-      }}
     >
       <AnimatePresence>
         {active && (
