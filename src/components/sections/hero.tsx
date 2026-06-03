@@ -36,11 +36,11 @@ export default function Hero({
           </h1>
         </div>
         <p className="text-balance pt-6 text-xl leading-normal">
-          A{age === 18 ? "n" : null} {age} year old highschool{" "}
+          A{age === 18 ? "n" : null} {age} year old university{" "}
           <span className="text-brand">student</span>,{" "}
-          <span className="text-brand">web developer</span>,{" "}
+          <span className="text-brand">software developer</span>,{" "}
           <span className="text-brand">linux</span> and{" "}
-          <span className="text-brand">aviation</span> enthusiast from Slovakia.{" "}
+          <span className="text-brand">AI</span> enthusiast from Slovakia.{" "}
           <span className="font-emoji">{env.NEXT_PUBLIC_SLOVAKIA_EMOJI}</span>
         </p>
       </div>
