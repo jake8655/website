@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useEffect, useState } from "react";
 import { useSmallScreen } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
 
@@ -58,15 +57,21 @@ const paths = [
   "M-37 -581C-37 -581 31 -176 495 -49C959 78 1027 483 1027 483",
 ];
 
+const pathAnimations = paths.map((_, index) => {
+  const seed = Math.sin((index + 1) * 12.9898) * 43758.5453;
+  const fraction = seed - Math.floor(seed);
+
+  return {
+    y2: `${93 + fraction * 8}%`,
+    duration: 10 + ((index * 7) % 10),
+    delay: (index * 3) % 10,
+  };
+});
+
 const BackgroundBeams = ({ className }: { className?: string }) => {
   const smallScreen = useSmallScreen();
-  const [show, setShow] = useState(true);
 
-  useEffect(() => {
-    if (smallScreen && show) setShow(false);
-  }, [smallScreen, show]);
-
-  return !show ? null : (
+  return smallScreen ? null : (
     <div
       className={cn(
         "absolute inset-0 flex h-full w-full items-center justify-center will-change-transform [mask-repeat:no-repeat] [mask-size:40px]",
@@ -115,13 +120,13 @@ const BackgroundBeams = ({ className }: { className?: string }) => {
                 x1: ["0%", "100%"],
                 x2: ["0%", "95%"],
                 y1: ["0%", "100%"],
-                y2: ["0%", `${93 + Math.random() * 8}%`],
+                y2: ["0%", pathAnimations[index]!.y2],
               }}
               transition={{
-                duration: Math.random() * 10 + 10,
+                duration: pathAnimations[index]!.duration,
                 ease: "easeInOut",
                 repeat: Infinity,
-                delay: Math.random() * 10,
+                delay: pathAnimations[index]!.delay,
               }}
             >
               <stop stopColor="#18CCFC" stopOpacity="0"></stop>

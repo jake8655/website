@@ -2,8 +2,12 @@ import { type Duration, Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { waitUntil } from "@vercel/functions";
 import { headers } from "next/headers";
+import { env } from "@/env";
 
-export const redis = Redis.fromEnv();
+export const redis = new Redis({
+  url: env.KV_REST_API_URL,
+  token: env.KV_REST_API_TOKEN,
+});
 
 export const createRatelimiter = (tokens: number, window: Duration) => {
   return new Ratelimit({

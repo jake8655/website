@@ -13,7 +13,7 @@ export function SignOutButton() {
   return (
     <button
       className="relative transition-colors hover:text-brand"
-      role="menuitem"
+      type="button"
       onClick={logout}
     >
       Sign out
@@ -26,6 +26,7 @@ export function ContactButton() {
 
   return (
     <button
+      type="button"
       className="transition-colors hover:text-brand"
       onClick={() => setOpen(true)}
     >
@@ -56,11 +57,11 @@ export function SectionLink({ title, idx }: { title: string; idx: number }) {
 
   return (
     <button
+      type="button"
       className={cn("relative transition-colors hover:text-brand", {
         "text-brand": active,
       })}
       onClick={() => navigate(idx)}
-      role="menuitem"
       onKeyDown={e => {
         if (e.key === "Enter") {
           navigate(idx);

@@ -4,6 +4,7 @@ import NumberFlow from "@number-flow/react";
 import { useInView } from "motion/react";
 import { useRef } from "react";
 import { toast } from "sonner";
+import { capturePostHogEvent } from "@/lib/posthog";
 import { cn, msToTime } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import {
@@ -12,6 +13,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
+
+function getResetTime(resetTimestamp: number) {
+  return msToTime(resetTimestamp - Date.now());
+}
 
 export default function ProjectLikes({ projectId }: { projectId: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -90,7 +95,7 @@ function ProjectLikeButton({
 
       if (err.data?.ratelimit) {
         const resetTimestamp = err.data.ratelimit.resetTimestamp;
-        const timeStamp = msToTime(resetTimestamp - Date.now());
+        const timeStamp = getResetTime(resetTimestamp);
 
         toast.error("Error liking the project", {
           description: `You have exceeded the rate limit for liking projects. Please try again in ${timeStamp}.`,
@@ -102,7 +107,7 @@ function ProjectLikeButton({
           "There was an internal server error while liking the project.",
         action: {
           label: "Try again",
-          onClick: () => mutate({ projectId }),
+          onClick: () => toggleLike(),
         },
       });
     },
@@ -110,13 +115,19 @@ function ProjectLikeButton({
       // Sync with server once mutation has settled
       utils.projectLike.getProjectLikeCount.invalidate({ projectId });
     },
-    onSuccess: ({ userHasLiked }) => {
+    onSuccess: ({ userHasLiked, likes }) => {
+      void capturePostHogEvent("project_like_toggled", {
+        project_id: projectId,
+        liked: userHasLiked,
+        like_count: likes,
+      });
+
       if (userHasLiked) {
         toast.success("Successfully liked the project", {
           description: "Thank you for liking the project!",
           action: {
             label: "Undo",
-            onClick: () => mutate({ projectId }),
+            onClick: () => toggleLike(),
           },
         });
         return;
@@ -125,19 +136,31 @@ function ProjectLikeButton({
       toast.success("Successfully removed like from the project", {
         action: {
           label: "Undo",
-          onClick: () => mutate({ projectId }),
+          onClick: () => toggleLike(),
         },
       });
     },
   });
+
+  function toggleLike() {
+    if (isPending) return;
+    mutate({ projectId });
+  }
 
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
           <button
-            onClick={() => mutate({ projectId })}
+            type="button"
+            onClick={toggleLike}
             disabled={isPending}
+            aria-label={
+              userHasLiked
+                ? "Remove like from this project"
+                : "Like this project"
+            }
+            aria-pressed={userHasLiked}
             className="group"
           >
             <ThumbsUp filled={userHasLiked} />

@@ -13,13 +13,9 @@ export function AdminNavbar() {
     <>
       {/* Empty div to move navbar lower so the sticky positioning triggers later */}
       <div className="h-16 w-full"></div>
-      <nav className="sticky top-8 z-50">
+      <nav className="sticky top-8 z-50" aria-label="Admin navigation">
         <Wrapper size="sm">
-          <ul
-            role="navigation"
-            aria-label="Main navigation"
-            className="flex items-center justify-between rounded-xl border-2 border-brand bg-blue-700/30 px-2 py-3 font-semibold text-sm backdrop-blur-lg md:p-4 md:text-xl md:backdrop-blur-xl"
-          >
+          <ul className="flex items-center justify-between rounded-xl border-2 border-brand bg-blue-700/30 px-2 py-3 font-semibold text-sm backdrop-blur-lg md:p-4 md:text-xl md:backdrop-blur-xl">
             <li>
               <Image
                 src="/images/memoji.png"
@@ -33,7 +29,6 @@ export function AdminNavbar() {
             <li className="mx-2 ml-auto md:mx-4 md:ml-auto">
               <Link
                 className="relative transition-colors hover:text-brand"
-                role="menuitem"
                 href="/"
               >
                 Homepage
@@ -42,7 +37,6 @@ export function AdminNavbar() {
             <li className="mx-2 md:mx-4">
               <Link
                 className="relative transition-colors hover:text-brand"
-                role="menuitem"
                 href="/admin"
               >
                 Dashboard
@@ -63,20 +57,15 @@ export default function Navbar() {
     <>
       {/* Empty div to move navbar lower so the sticky positioning triggers later */}
       <div className="h-16 w-full"></div>
-      <nav className="sticky top-8 z-50">
+      <nav className="sticky top-8 z-50" aria-label="Main navigation">
         <Wrapper size="sm">
-          <ul
-            role="navigation"
-            aria-label="Main navigation"
-            className="flex items-center justify-between rounded-xl border-2 border-brand bg-blue-700/30 px-2 py-3 font-semibold text-sm backdrop-blur-lg md:p-4 md:text-xl md:backdrop-blur-xl"
-          >
+          <ul className="flex items-center justify-between rounded-xl border-2 border-brand bg-blue-700/30 px-2 py-3 font-semibold text-sm backdrop-blur-lg md:p-4 md:text-xl md:backdrop-blur-xl">
             <li>
               <Link href="/">
                 <Image
                   src="/images/memoji.png"
                   width={50}
                   height={50}
-                  quality={90}
                   sizes="50px"
                   className="h-8 w-8 md:h-12 md:w-12"
                   alt="Dominik Tóth"

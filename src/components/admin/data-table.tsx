@@ -87,6 +87,7 @@ function TableView<TValue>({ columns, data }: DataTableProps<Contact, TValue>) {
     { id: "archived", value: false },
   ]);
 
+  // eslint-disable-next-line react-hooks/incompatible-library -- TanStack Table exposes mutable helpers; this component opts out of compiler memoization.
   const table = useReactTable({
     data,
     columns,

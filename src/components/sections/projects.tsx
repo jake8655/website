@@ -250,6 +250,7 @@ function ProjectCard({
           backgroundColor,
         )}
         href={deployedHref ?? sourceHref}
+        aria-label={`Open ${title}`}
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -259,6 +260,7 @@ function ProjectCard({
             alt={alt}
             width={1920}
             height={1080}
+            sizes="(min-width: 1024px) 896px, calc(100vw - 2rem)"
             className={cn(
               "h-full w-full rounded-[30px] object-cover transition-transform duration-300 group-hover:scale-105",
               {
@@ -283,6 +285,7 @@ function ProjectCard({
                 href={deployedHref}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`Open deployed ${title}`}
                 className="hover:text-brand"
               >
                 <ExternalLink size={20} />
@@ -293,6 +296,7 @@ function ProjectCard({
                 href={sourceHref}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`Open source code for ${title}`}
                 className="hover:text-brand"
               >
                 <SiGithub size={20} />
