@@ -95,7 +95,6 @@
     "typescript": "^6.0.3"
   },
   "overrides": {
-    "typescript-eslint": "8.60.1",
-    "zod-validation-error": "4.0.2"
+    "typescript-eslint": "8.60.1"
   }
 }
