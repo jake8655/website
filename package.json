@@ -95,6 +95,6 @@
     "typescript": "^7.0.0"
   },
   "overrides": {
-    "typescript-eslint": "8.60.1"
+    "typescript-eslint": "8.67.0"
   }
 }
